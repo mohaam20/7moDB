@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+      integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script src="myapp copy.js" defer></script>
+    <title>movies</title>
+  </head>
+  <body id="main">
+    <header>
+      <div class="head-cont">
+        <a href="#" class="home"><img src="/logos/logo.png" alt="7mobox" /></a>
+        <div class="search">
+          <input
+            type="text"
+            placeholder="Search"
+            id="search_area"
+            autocomplete="off"
+          />
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <ul class="results">
+            <template class="result_temp"
+              ><li data-pop="" class="result">
+                <img src="https://source.unsplash.com/random" alt="results" />
+                <p class="res_title">movie title</p>
+              </li></template
+            >
+          </ul>
+        </div>
+      </div>
+    </header>
+    <!-- <div class="container">
+        <div class="content" >
+            <div class="card">  <img class="img-fluid" src="https://source.unsplash.com/random">
+                <span class="infos">Lorem ipsum dolor sit amet consectetur.</span></div>
+            <div class="card">  <img class="img-fluid" src="https://source.unsplash.com/random">
+                <span class="infos">Lorem ipsum dolor sit amet consectetur.</span></div>
+            <div class="card">  <img class="img-fluid" src="https://source.unsplash.com/random">
+                <span class="infos">Lorem ipsum dolor sit amet consectetur.</span></div>
+            <div class="card">  <img class="img-fluid" src="https://source.unsplash.com/random">
+                <span class="infos">Lorem ipsum dolor sit amet consectetur.</span></div>
+        </div>
+    </div> -->
+    <div class="slide-dad" id="rec">
+      <h2 class="slide-title">
+        recommended <i class="fa-solid fa-angle-right"></i>
+      </h2>
+      <h2 class="next-title">next<i class="fa-solid fa-angle-right"></i></h2>
+
+      <button class="back"><i class="fa-solid fa-angle-left"></i></button>
+      <button class="next"><i class="fa-solid fa-angle-right"></i></button>
+      <h1 class="cardLoad">loding <i class="fa-solid fa-spinner"></i></h1>
+
+      <div class="slide-show">
+        <template class="card-temp">
+          <div class="card">
+            <img class="img-fluid" src="https://source.unsplash.com/random" />
+            <div class="infos">
+              <div class="posterTitle">
+                <img src="https://source.unsplash.com/random" alt="" />
+                <h2>movie 1</h2>
+              </div>
+            </div>
+          </div>
+        </template>
+        <!-- <div class="card">
+          <img class="img-fluid" src="https://source.unsplash.com/random" />
+          <div class="infos">
+            <div class="posterTitle">
+              <img src="https://source.unsplash.com/random" alt="" />
+              <h3>movie 1</h3>
+            </div>
+            Lorem ipsum dolor sit amet consectetur.
+          </div>
+        </div> -->
+      </div>
+      <div class="next-rec">
+        <h1 class="cardLoad">loding <i class="fa-solid fa-spinner"></i></h1>
+        <template class="nextTemp">
+          <div class="nextCard">
+            <img src="https://source.unsplash.com/random" alt="" />
+            <span>
+              <h4>avengers2</h4>
+              <p>2022</p></span
+            >
+          </div>
+        </template>
+        <!-- <div class="nextCard">
+          <img src="https://source.unsplash.com/random" alt="" />
+          <span>
+            <h4>avengers2</h4>
+            <p>2022</p></span
+          >
+        </div> -->
+      </div>
+    </div>
+
+    <!-- end1............................................ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ -->
+
+    <div class="slide-dad" id="movieTrends">
+      <h2 class="slide-title">
+        trending movies <i class="fa-solid fa-angle-right"></i>
+      </h2>
+      <button class="back"><i class="fa-solid fa-angle-left"></i></button>
+      <button class="next"><i class="fa-solid fa-angle-right"></i></button>
+
+      <div class="slide-show">
+        <template class="card-temp"
+          ><div class="card">
+            <img class="img-fluid" src="https://source.unsplash.com/random" />
+            <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>
+          </div></template
+        >
+      </div>
+    </div>
+
+    <div class="slide-dad" id="tvTrends">
+      <h2 class="slide-title">
+        trending serieses <i class="fa-solid fa-angle-right"></i>
+      </h2>
+      <button class="next"><i class="fa-solid fa-angle-right"></i></button>
+      <button class="back"><i class="fa-solid fa-angle-left"></i></button>
+
+      <div class="slide-show">
+        <template class="card-temp"
+          ><div class="card">
+            <img class="img-fluid" src="https://source.unsplash.com/random" />
+            <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>
+          </div></template
+        >
+      </div>
+    </div>
+  </body>
+</html>
