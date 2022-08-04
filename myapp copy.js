@@ -4,6 +4,9 @@ const ressTemp = document.querySelector(".results");
 const resTemp = ressTemp.querySelector(".result_temp").content;
 const slide1 = document.querySelector("#movieTrends");
 const slide2 = document.querySelector("#tvTrends");
+const topSlide = document.querySelector("#topMovies");
+const top2Slide = document.querySelector("#topShows");
+const top3Slide = document.querySelector("#topAnimes");
 const mainSlide = document.querySelector("#rec");
 const movieCard = document.querySelector(".card-temp");
 const nextField = document.querySelector(".next-rec");
@@ -17,6 +20,33 @@ let baseImg = "http://image.tmdb.org/t/p/original/";
 // refrence constats
 
 addEventListener("DOMContentLoaded", () => {
+  fetch(
+    "https://api.themoviedb.org/3/movie/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&region=us"
+  )
+    .then((res) => res.json())
+    .then((res) => res.results)
+    .then((res) => {
+      // console.log(res);
+      showTrending(res, topSlide);
+    });
+  fetch(
+    "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&region=us"
+  )
+    .then((res) => res.json())
+    .then((res) => res.results)
+    .then((res) => {
+      // console.log(res);
+      showTrending(res, top2Slide);
+    });
+  fetch(
+    "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=ja&page=1"
+  )
+    .then((res) => res.json())
+    .then((res) => res.results)
+    .then((res) => {
+      // console.log(res);
+      showTrending(res, top3Slide);
+    });
   fetch(
     "https://api.themoviedb.org/3/trending/movie/day?api_key=5e060480a887e5981aa743bc33a74e40"
   )
@@ -204,7 +234,6 @@ function showMovies(movies) {
 function showTrending(trends, slideName) {
   // trends = trends.slice(0, 7);
   for (let trend of trends) {
-    console.log(trend.original_language + slideName.id);
     let poster = trend.poster_path;
     let backDrop = trend.backdrop_path;
     let title = trend.original_name ?? trend.title;
@@ -230,9 +259,7 @@ function showTrending(trends, slideName) {
           0,
           4
         )}<p/>` +
-        `<p style=" color:rgb(255, 208, 0); display:inline;">rating: ${
-          Math.round(trend.vote_average * 10) / 10
-        }<p/>` +
+        `<p style=" color:rgb(255, 208, 0); display:inline;">rating: ${trend.vote_average}<p/>` +
         `<p class="over-view">overview: ${detial ?? "don't exist yet"}<p/>`;
 
       if (poster != null && backDrop != null) {
@@ -316,7 +343,7 @@ function scrollSlide(direction, area) {
     //   console.log("captin");
     //   area.scrollLeft += scrollVal + 19;
     // }
-  } else if (direction == "back" && counter >2) {
+  } else if (direction == "back" && counter > 2) {
     if (nextField.children[counter].className == "nextCard") {
       nextField.children[counter].style.display = "flex";
       nextField.children[counter + 1].style.backgroundColor = null;
@@ -356,7 +383,8 @@ document.addEventListener(
       event.target.innerHTML == "more..."
     ) {
       let data = event.target.parentNode.querySelector(".over-view");
-      data.style.height = "fit-content";
+      data.style.minHeight = "fit-content";
+      data.style.height = "100%";
       event.target.innerHTML = "less";
     } else if (
       event.target.className == "more" &&
@@ -409,3 +437,21 @@ function fetchTrend(page) {
       showTrending(res, mainSlide);
     });
 }
+
+async function imdb() {
+  const fetching = await fetch(
+    "https://api.themoviedb.org/3/find/tt0111161?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&external_source=imdb_id"
+  );
+  const list = await fetching.json();
+  console.log(list);
+}
+
+imdb();
+
+fetch(
+  "https://api.themoviedb.org/3/movie/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&region=us"
+).then((res) => console.log(res.json()));
+
+setInterval(() => {
+  mainSlide.querySelector(".next").click();
+}, 4000);
