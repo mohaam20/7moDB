@@ -11,11 +11,17 @@ i {
   pointer-events: none;
 }
 
+:root {
+  --slide-width: 90vw;
+}
+
 .cardLoad {
+  overflow: hidden;
+  max-width: 90%;
   z-index: 3;
   position: absolute;
   top: 50%;
-  left: 25%;
+  left: 0;
   transform: translate(25%, -50%);
   color: antiquewhite;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
@@ -31,7 +37,12 @@ i {
   border-radius: 0.3rem;
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
+  overflow-x: hidden;
   background-color: rgb(0, 64, 136);
   overflow-x: hidden;
   display: flex;
@@ -42,7 +53,7 @@ body {
 header {
   position: relative;
   height: 3rem;
-  width: 100%;
+  width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -256,7 +267,8 @@ img {
   height: 18rem;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.692);
   border-radius: 1rem;
-  max-width: 65rem;
+  max-width: var(--slide-width);
+  width: 65rem;
   overflow: hidden;
   display: flex;
   position: relative;
@@ -265,6 +277,8 @@ img {
 }
 
 .slide-dad {
+  max-width: var(--slide-width);
+
   margin: 0.5rem;
   position: relative;
   /* align-items: center;
@@ -328,11 +342,13 @@ img {
   margin: 1rem;
   padding-top: 2rem;
   display: flex;
+  max-width: 90vw;
+  width: 70rem;
 }
 #rec .card {
   background-image: linear-gradient(0, black, white);
   margin: 0;
-  min-width: 100%;
+  min-width: 100% !important;
 }
 #rec .slide-title {
   top: 0;
@@ -344,7 +360,8 @@ img {
   padding: 0.5rem;
   height: 35rem;
   margin: 1rem;
-  width: 50rem;
+  width: fit-content;
+  max-width: 70%;
 }
 #rec .next-rec {
   padding: 1rem;
@@ -365,7 +382,8 @@ img {
 }
 
 #rec .next {
-  right: 22rem;
+  left: 70%;
+  transform: translateX(-2rem);
 }
 
 #rec * {
@@ -392,6 +410,7 @@ img {
 }
 
 .nextCard {
+  font-size: 70%;
   padding: 0.5rem;
   background-color: rgb(0, 53, 113);
   z-index: 4;
@@ -404,6 +423,10 @@ img {
 
 .nextCard p {
   color: rgb(141, 141, 141);
+}
+.nextCard h4 {
+  max-width: 80%;
+  overflow: hidden;
 }
 .nextCard span {
   text-transform: capitalize;
@@ -421,4 +444,42 @@ img {
   right: 16rem;
   transform: translateY(-100%);
   text-transform: capitalize;
+}
+
+@media all and (max-width: 900px) {
+  .next-title {
+    display: none;
+  }
+  header {
+    width: 100% !important;
+  }
+  #rec .slide-show {
+    max-width: 90vw;
+  }
+  #rec .next-rec {
+    display: none !important;
+  }
+  #rec .next {
+    right: 22rem;
+  }
+  .card {
+    min-width: calc(calc(90vw - 48px) / 3) !important;
+  }
+  #rec .next {
+    left: 100%;
+    transform: translateX(-4rem);
+  }
+}
+
+@media all and (max-width: 1200px) and (min-width: 800px) and (orientation: portrait) {
+  body {
+    background-color: green;
+  }
+  #rec .next-rec {
+    display: none !important;
+  }
+
+  .card {
+    min-width: calc(calc(90vw - 64px) / 4) !important;
+  }
 }

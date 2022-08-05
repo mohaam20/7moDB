@@ -267,6 +267,7 @@ function showTrending(trends, slideName) {
         nextField.children[2].style.display = "none";
 
         slideName.querySelector(".slide-show").append(card);
+        console.log(mainSlide.querySelector(".slide-show").clientWidth);
       }
     } else {
       card.querySelector("img").src = `${baseImg}${poster}`;
@@ -291,6 +292,13 @@ function showTrending(trends, slideName) {
   }
 }
 
+document.addEventListener("click", (event) => {
+  if (event.target.className == "next") {
+    clearInterval(autoScroll);
+    console.log("stoped");
+  }
+});
+
 document.addEventListener(
   "click",
   (event) => {
@@ -310,7 +318,7 @@ function scrollSlide(direction, area) {
   let maxScroll = area.scrollWidth - area.clientWidth;
   // console.log(currentScroll);
   // console.log(scrollVal);
-
+  console.log(direction);
   if (direction == "next") {
     if (set.id == "rec") {
       counter += 1;
@@ -343,7 +351,8 @@ function scrollSlide(direction, area) {
     //   console.log("captin");
     //   area.scrollLeft += scrollVal + 19;
     // }
-  } else if (direction == "back" && counter > 2) {
+  } else if (direction == "back" && counter > 1) {
+    console.log("go back");
     if (nextField.children[counter].className == "nextCard") {
       nextField.children[counter].style.display = "flex";
       nextField.children[counter + 1].style.backgroundColor = null;
@@ -452,6 +461,50 @@ fetch(
   "https://api.themoviedb.org/3/movie/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&region=us"
 ).then((res) => console.log(res.json()));
 
-setInterval(() => {
-  mainSlide.querySelector(".next").click();
+const autoScroll = setInterval(() => {
+  let area = mainSlide.querySelector(".slide-show");
+  let card = mainSlide.querySelector(".card");
+  let scrollVal = card.scrollWidth;
+  let maxScroll = area.scrollWidth - area.clientWidth;
+  counter += 1;
+
+  let statu =
+    parseInt(area.children[1].style.transform.replace(/\D/g, "")) || 0;
+  // console.log(statu);
+  // console.log(maxScroll);
+  if (statu > maxScroll - scrollVal * 3) {
+    console.log("stared");
+    trendPage += 1;
+    fetchTrend(trendPage);
+  }
+  if (nextField.children[counter].className == "nextCard") {
+    nextField.children[counter].style.display = "none";
+    nextField.children[counter + 1].style.backgroundColor = "rgb(0, 86, 184)";
+    nextField.children[counter + 1].style.transform = "scale(1.1)";
+    nextField.children[counter + 1].style.zIndex = "10";
+  }
+
+  if (statu < maxScroll) {
+    for (let bag of area.children) {
+      bag.style.transform = `translateX(-${statu + area.clientWidth}px)`;
+    }
+  }
 }, 4000);
+
+window.addEventListener(
+  "resize",
+  () => {
+    let area = mainSlide.querySelector(".slide-show");
+
+    console.log("it is moving");
+    setTimeout(() => {
+      for (let bag of area.children) {
+        console.log(counter);
+        bag.style.transform = `translateX(-${
+          (counter - 2) * area.clientWidth
+        }px)`;
+      }
+    }, 900);
+  },
+  false
+);
