@@ -30,7 +30,7 @@ addEventListener("DOMContentLoaded", () => {
       showTrending(res, topSlide);
     });
   fetch(
-    "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&region=us"
+    "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=en|ar&page=1&region=us"
   )
     .then((res) => res.json())
     .then((res) => res.results)
