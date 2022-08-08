@@ -633,5 +633,5 @@ function openMovie(card, dataType) {
   allLinks.links.push(meta);
   localStorage.setItem("tabs", JSON.stringify(allLinks));
   console.log(localStorage.getItem("tabs"));
-  window.open("movie1.html", "_blank");
+//   window.open("movie1.html", "_blank");
 }
