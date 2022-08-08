@@ -12,7 +12,11 @@ i {
 }
 
 :root {
+  --main-dark: rgb(0, 21, 45);
+  --main-mid: rgb(0, 46, 98);
   --slide-width: 90vw;
+  --main-light: rgb(0, 86, 184);
+  --gold: rgb(255, 208, 0);
 }
 
 .cardLoad {
@@ -43,7 +47,7 @@ html {
 
 body {
   overflow-x: hidden;
-  background-color: rgb(0, 21, 45);
+  background-color: var(--main-dark);
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
@@ -54,12 +58,12 @@ header {
   padding: 0.5rem;
 
   position: relative;
-  height: 3rem;
+  height: 3.5rem;
   width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(0, 46, 98);
+  background-color: var(--main-mid);
 }
 
 .head-cont {
@@ -73,10 +77,12 @@ header {
 
 .home {
   box-shadow: 0px 0px 25px rgba(176, 255, 250, 0.207);
-  background-color: rgb(0, 73, 156);
+  background-color: var(--main-light);
   border-radius: 4rem;
   height: 100%;
   padding: 0.1rem 1rem;
+  min-width: 3rem;
+  margin-right: 0.5rem;
 }
 
 .search {
@@ -92,7 +98,7 @@ header {
   border: 1px solid rgb(0, 253, 245);
 
   appearance: none;
-  border-radius: 1rem;
+  border-radius: 1.5rem;
   width: 30rem;
   height: 100%;
   padding: 0 1rem;
@@ -112,19 +118,6 @@ button {
   margin: 1rem;
   display: flex;
   justify-content: center;
-}
-
-.content {
-  border-radius: 1rem;
-  column-gap: 0.5rem;
-  padding: 0 1rem;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, auto));
-  justify-items: center;
-  background-color: rgb(0, 53, 113);
-  width: 70rem;
-  max-width: 90%;
-  min-height: 10rem;
 }
 
 img {
@@ -184,7 +177,7 @@ img {
 }
 
 .infos .over-view {
-  height: 4rem;
+  height: 7rem;
   overflow: hidden;
   font-size: rem;
 }
@@ -202,27 +195,28 @@ img {
   width: 15rem;
   margin: 2rem;
   cursor: pointer;
-  background-color: aqua;
   position: relative;
   overflow: hidden;
   border: 1.5px solid rgb(255, 255, 255);
   box-shadow: 0px 0px 3px black;
 }
 .card:hover > img {
-  filter: blur(3px) !important;
+  filter: blur(3px);
   /* filter: brightness(50%) !important; */
 }
 
 .results {
+  border: 1px solid var(--gold);
   overflow: hidden;
   border-radius: 1rem;
   top: 101%;
-  background-color: rgb(0, 37, 89);
+  background-color: rgba(0, 46, 98, 0.511);
   list-style: none;
   z-index: 99;
   position: absolute;
   height: max-content;
   width: 100%;
+  transform: translateY(1rem);
 }
 
 .results li {
@@ -236,7 +230,7 @@ img {
 }
 
 .results li:hover {
-  background-color: rgb(0, 60, 181);
+  background-color: rgba(255, 215, 34, 0.615);
 }
 
 .results img {
@@ -278,7 +272,7 @@ img {
   display: flex;
   position: relative;
   /* scroll-behavior: smooth; */
-  background-color: rgb(0, 53, 113);
+  background-color: var(--main-mid);
 }
 
 .slide-dad {
@@ -319,7 +313,7 @@ img {
 }
 
 .slide-show .card {
-  transition: all 1s ease;
+  transition: all 0.5s ease;
   min-width: 12rem;
   height: 100%;
   margin: 0 0.5rem;
@@ -383,7 +377,7 @@ img {
   display: flex;
   position: relative;
   scroll-behavior: smooth;
-  background-color: rgb(0, 53, 113);
+  background-color: var(--main-mid);
 }
 
 #rec .next {
@@ -401,7 +395,6 @@ img {
   left: 0;
   width: 100%;
   height: 70%;
-  /* background-color: red; */
   z-index: 4;
   content: "";
   position: absolute;
@@ -417,7 +410,7 @@ img {
 .nextCard {
   font-size: 70%;
   padding: 0.5rem;
-  background-color: rgb(0, 53, 113);
+  background-color: var(--main-mid);
   z-index: 4;
   border-radius: 1rem;
   display: flex;
@@ -448,12 +441,23 @@ img {
   gap: 0.5rem;
   align-items: center;
   position: absolute;
-  right: 16rem;
+  right: 19%;
   transform: translateY(-100%);
   text-transform: capitalize;
 }
 
-@media all and (max-width: 900px) {
+@media all and (max-width: 800px) {
+  .slide-show {
+    max-height: 70vh;
+  }
+  .posterTitle img {
+    width: 5rem;
+    height: 8rem;
+  }
+  .posterTitle {
+    gap: 0;
+    font-size: 0.8rem !important;
+  }
   .next-title {
     display: none;
   }
@@ -466,11 +470,13 @@ img {
   #rec .next-rec {
     display: none !important;
   }
-  #rec .next {
-    right: 22rem;
-  }
+
   .card {
-    min-width: calc(calc(90vw - 48px) / 3) !important;
+    min-width: calc(calc(90vw - 50px) / 3) !important;
+  }
+
+  .viewdCard {
+    min-width: calc(calc(calc(90vw - 25px) / 3) * 2) !important;
   }
   #rec .next {
     left: 100%;
@@ -478,15 +484,53 @@ img {
   }
 }
 
-@media all and (max-width: 1200px) and (min-width: 800px) and (orientation: portrait) {
-  body {
-    background-color: green;
+@media all and (orientation: landscape) {
+  .slide-show {
+    height: 78vh !important;
   }
-  #rec .next-rec {
-    display: none !important;
+  .slide-show {
+    margin-bottom: 5vh;
+  }
+  .next-rec {
+    max-height: 78vh !important;
+  }
+}
+
+@media all and (max-width: 1200px) and (min-width: 800px) {
+  .card {
+    min-width: calc(calc(90vw - 80px) / 5) !important;
+  }
+  .viewdCard {
+    min-width: calc(calc(calc(90vw - 40px) / 5) * 2) !important;
   }
 
+  .next-rec {
+    max-height: 75vh !important;
+  }
+  .slide-show {
+    max-height: 75vh;
+  }
+  .posterTitle img {
+    width: 5rem;
+    height: 8rem;
+  }
+  .posterTitle {
+    gap: 0;
+    font-size: 0.8rem !important;
+  }
+  .next-title {
+    right: 18%;
+  }
+  header {
+    width: 100% !important;
+  }
+}
+
+@media all and (min-width: 1200px) {
   .card {
-    min-width: calc(calc(90vw - 64px) / 4) !important;
+    min-width: calc(calc(100% - 80px) / 5) !important;
+  }
+  .viewdCard {
+    min-width: calc(calc(calc(100% - 40px) / 5) * 2) !important;
   }
 }
