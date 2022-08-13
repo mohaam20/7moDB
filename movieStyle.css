@@ -132,8 +132,9 @@ img {
 }
 
 .backDropHolder > img {
-  object-fit: cover;
-  width: auto;
+    height: 100vh;
+    object-fit: cover;
+    width: auto;
 }
 /* 
 .backDropHolder::before {
