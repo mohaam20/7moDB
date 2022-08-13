@@ -331,7 +331,7 @@ function plotCast(trends, slideName) {
     card.querySelector(".card").id = title;
     card.querySelector(".card").setAttribute("type", "person");
 
-    card.querySelector("img").src = `${baseImg}${poster}`;
+    card.querySelector("img").src = `https://image.tmdb.org/t/p/w185/${poster}`;
     card.querySelector(".infos").innerHTML =
       `<p style=" display:inline; font-size:1.2rem;">${title}<p/>` +
       " " +
@@ -347,7 +347,6 @@ function plotSlides(trends, slideName) {
   // trends = trends.slice(0, 7);
   for (let trend of trends) {
     let poster = trend.poster_path;
-    let backDrop = trend.backdrop_path;
     let title = trend.original_name ?? trend.title;
     let date = trend.release_date ?? trend.first_air_date;
     let detial = trend.overview;
@@ -361,10 +360,7 @@ function plotSlides(trends, slideName) {
       card.querySelector(".card").id = trend.id;
       card.setAttribute("type", trend.title == null ? "tv" : "movie");
 
-      nextCard.querySelector("img").src = `${baseImg}${poster}`;
-      nextCard.querySelector("h4").innerHTML = `${title}`;
-      nextCard.querySelector("p").innerHTML = `${date}`;
-      card.querySelector("img").src = `${baseImg}${backDrop || poster}`;
+      card.querySelector("img").src = `https://image.tmdb.org/t/p/w342/${poster}`;
       card
         .querySelector(".posterTitle")
         .querySelector("img").src = `${baseImg}${poster}`;
