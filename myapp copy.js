@@ -241,7 +241,7 @@ function searchResults(movies) {
     card.setAttribute("type", movie.title == null ? "tv" : "movie");
 
     // console.log(movie.popularity + " " + title);
-    card.querySelector("img").src = `${baseImg}${poster}`;
+    card.querySelector("img").src = `https://image.tmdb.org/t/p/w92/${poster}`;
     card.querySelector(".res_title").innerHTML =
       `<p style=" display:inline; font-size:1.2rem;">${title}<p/>` +
       " " +
