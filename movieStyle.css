@@ -131,11 +131,7 @@ img {
   z-index: -1;
 }
 
-.backDropHolder > img {
-    height: 100vh;
-    object-fit: cover;
-    width: auto;
-}
+
 /* 
 .backDropHolder::before {
   content: "";
