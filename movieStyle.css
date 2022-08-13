@@ -2,7 +2,7 @@
   padding: 0;
   box-sizing: border-box;
   margin: 0;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   height: fit-content;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -12,6 +12,7 @@ a {
   text-decoration: none;
 }
 i {
+  color: gold;
   pointer-events: none;
 }
 
@@ -23,15 +24,9 @@ i {
   --gold: rgb(255, 208, 0);
 }
 
-img {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-}
 .cardLoad {
   overflow: hidden;
   max-width: 90%;
-  z-index: 3;
   position: absolute;
   top: 50%;
   left: 0;
@@ -51,14 +46,11 @@ img {
 }
 
 html {
-  overflow-x: hidden;
+  overflow: auto;
 }
 
 body {
-  overflow-x: hidden;
   background-color: var(--main-dark);
-  overflow-x: hidden;
-  display: flex;
   flex-direction: column;
   align-items: center;
 }
@@ -68,7 +60,7 @@ header {
 
   position: relative;
   height: 3.5rem;
-  width: 100vw;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -116,6 +108,169 @@ header {
   color: rgb(255, 208, 0) !important;
   right: 0.5rem;
   position: absolute;
+}
+
+button {
+  padding: 0 00.5rem;
+  cursor: pointer;
+}
+
+img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.backDropHolder {
+  top: 0;
+  max-height: 100vh;
+  overflow: hidden;
+  display: block;
+  position: fixed;
+  width: 100%;
+  z-index: -1;
+}
+
+.backDropHolder > img {
+  object-fit: cover;
+  width: auto;
+}
+/* 
+.backDropHolder::before {
+  content: "";
+  width: 100%;
+  height: 90%;
+  position: absolute;
+  background-image: linear-gradient(0, black, rgba(255, 255, 255, 0));
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+} */
+
+.backDropHolder::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: var(--main-light);
+  mix-blend-mode: overlay !important;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.mainInfos {
+  padding: 0 5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+  color: white;
+  text-transform: capitalize;
+  /* background-color: rgba(0, 21, 45, 0.571); */
+  background-image: linear-gradient(0, rgba(0, 21, 45, 0), rgb(0, 21, 45));
+  align-items: flex-end;
+  border-top: 1px solid var(--gold);
+  width: 100%;
+  min-height: 40%;
+  margin-top: 60vh;
+  display: flex;
+  position: relative;
+  box-shadow: 0px -50px 50px rgba(255, 242, 0, 0.214) !important;
+
+  z-index: 10;
+}
+
+.mainTitle {
+  gap: 1.5rem;
+  margin: 5rem 0;
+  margin-top: 0 !important;
+  position: relative;
+  align-items: flex-end;
+  display: flex;
+  width: 100%;
+  height: 4rem;
+}
+.mainTitle > * {
+  margin: 1rem;
+}
+.mainTitle > .title {
+  text-shadow: 0 0 2px white;
+}
+.mainTitle > .air {
+  text-shadow: 0 0 1px white;
+  color: rgb(255, 227, 69);
+}
+.mainTitle > .media {
+  text-shadow: 0 0 1px white;
+  color: rgb(42, 130, 255);
+}
+.mainInfos > .story {
+  text-shadow: 0.2px 0.2px 1.5px white !important;
+  font-weight: 700;
+  line-height: 2rem;
+  min-width: 35%;
+  word-wrap: none;
+  word-break: keep-all;
+  overflow: hidden;
+  width: min-content;
+  text-shadow: 0 0 1px rgb(0, 0, 0);
+}
+
+.story > p {
+  border-radius: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--gold);
+}
+
+.mainTitle img {
+  top: 4rem;
+  box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.527) !important;
+  border-radius: 1rem;
+  height: 25rem;
+  min-width: 10rem;
+  max-width: 15rem;
+  cursor: pointer;
+  position: relative;
+  border: 1.5px solid rgb(255, 213, 0);
+  overflow: hidden;
+}
+.caster {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 5rem;
+}
+.trailer {
+  border-radius: 2rem;
+  border: 2px solid var(--main-light);
+  height: 20rem;
+}
+#cast {
+  width: 60%;
+}
+#cast .slide-show {
+  height: 20rem !important;
+  max-width: 100% !important;
+}
+#cast .card {
+  cursor: pointer;
+  pointer-events: none;
+  width: 40rem !important;
+}
+#cast .infos {
+  position: absolute !important;
+  bottom: 0 !important;
+  top: initial;
+  min-height: 35%;
+}
+.containter {
+  padding: 10rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  min-height: 100rem;
+  width: 100%;
+  /* background-color: var(--main-dark); */
 }
 
 button {
@@ -219,6 +374,7 @@ button {
 .results li {
   width: 100%;
   cursor: pointer;
+  gap: 2rem;
   align-items: center;
   display: flex;
   height: 5.5rem;
@@ -273,7 +429,7 @@ button {
 .slide-show {
   padding: 0.5rem 0;
   height: 18rem;
-  box-shadow: 0px 0px 25px rgba(176, 255, 250, 0.207);
+  box-shadow: 0px 0px 25px rgb(0, 0, 0);
   border-radius: 1rem;
   max-width: var(--slide-width);
   width: 65rem;
@@ -285,14 +441,12 @@ button {
 }
 
 .slide-dad {
-  max-width: var(--slide-width);
+  max-width: fit-content;
 
   margin: 0.5rem;
   position: relative;
-  /* align-items: center;
   display: flex;
-  justify-content: center;
-  flex-direction: column; */
+  flex-direction: column;
 }
 
 .slide-dad > button {
@@ -333,6 +487,9 @@ button {
 }
 
 .slide-title {
+  -webkit-text-stroke: 0.5px rgba(255, 217, 0, 0.615);
+
+  z-index: 2;
   text-shadow: 0px 0px 5px rgba(176, 255, 250, 0.692);
   font-size: 2rem;
   letter-spacing: 0.1rem;
@@ -345,117 +502,35 @@ button {
   color: rgb(255, 208, 0);
 }
 
-#rec {
-  color: white;
-  margin: 1rem;
-  padding-top: 2rem;
-  display: flex;
-  max-width: 90vw;
-  width: 70rem;
-}
-#rec .card {
-  background-image: linear-gradient(0, black, white);
-  margin: 0;
-  min-width: 100% !important;
-}
-#rec .slide-title {
-  top: 0;
-  left: 0.5rem;
-  position: absolute;
-}
-#rec .slide-show {
-  gap: 1rem;
-  padding: 0.5rem;
-  height: 35rem;
-  margin: 1rem;
-  width: fit-content;
-  max-width: 70%;
-}
-#rec .next-rec {
-  padding: 1rem;
-  flex-direction: column;
-  margin: 1rem;
-  width: 20rem;
-  max-height: 35rem;
-  height: fit-content;
-  background-color: aqua;
-  box-shadow: 0px 0px 25px rgba(176, 255, 250, 0.207);
-  border-radius: 1rem;
-  max-width: 55rem;
-  overflow: auto;
-  display: flex;
-  position: relative;
-  scroll-behavior: smooth;
-  background-color: var(--main-mid);
-}
-
-#rec .next {
-  left: 70%;
-  transform: translateX(-2rem);
-}
-
-#rec * {
-  transition: all 0.5s ease;
-}
-
-#rec .card::after {
-  pointer-events: none;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 70%;
-  z-index: 4;
-  content: "";
-  position: absolute;
-  background-image: linear-gradient(0, black, rgba(255, 255, 255, 0));
-}
-
-.nextCard img {
-  border-radius: 0.5rem;
-  width: 4rem;
-  height: 6rem;
-}
-
-.nextCard {
-  font-size: 70%;
-  padding: 0.5rem;
-  background-color: var(--main-mid);
-  z-index: 4;
-  border-radius: 1rem;
-  display: flex;
-  align-items: flex-end;
-  height: fit-content;
-  gap: 2rem;
-}
-
-.nextCard p {
-  color: rgb(141, 141, 141);
-}
-.nextCard h4 {
-  max-width: 80%;
-  overflow: hidden;
-}
-.nextCard span {
-  text-transform: capitalize;
-  color: white;
-  padding: 1rem 0;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-}
-
-.next-title {
-  text-shadow: 0px 0px 5px rgba(176, 255, 250, 0.692);
-
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  position: absolute;
-  right: 19%;
-  transform: translateY(-100%);
-  text-transform: capitalize;
-}
-
 @media all and (max-width: 800px) {
+  .mainInfos {
+    justify-content: center;
+    padding: 0 0.5rem;
+  }
+  .mainTitle > span {
+    position: relative;
+    top: 100%;
+  }
+  .mainInfos > .story {
+    min-width: 90%;
+  }
+  #cast .slide-show {
+    width: 100%;
+  }
+  #cast {
+    width: 93%;
+  }
+  .caster {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .caster > .trailer {
+    width: 90%;
+  }
+  .mainTitle img {
+    height: 20rem !important;
+  }
   .slide-show {
     max-height: 70vh;
   }
@@ -495,13 +570,10 @@ button {
 
 @media all and (orientation: landscape) {
   .slide-show {
-    height: 78vh !important;
+    height: 25rem !important;
   }
   .slide-show {
     margin-bottom: 5vh;
-  }
-  .next-rec {
-    max-height: 78vh !important;
   }
 }
 
@@ -509,13 +581,11 @@ button {
   .card {
     min-width: calc(calc(90vw - 80px) / 5) !important;
   }
+
   .viewdCard {
     min-width: calc(calc(calc(90vw - 40px) / 5) * 2) !important;
   }
 
-  .next-rec {
-    max-height: 75vh !important;
-  }
   .slide-show {
     max-height: 75vh;
   }
@@ -538,6 +608,9 @@ button {
 @media all and (min-width: 1200px) {
   .card {
     min-width: calc(calc(100% - 80px) / 5) !important;
+  }
+  #cast .card {
+    min-width: calc(calc(100% - 64px) / 4) !important;
   }
   .viewdCard {
     min-width: calc(calc(calc(100% - 40px) / 5) * 2) !important;

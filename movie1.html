@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="icon" href="title-logo.png" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+      integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script src="details.js" defer></script>
+    <link rel="stylesheet" href="movieStyle.css" />
+  </head>
+  <body>
+    <header>
+      <div class="head-cont">
+        <a href="index.html" class="home"
+          ><img src="/logos/logo.png" alt="7mobox"
+        /></a>
+        <div class="search">
+          <input
+            type="text"
+            placeholder="Search"
+            id="search_area"
+            autocomplete="off"
+          />
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <ul class="results" style="display: none">
+            <template class="result_temp"
+              ><li data-pop="" class="result">
+                <a href="movie1.html">
+                  <img src="https://source.unsplash.com/random" alt="results" />
+                <p class="res_title">movie title</p>
+                </a>
+              </li></template
+            >
+          </ul>
+        </div>
+      </div>
+    </header>
+
+    <div class="backDropHolder">
+      <img
+        src="drop-holder.png"
+        class="backDropImg"
+        alt=""
+      />
+    </div>
+    
+    <div class="mainInfos">
+      <div class="mainTitle">
+        <img src="poster-holder.png" alt="" />
+        <span class="metaTitle"><h2 class="title">dexter</h2>
+          <h4 class="air">2001</h4>
+          <h4 class="media">tv-show</h4></span>
+      </div>
+      <div class="story"><span>overview <i class="fa-solid fa-angle-right"></i></span><p class="text"></p></div>
+      <section class="caster">
+        <iframe class="trailer" width="560" height="315"  title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> 
+        <div class="slide-dad" id="cast">
+          <h2 class="slide-title">
+            cast <i class="fa-solid fa-angle-right"></i>
+          </h2>
+          <button class="back"><i class="fa-solid fa-angle-left"></i></button>
+          <button class="next"><i class="fa-solid fa-angle-right"></i></button>
+    
+          <div class="slide-show">
+            <template class="card-temp"
+              ><a href="movie1.html" onclick="stopShit(event)" class="card">
+                <img class="img-fluid" src="https://source.unsplash.com/random" />
+                <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>
+              </a></template
+            >
+          </div></section>
+    </div>
+    </div>
+    <div class="containter">
+      <div class="slide-dad" id="similar">
+        <h2 class="slide-title">
+          similar <i class="fa-solid fa-angle-right"></i>
+        </h2>
+        <button class="back"><i class="fa-solid fa-angle-left"></i></button>
+        <button class="next"><i class="fa-solid fa-angle-right"></i></button>
+  
+        <div class="slide-show">
+          <template class="card-temp"
+            ><a href="movie1.html" onclick="stopShit(event)" class="card">
+              <img class="img-fluid" src="https://source.unsplash.com/random" />
+              <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>
+            </a></template
+          >
+        </div>
+      </div>
+      <div class="slide-dad" id="topMovies">
+        <h2 class="slide-title">
+          topMovies of all time <i class="fa-solid fa-angle-right"></i>
+        </h2>
+        <button class="back"><i class="fa-solid fa-angle-left"></i></button>
+        <button class="next"><i class="fa-solid fa-angle-right"></i></button>
+  
+        <div class="slide-show">
+          <template class="card-temp"
+            ><a href="movie1.html" onclick="stopShit(event)" class="card">
+              <img class="img-fluid" src="https://source.unsplash.com/random" />
+              <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>
+            </a></template
+          >
+        </div>
+      </div>
+      <div class="slide-dad" id="topShows">
+        <h2 class="slide-title">
+          top serieses of all time <i class="fa-solid fa-angle-right"></i>
+        </h2>
+        <button class="back"><i class="fa-solid fa-angle-left"></i></button>
+        <button class="next"><i class="fa-solid fa-angle-right"></i></button>
+  
+        <div class="slide-show">
+          <template class="card-temp"
+            ><div class="card">
+              <img class="img-fluid" src="https://source.unsplash.com/random" />
+              <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>
+            </div></template
+          >
+        </div>
+      </div>
+      <div class="slide-dad" id="topAnimes">
+        <h2 class="slide-title">
+          top animes of all time <i class="fa-solid fa-angle-right"></i>
+        </h2>
+        <button class="back"><i class="fa-solid fa-angle-left"></i></button>
+        <button class="next"><i class="fa-solid fa-angle-right"></i></button>
+  
+        <div class="slide-show">
+          <template class="card-temp"
+            ><div class="card">
+              <img class="img-fluid" src="https://source.unsplash.com/random" />
+              <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>
+            </div></template
+          >
+        </div>
+      </div>
+      <div class="slide-dad" id="movieTrends">
+        <h2 class="slide-title">
+          trending movies <i class="fa-solid fa-angle-right"></i>
+        </h2>
+        <button class="back"><i class="fa-solid fa-angle-left"></i></button>
+        <button class="next"><i class="fa-solid fa-angle-right"></i></button>
+  
+        <div class="slide-show">
+          <template class="card-temp"
+            ><div class="card">
+              <img class="img-fluid" src="https://source.unsplash.com/random" />
+              <span class="infos">Lorem ipsum dolor siwit amet consectetur.</span>
+            </div></template
+          >
+        </div>
+      </div>
+  
+      <div class="slide-dad" id="tvTrends">
+        <h2 class="slide-title">
+          trending serieses <i class="fa-solid fa-angle-right"></i>
+        </h2>
+        <button class="next"><i class="fa-solid fa-angle-right"></i></button>
+        <button class="back"><i class="fa-solid fa-angle-left"></i></button>
+  
+        <div class="slide-show">
+          <template class="card-temp"
+            ><div class="card">
+              <img class="img-fluid" src="https://source.unsplash.com/random" />
+              <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>
+            </div></template
+          >
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,42 +1,119 @@
+if (sessionStorage.getItem("count") == null) {
+  sessionStorage.setItem("count", 0);
+  console.log("first time");
+} else {
+  console.log("not again");
+}
+
+let infos = JSON.parse(localStorage.getItem("tabs"));
+console.log(infos);
+if (sessionStorage.getItem("count") < 1) {
+  sessionStorage.setItem(
+    "movieId",
+    `${infos.links[infos.links.length - 1].id}`
+  );
+  sessionStorage.setItem("type", `${infos.links[infos.links.length - 1].type}`);
+
+  sessionStorage.setItem("count", 1);
+}
+
+let realInfos = sessionStorage.getItem("movieId");
+let videoType = sessionStorage.getItem("type");
+console.log(realInfos);
+console.log(videoType);
+
+(async () => {
+  let raw = await fetch(
+    `https://api.themoviedb.org/3/${videoType}/${realInfos}?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&append_to_response=reviews,videos,credits,similar`
+  ).then((res) => res.json());
+
+  console.log(raw);
+  plotSlides(raw.similar.results, simiSlide);
+  document.title = raw.title ?? raw.original_name;
+  mainTitle.querySelector(".title").innerHTML = raw.title ?? raw.original_name;
+  mainTitle.querySelector(".air").innerHTML = (
+    raw.release_date ?? raw.first_air_date
+  ).slice(0, 4);
+  mainTitle.querySelector(".media").innerHTML =
+    videoType == "movie" ? "moive" : "tv-show";
+  mainOverview.innerHTML = raw.overview;
+  mainDop.src = `${baseImg}${raw.backdrop_path || raw.poster_path}`;
+  mainPoster.src = `${baseImg}${raw.poster_path}`;
+  plotCast(raw.credits.cast, castSlide);
+  for (let k of raw.videos.results) {
+    if (k.type == "Trailer") {
+      console.log(k.type);
+      console.log(raw.videos.results.indexOf(k));
+      console.log(k.key);
+      document.querySelector(
+        ".trailer"
+      ).src = `https://www.youtube.com/embed/${k.key}`;
+      break;
+    }
+  }
+  console.log(document.querySelector(".trailer"));
+})();
+
 // Dom Elements
+const mainTitle = document.querySelector(".mainTitle");
+const mainOverview = document
+  .querySelector(".mainInfos")
+  .querySelector(".text");
+const mainDop = document.querySelector(".backDropHolder").querySelector("img");
+const mainPoster = document.querySelector(".mainInfos").querySelector("img");
 const searchBar = document.querySelector("#search_area");
 const ressTemp = document.querySelector(".results");
 const resTemp = ressTemp.querySelector(".result_temp").content;
+const castSlide = document.querySelector("#cast");
 const slide1 = document.querySelector("#movieTrends");
 const slide2 = document.querySelector("#tvTrends");
+const simiSlide = document.querySelector("#similar");
 const topSlide = document.querySelector("#topMovies");
 const top2Slide = document.querySelector("#topShows");
 const top3Slide = document.querySelector("#topAnimes");
-const mainSlide = document.querySelector("#rec");
+// const mainSlide = document.querySelector("#rec");
 const movieCard = document.querySelector(".card-temp");
-const nextField = document.querySelector(".next-rec");
+// const nextField = document.querySelector(".next-rec");
 // Dom Elements
-
 let allLinks = JSON.parse(localStorage.getItem("tabs")) || { links: [] };
 localStorage.setItem("tabs", JSON.stringify(allLinks));
 
-// let tabs = JSON.parse(localStorage.getItem("tabs")).links;
+let num = JSON.parse(localStorage.getItem("tabs")).links.length || 0;
+window.addEventListener("click", (event) => {
+  let card = event.target.closest(".card").id;
+  console.log(card);
 
-// window.addEventListener("click", (event) => {
-//   let card = event.target.closest(".card").id;
-//   console.log(card);
-
-//   allLinks.links.push(card);
-//   localStorage.setItem("tabs", JSON.stringify(allLinks));
-//   let logs = JSON.parse(localStorage.getItem("tabs")).links;
-//   // window.open("movie1.html", "_blank");
-// });
+  allLinks.links.push(card);
+  localStorage.setItem("tabs", JSON.stringify(allLinks));
+  let logs = JSON.parse(localStorage.getItem("tabs")).links;
+  // window.open("movie1.html", "_blank");
+});
 // refrence constats
 let autoslide = true;
 let counter = 2;
 let trendPage = 1;
-nextField.children[1].style.display = "none";
 let baseImg = "http://image.tmdb.org/t/p/original/";
 // refrence constats
 
-addEventListener("DOMContentLoaded", () => {
-  localStorage.clear();
-  sessionStorage.clear();
+window.addEventListener("scroll", (event) => {
+  // console.log(event);
+  let valu = Math.round(window.scrollY);
+  // console.log(valu);
+
+  mainDop.style.filter = `blur(${
+    valu / 100 < 10 ? valu / 100 : 10
+  }px) brightness(${
+    400 > valu > 0
+      ? 100
+      : 80000 / valu > 100
+      ? 100
+      : 80000 / valu < 50
+      ? 50
+      : 80000 / valu
+  }%)`;
+});
+
+window.addEventListener("DOMContentLoaded", () => {
   fetch(
     "https://api.themoviedb.org/3/movie/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&region=us"
   )
@@ -82,21 +159,6 @@ addEventListener("DOMContentLoaded", () => {
       // console.log(res);
       plotSlides(res, slide2);
     });
-  fetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=5e060480a887e5981aa743bc33a74e40&sort_by=release_date.desc&include_adult=false&include_video=false&page=${trendPage}&vote_average.gte=7&with_keywords=avengers&with_watch_monetization_types=flatrate`
-  )
-    .then((res) => res.json())
-    .then((res) =>
-      res.results.filter(
-        (res) =>
-          res.original_language === "en" ||
-          res.original_language === "ar" ||
-          res.original_language === "ja"
-      )
-    )
-    .then((res) => {
-      plotSlides(res, mainSlide);
-    });
 });
 
 // search
@@ -111,6 +173,7 @@ window.addEventListener(
       ressTemp.style.display = "none";
     }
     if (event.target.id == "search_area" && searchBar.value.length !== 0) {
+      console.log("hi blur pleas");
       Promise.all([
         fetch(
           `https://api.themoviedb.org/3/search/movie?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&query=${searchBar.value}&page=1&include_adult=false`
@@ -232,15 +295,13 @@ function searchResults(movies) {
   movies = movies.slice(0, 7);
 
   for (let movie of movies) {
-    console.log(movie);
     let poster = movie.poster_path;
     let title = movie.original_name ?? movie.original_title;
     let date = movie.release_date ?? movie.first_air_date;
     let card = resTemp.cloneNode(true).querySelector("li");
+    // console.log(movie.popularity + " " + title);
     card.id = movie.id;
     card.setAttribute("type", movie.title == null ? "tv" : "movie");
-
-    // console.log(movie.popularity + " " + title);
     card.querySelector("img").src = `${baseImg}${poster}`;
     card.querySelector(".res_title").innerHTML =
       `<p style=" display:inline; font-size:1.2rem;">${title}<p/>` +
@@ -260,6 +321,28 @@ function searchResults(movies) {
 
 //scroll
 
+function plotCast(trends, slideName) {
+  for (let trend of trends) {
+    let poster = trend.profile_path;
+    let title = trend.name;
+    let detial = trend.character;
+    let card = movieCard.content.cloneNode(true);
+
+    card.querySelector(".card").id = title;
+    card.querySelector(".card").setAttribute("type", "person");
+
+    card.querySelector("img").src = `${baseImg}${poster}`;
+    card.querySelector(".infos").innerHTML =
+      `<p style=" display:inline; font-size:1.2rem;">${title}<p/>` +
+      " " +
+      `<p style=" display:inline; font-size:1rem;">${detial}<p/>`;
+
+    if (poster != null) {
+      slideName.querySelector(".slide-show").append(card);
+    }
+  }
+}
+
 function plotSlides(trends, slideName) {
   // trends = trends.slice(0, 7);
   for (let trend of trends) {
@@ -276,9 +359,7 @@ function plotSlides(trends, slideName) {
       let nextCont = slideName.querySelector(".next-rec");
 
       card.querySelector(".card").id = trend.id;
-      card
-        .querySelector(".card")
-        .setAttribute("type", trend.title == null ? "Tv" : "movie");
+      card.setAttribute("type", trend.title == null ? "tv" : "movie");
 
       nextCard.querySelector("img").src = `${baseImg}${poster}`;
       nextCard.querySelector("h4").innerHTML = `${title}`;
@@ -308,6 +389,7 @@ function plotSlides(trends, slideName) {
       card
         .querySelector(".card")
         .setAttribute("type", trend.title == null ? "tv" : "movie");
+
       card.querySelector("img").src = `${baseImg}${poster}`;
       card.querySelector(".infos").innerHTML =
         `<p style=" display:inline; font-size:1.2rem;">${title}<p/>` +
@@ -345,7 +427,7 @@ document.addEventListener(
   (event) => {
     if (event.target.nodeName == "BUTTON") {
       let area = event.target.parentNode.querySelector(".slide-show");
-      // console.log(area);
+      console.log(area);
       let direction = event.target.className;
       scrollSlide(direction, area);
     }
@@ -375,12 +457,6 @@ function scrollSlide(direction, area) {
       trendPage += 1;
       fetchTrend(trendPage);
     }
-    if (nextField.children[counter].className == "nextCard") {
-      nextField.children[counter].style.display = "none";
-      nextField.children[counter + 1].style.backgroundColor = "rgb(0, 86, 184)";
-      nextField.children[counter + 1].style.transform = "scale(1.1)";
-      nextField.children[counter + 1].style.zIndex = "10";
-    }
 
     if (statu < maxScroll) {
       for (let bag of area.children) {
@@ -395,15 +471,6 @@ function scrollSlide(direction, area) {
     //   area.scrollLeft += scrollVal + 19;
     // }
   } else if (direction == "back") {
-    console.log(counter + " this is counter");
-    if (nextField.children[counter].className == "nextCard" && counter > 2) {
-      nextField.children[counter].style.display = "flex";
-      nextField.children[counter + 1].style.backgroundColor = null;
-      nextField.children[counter + 1].style.transform = "scale(1)";
-      nextField.children[counter + 1].style.zIndex = 4;
-      counter -= 1;
-    }
-
     let statu =
       parseInt(area.children[1].style.transform.replace(/\D/g, "")) || 0;
     console.log(statu);
@@ -432,140 +499,110 @@ function scrollSlide(direction, area) {
   }
 }
 
-document.addEventListener(
-  "click",
-  (event) => {
-    if (
-      event.target.className == "more" &&
-      event.target.innerHTML == "more..."
-    ) {
-      let data = event.target.parentNode.querySelector(".over-view");
-      data.style.minHeight = "fit-content";
-      data.style.height = "100%";
-      event.target.innerHTML = "less";
-    } else if (
-      event.target.className == "more" &&
-      event.target.innerHTML == "less"
-    ) {
-      let data = event.target.parentNode.querySelector(".over-view");
-      data.style.height = "4rem";
-      event.target.innerHTML = "more...";
-    }
-    if (event.target.className == "over-view") {
-      let data = event.target.parentNode.querySelector(".over-view");
-      event.target.parentNode.querySelector(".more").innerHTML = "more...";
-      data.style.height = "4rem";
-    }
-  },
-  true
-);
+// document.addEventListener(
+//   "click",
+//   (event) => {
+//     if (
+//       event.target.className == "more" &&
+//       event.target.innerHTML == "more..."
+//     ) {
+//       let data = event.target.parentNode.querySelector(".over-view");
+//       data.style.minHeight = "fit-content";
+//       data.style.height = "100%";
+//       event.target.innerHTML = "less";
+//     } else if (
+//       event.target.className == "more" &&
+//       event.target.innerHTML == "less"
+//     ) {
+//       let data = event.target.parentNode.querySelector(".over-view");
+//       data.style.height = "4rem";
+//       event.target.innerHTML = "more...";
+//     }
+//     if (event.target.className == "over-view") {
+//       let data = event.target.parentNode.querySelector(".over-view");
+//       event.target.parentNode.querySelector(".more").innerHTML = "more...";
+//       data.style.height = "4rem";
+//     }
+//   },
+//   true
+// );
 // scroll;
 
-function newScroller(area) {
-  let key = area.id;
-  scrollVals[key] += 1;
-  let kids = area.querySelector(".slide-show").children;
-  console.log(scrollVals[key]);
-  kids[scrollVals[key]].scrollIntoView({ block: "end", inline: "nearest" });
-}
+// mainSlide.addEventListener("mouseenter", () => {
+//   autoslide = false;
+// });
+// mainSlide.addEventListener("mouseleave", () => {
+//   autoslide = true;
+// });
 
-fetch(
-  `https://api.themoviedb.org/3/search/movie?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&query=jaws&page=1&include_adult=false&append_to_response=videos,images`
-).then((res) => {
-  console.log(res.json());
-});
+// const autoScroll = setInterval(() => {
+//   if (autoslide) {
+//     let area = mainSlide.querySelector(".slide-show");
+//     let card = mainSlide.querySelector(".card");
+//     let scrollVal = card.scrollWidth;
+//     let maxScroll = area.scrollWidth - area.clientWidth;
+//     counter += 1;
 
-function fetchTrend(page) {
-  console.log(page);
-  fetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=5e060480a887e5981aa743bc33a74e40&sort_by=release_date.desc&include_adult=false&include_video=false&page=${page}&vote_average.gte=7&with_keywords=avengers&with_watch_monetization_types=flatrate`
-  )
-    .then((res) => res.json())
-    .then((res) =>
-      res.results.filter(
-        (res) =>
-          res.original_language === "en" ||
-          res.original_language === "ar" ||
-          res.original_language === "ja"
-      )
-    )
-    .then((res) => {
-      plotSlides(res, mainSlide);
-    });
-}
+//     let statu =
+//       parseInt(area.children[1].style.transform.replace(/\D/g, "")) || 0;
+//     // console.log(statu);
+//     // console.log(maxScroll);
+//     if (statu > maxScroll - scrollVal * 3) {
+//       console.log("stared");
+//       trendPage += 1;
+//       fetchTrend(trendPage);
+//     }
 
-fetch(
-  "https://api.themoviedb.org/3/movie/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&region=us"
-).then((res) => console.log(res.json()));
+//     if (nextField.children[counter].className == "nextCard") {
+//       nextField.children[counter].style.display = "none";
+//       nextField.children[counter + 1].style.backgroundColor = "rgb(0, 86, 184)";
+//       nextField.children[counter + 1].style.transform = "scale(1.1)";
+//       nextField.children[counter + 1].style.zIndex = "10";
+//     }
 
-mainSlide.addEventListener("mouseenter", () => {
-  autoslide = false;
-});
-mainSlide.addEventListener("mouseleave", () => {
-  autoslide = true;
-});
+//     if (statu < maxScroll) {
+//       for (let bag of area.children) {
+//         bag.style.transform = `translateX(-${statu + area.clientWidth}px)`;
+//       }
+//     }
+//   }
+// }, 5000);
 
-const autoScroll = setInterval(() => {
-  if (autoslide) {
-    let area = mainSlide.querySelector(".slide-show");
-    let card = mainSlide.querySelector(".card");
-    let scrollVal = card.scrollWidth;
-    let maxScroll = area.scrollWidth - area.clientWidth;
-    counter += 1;
+// window.addEventListener(
+//   "resize",
+//   () => {
+//     let area = mainSlide.querySelector(".slide-show");
 
-    let statu =
-      parseInt(area.children[1].style.transform.replace(/\D/g, "")) || 0;
-    // console.log(statu);
-    // console.log(maxScroll);
-    if (statu > maxScroll - scrollVal * 3) {
-      console.log("stared");
-      trendPage += 1;
-      fetchTrend(trendPage);
-    }
-    if (nextField.children[counter].className == "nextCard") {
-      nextField.children[counter].style.display = "none";
-      nextField.children[counter + 1].style.backgroundColor = "rgb(0, 86, 184)";
-      nextField.children[counter + 1].style.transform = "scale(1.1)";
-      nextField.children[counter + 1].style.zIndex = "10";
-    }
-
-    if (statu < maxScroll) {
-      for (let bag of area.children) {
-        bag.style.transform = `translateX(-${statu + area.clientWidth}px)`;
-      }
-    }
-  }
-}, 5000);
-
+//     console.log("it is moving");
+//     setTimeout(() => {
+//       for (let bag of area.children) {
+//         bag.style.transform = `translateX(-${
+//           (counter - 2) * area.clientWidth
+//         }px)`;
+//       }
+//       for (let h of document.querySelectorAll(".card")) {
+//         console.log(h);
+//         if (h.closest(".slide-dad").id !== "rec") {
+//           h.style.transform = `translateX(0px)`;
+//         }
+//       }
+//     }, 2000);
+//   },
+//   false
+// );
 window.addEventListener(
   "resize",
   () => {
-    let area = mainSlide.querySelector(".slide-show");
-
-    console.log("it is moving");
     setTimeout(() => {
-      for (let bag of area.children) {
-        bag.style.transform = `translateX(-${
-          (counter - 2) * area.clientWidth
-        }px)`;
-      }
       for (let h of document.querySelectorAll(".card")) {
         // console.log(h);
-        if (h.closest(".slide-dad").id !== "rec") {
-          h.style.transform = `translateX(0px)`;
-        }
+
+        h.style.transform = `translateX(0px)`;
       }
     }, 2000);
   },
   false
 );
-
-window.addEventListener("click", (event) => {
-  // console.log(event);
-});
-
-for (let i of document.querySelectorAll("a")) {
-}
 
 window.addEventListener(
   "mousedown",
@@ -645,13 +682,14 @@ window.addEventListener(
   },
   false
 );
-
 function openMovie(card, dataType, go) {
   console.log(card);
   let meta = { id: card, type: dataType };
   allLinks.links.push(meta);
   localStorage.setItem("tabs", JSON.stringify(allLinks));
   console.log(localStorage.getItem("tabs"));
+  sessionStorage.setItem("count", 0);
+
   if (go == 0) {
     window.open("movie1.html", "_blank");
   }

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="logos/logo.png" type="image/x-icon" />
+    <link rel="icon" href="title-logo.png" type="image/x-icon" />
     <link rel="stylesheet" href="style.css" />
     <link
       rel="stylesheet"
@@ -19,7 +19,7 @@
   <body id="main">
     <header>
       <div class="head-cont">
-        <a href="#" class="home"><img src="logo.png" alt="7mobox" /></a>
+        <a href="#" class="home"><img src="/logos/logo.png" alt="7mobox" /></a>
         <div class="search">
           <input
             type="text"
@@ -31,8 +31,13 @@
           <ul class="results" style="display: none">
             <template class="result_temp"
               ><li data-pop="" class="result">
-                <img src="https://source.unsplash.com/random" alt="results" />
-                <p class="res_title">movie title</p>
+                <a href="movie1.html"
+                  ><img
+                    src="https://source.unsplash.com/random"
+                    alt="results"
+                  />
+                  <p class="res_title">movie title</p></a
+                >
               </li></template
             >
           </ul>
@@ -53,7 +58,12 @@
 
       <div class="slide-show">
         <template class="card-temp">
-          <div class="card">
+          <a
+            href="movie1.html"
+            onclick="stopShit(event)"
+            target="_blank"
+            class="card"
+          >
             <img class="img-fluid" src="https://source.unsplash.com/random" />
             <div class="infos">
               <div class="posterTitle">
@@ -61,7 +71,7 @@
                 <h2>movie 1</h2>
               </div>
             </div>
-          </div>
+          </a>
         </template>
         <!-- <div class="card">
           <img class="img-fluid" src="https://source.unsplash.com/random" />
@@ -105,12 +115,12 @@
       <button class="next"><i class="fa-solid fa-angle-right"></i></button>
 
       <div class="slide-show">
-        <template class="card-temp"
+        <!-- <template class="card-temp"
           ><div class="card">
             <img class="img-fluid" src="https://source.unsplash.com/random" />
             <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>
           </div></template
-        >
+        > -->
       </div>
     </div>
     <div class="slide-dad" id="topShows">
