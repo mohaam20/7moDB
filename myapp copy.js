@@ -11,6 +11,17 @@ const mainSlide = document.querySelector("#rec");
 const movieCard = document.querySelector(".card-temp");
 const nextField = document.querySelector(".next-rec");
 // Dom Elements
+let isTouch = false;
+if (
+  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  )
+) {
+  // some code..
+  isTouch = true;
+} else {
+  isTouch = false;
+}
 
 let allLinks = JSON.parse(localStorage.getItem("tabs")) || { links: [] };
 localStorage.setItem("tabs", JSON.stringify(allLinks));
@@ -119,7 +130,9 @@ window.addEventListener(
           .then((res) =>
             res.results.filter(
               (res) =>
-                res.original_language == "en" || res.original_language == "ar"
+                res.original_language == "en" ||
+                res.original_language == "ar" ||
+                res.original_language == "ja"
             )
           )
           .then((res) => res.slice(0, 10))
@@ -135,7 +148,9 @@ window.addEventListener(
           .then((res) =>
             res.results.filter(
               (res) =>
-                res.original_language == "en" || res.original_language == "ar"
+                res.original_language == "en" ||
+                res.original_language == "ar" ||
+                res.original_language == "ja"
             )
           )
           .then((res) => res.slice(0, 10))
@@ -182,7 +197,9 @@ searchBar.addEventListener(
           .then((res) =>
             res.results.filter(
               (res) =>
-                res.original_language == "en" || res.original_language == "ar"
+                res.original_language == "en" ||
+                res.original_language == "ar" ||
+                res.original_language == "ja"
             )
           )
           .then((res) => res.slice(0, 10))
@@ -198,7 +215,9 @@ searchBar.addEventListener(
           .then((res) =>
             res.results.filter(
               (re) =>
-                re.original_language == "en" || re.original_language == "ar"
+                re.original_language == "en" ||
+                re.original_language == "ar" ||
+                res.original_language == "ja"
             )
           )
           .then((res) => res.slice(0, 10))
@@ -241,7 +260,7 @@ function searchResults(movies) {
     card.setAttribute("type", movie.title == null ? "tv" : "movie");
 
     // console.log(movie.popularity + " " + title);
-    card.querySelector("img").src = `https://image.tmdb.org/t/p/w92/${poster}`;
+    card.querySelector("img").src = ` https://image.tmdb.org/t/p/w92/${poster}`;
     card.querySelector(".res_title").innerHTML =
       `<p style=" display:inline; font-size:1.2rem;">${title}<p/>` +
       " " +
@@ -560,99 +579,102 @@ window.addEventListener(
   false
 );
 
-window.addEventListener("click", (event) => {
-  // console.log(event);
-});
-
 for (let i of document.querySelectorAll("a")) {
 }
 
-window.addEventListener(
-  "mousedown",
-  (event) => {
-    // for (let y of document.querySelectorAll(".card")) {
-    //   y.classList.remove("viewdCard");
-    // }
+if (isTouch) {
+  window.addEventListener("touchstart", appendLink, false);
+  // window.addEventListener("click", appendLink, false);
+} else {
+  window.addEventListener("mousedown", appendLink, false);
+}
 
-    try {
-      console.log(event.target.closest(".result"));
+function appendLink(event) {
+  // for (let y of document.querySelectorAll(".card")) {
+  //   y.classList.remove("viewdCard");
+  // }
+
+  try {
+    // console.log(event.type);
+    // console.log(event.button);
+    console.log(event.target.closest(".result"));
+    openMovie(
+      event.target.closest(".result").id,
+      event.target.closest(".result").getAttribute("type"),
+      event.button,
+      event.type
+    );
+  } catch {}
+  try {
+    let dad = event.target.closest(".slide-dad");
+    let uncle = dad.querySelector(".slide-show");
+    let card = event.target.closest(".card");
+    let gage = (uncle.clientWidth / 5) * 4;
+    let realLeft = Math.round(
+      card.getBoundingClientRect().left - dad.getBoundingClientRect().left
+    );
+
+    let statu =
+      parseInt(uncle.children[1].style.transform.replace(/\D/g, "")) || 0;
+    console.log(event.target);
+    // console.log(gage + "gage");
+    // console.log(
+    //   Math.round(
+    //     card.getBoundingClientRect().left - dad.getBoundingClientRect().left - 8
+    //   )
+    // );
+    if (dad.id == "rec") {
       openMovie(
-        event.target.closest(".result").id,
-        event.target.closest(".result").getAttribute("type"),
+        event.target.closest(".card").id,
+        event.target.closest(".card").getAttribute("type"),
         event.button
       );
-    } catch {}
-    try {
-      let dad = event.target.closest(".slide-dad");
-      let uncle = dad.querySelector(".slide-show");
-      let card = event.target.closest(".card");
-      let gage = (uncle.clientWidth / 5) * 4;
-      let realLeft = Math.round(
-        card.getBoundingClientRect().left - dad.getBoundingClientRect().left
+      console.log(event.target.closest(".card").getAttribute("type"));
+    } else {
+      openMovie(
+        event.target.closest(".card").id,
+        event.target.closest(".card").getAttribute("type"),
+        1
       );
-
-      let statu =
-        parseInt(uncle.children[1].style.transform.replace(/\D/g, "")) || 0;
-      console.log(event.target);
-      // console.log(gage + "gage");
-      // console.log(
-      //   Math.round(
-      //     card.getBoundingClientRect().left - dad.getBoundingClientRect().left - 8
-      //   )
-      // );
-      if (dad.id == "rec") {
+      if (card.classList.contains("viewdCard")) {
         openMovie(
           event.target.closest(".card").id,
           event.target.closest(".card").getAttribute("type"),
           event.button
         );
         console.log(event.target.closest(".card").getAttribute("type"));
-      } else {
-        openMovie(
-          event.target.closest(".card").id,
-          event.target.closest(".card").getAttribute("type"),
-          1
-        );
-        if (card.classList.contains("viewdCard") && event.button == 0) {
-          openMovie(
-            event.target.closest(".card").id,
-            event.target.closest(".card").getAttribute("type"),
-            event.button
-          );
-          console.log(event.target.closest(".card").getAttribute("type"));
 
-          card.classList.toggle("viewdCard");
-          card.querySelector(".over-view").style.height = null;
-          card.querySelector("img").style.filter = null;
-        } else if (card.classList.contains("card")) {
-          if (realLeft > gage) {
-            for (let i of uncle.children) {
-              i.style.transform = `translateX(-${
-                statu + card.scrollWidth + 19
-              }px)`;
-            }
-          }
-          console.log("reach");
+        card.classList.toggle("viewdCard");
+        card.querySelector(".over-view").style.height = null;
+        card.querySelector("img").style.filter = null;
+      } else if (card.classList.contains("card")) {
+        if (realLeft > gage) {
           for (let i of uncle.children) {
-            i.classList.remove("viewdCard");
+            i.style.transform = `translateX(-${
+              statu + card.scrollWidth + 19
+            }px)`;
           }
-          card.classList.toggle("viewdCard");
-          card.querySelector(".over-view").style.height = "fit-content";
-          card.querySelector("img").style.filter = "blur(0px)";
         }
+        console.log("reach");
+        for (let i of uncle.children) {
+          i.classList.remove("viewdCard");
+        }
+        card.classList.toggle("viewdCard");
+        card.querySelector(".over-view").style.height = "fit-content";
+        card.querySelector("img").style.filter = "blur(0px)";
       }
-    } catch {}
-  },
-  false
-);
+    }
+  } catch {}
+}
 
 function openMovie(card, dataType, go) {
-  console.log(card);
+  console.log(go);
   let meta = { id: card, type: dataType };
   allLinks.links.push(meta);
   localStorage.setItem("tabs", JSON.stringify(allLinks));
   console.log(localStorage.getItem("tabs"));
-  if (go == 0) {
+  if (go !== 2 && go !== 1) {
+    console.log("not touch");
     window.open("movie1.html", "_blank");
   }
 }
@@ -661,3 +683,7 @@ function stopShit(event) {
   event.preventDefault();
   console.log("this is link");
 }
+
+document.addEventListener("long-press", function () {
+  console.log("fire me");
+});

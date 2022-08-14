@@ -4,6 +4,23 @@ if (sessionStorage.getItem("count") == null) {
 } else {
   console.log("not again");
 }
+const options = {
+  method: "GET",
+  headers: {
+    "X-RapidAPI-Key": "d2a2325d29msh1e229817fbf71b6p14aebcjsn60e7a9f14a24",
+    "X-RapidAPI-Host": "moviesdatabase.p.rapidapi.com",
+  },
+};
+
+let isTouch = false;
+if (
+  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  )
+) {
+  // some code..
+  isTouch = true;
+} else isTouch = false;
 
 let infos = JSON.parse(localStorage.getItem("tabs"));
 console.log(infos);
@@ -24,22 +41,44 @@ console.log(videoType);
 
 (async () => {
   let raw = await fetch(
-    `https://api.themoviedb.org/3/${videoType}/${realInfos}?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&append_to_response=reviews,videos,credits,similar`
+    `https://api.themoviedb.org/3/${videoType}/${realInfos}?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&append_to_response=reviews,videos,credits,similar,external_ids`
   ).then((res) => res.json());
 
+  let imdbId = raw.external_ids.imdb_id;
+  console.log(imdbId);
+  let titleRate = await fetch(
+    `https://moviesdatabase.p.rapidapi.com/titles/${imdbId}/ratings`,
+    options
+  )
+    .then((response) => response.json())
+    .then((response) => response)
+    .catch((err) => console.error(err));
+
+  console.log(titleRate.results.averageRating);
+  document.querySelector(".rating").innerHTML +=
+    titleRate.results.averageRating;
   console.log(raw);
+
+  raw.genres.forEach((element) => {
+    document.querySelector(".genre").innerHTML += `/ ${element.name}`;
+  });
   plotSlides(raw.similar.results, simiSlide);
   document.title = raw.title ?? raw.original_name;
   mainTitle.querySelector(".title").innerHTML = raw.title ?? raw.original_name;
-  mainTitle.querySelector(".air").innerHTML = (
+  document.querySelector(".air").innerHTML += (
     raw.release_date ?? raw.first_air_date
   ).slice(0, 4);
-  mainTitle.querySelector(".media").innerHTML =
+  document.querySelector(".media").innerHTML +=
     videoType == "movie" ? "moive" : "tv-show";
   mainOverview.innerHTML = raw.overview;
-  mainDop.src = `${baseImg}${raw.backdrop_path || raw.poster_path}`;
+  mainDop.src = `${baseDrop}${raw.backdrop_path || raw.poster_path}`;
   mainPoster.src = `${baseImg}${raw.poster_path}`;
   plotCast(raw.credits.cast, castSlide);
+  document
+    .querySelector("#similar")
+    .querySelector(
+      "h2"
+    ).innerHTML += `${videoType}s <i class="fa-solid fa-angle-right">`;
   for (let k of raw.videos.results) {
     if (k.type == "Trailer") {
       console.log(k.type);
@@ -60,7 +99,7 @@ const mainOverview = document
   .querySelector(".mainInfos")
   .querySelector(".text");
 const mainDop = document.querySelector(".backDropHolder").querySelector("img");
-const mainPoster = document.querySelector(".mainInfos").querySelector("img");
+const mainPoster = document.querySelector(".posterHold").querySelector("img");
 const searchBar = document.querySelector("#search_area");
 const ressTemp = document.querySelector(".results");
 const resTemp = ressTemp.querySelector(".result_temp").content;
@@ -92,7 +131,9 @@ window.addEventListener("click", (event) => {
 let autoslide = true;
 let counter = 2;
 let trendPage = 1;
-let baseImg = "http://image.tmdb.org/t/p/original/";
+let baseImg = "http://image.tmdb.org/t/p/w500/";
+let baseDrop = "http://image.tmdb.org/t/p/w1280/";
+let basePoster = "http://image.tmdb.org/t/p/w342/";
 // refrence constats
 
 window.addEventListener("scroll", (event) => {
@@ -182,7 +223,9 @@ window.addEventListener(
           .then((res) =>
             res.results.filter(
               (res) =>
-                res.original_language == "en" || res.original_language == "ar"
+                res.original_language == "en" ||
+                res.original_language == "ar" ||
+                res.original_language == "ja"
             )
           )
           .then((res) => res.slice(0, 10))
@@ -198,7 +241,9 @@ window.addEventListener(
           .then((res) =>
             res.results.filter(
               (res) =>
-                res.original_language == "en" || res.original_language == "ar"
+                res.original_language == "en" ||
+                res.original_language == "ar" ||
+                res.original_language == "ja"
             )
           )
           .then((res) => res.slice(0, 10))
@@ -245,7 +290,9 @@ searchBar.addEventListener(
           .then((res) =>
             res.results.filter(
               (res) =>
-                res.original_language == "en" || res.original_language == "ar"
+                res.original_language == "en" ||
+                res.original_language == "ar" ||
+                res.original_language == "ja"
             )
           )
           .then((res) => res.slice(0, 10))
@@ -261,7 +308,9 @@ searchBar.addEventListener(
           .then((res) =>
             res.results.filter(
               (re) =>
-                re.original_language == "en" || re.original_language == "ar"
+                re.original_language == "en" ||
+                re.original_language == "ar" ||
+                res.original_language == "ja"
             )
           )
           .then((res) => res.slice(0, 10))
@@ -331,11 +380,11 @@ function plotCast(trends, slideName) {
     card.querySelector(".card").id = title;
     card.querySelector(".card").setAttribute("type", "person");
 
-    card.querySelector("img").src = `https://image.tmdb.org/t/p/w185/${poster}`;
+    card.querySelector("img").src = `${basePoster}${poster}`;
     card.querySelector(".infos").innerHTML =
       `<p style=" display:inline; font-size:1.2rem;">${title}<p/>` +
       " " +
-      `<p style=" display:inline; font-size:1rem;">${detial}<p/>`;
+      `<p style=" display:inline; font-size:1rem;">as: ${detial}<p/>`;
 
     if (poster != null) {
       slideName.querySelector(".slide-show").append(card);
@@ -347,6 +396,7 @@ function plotSlides(trends, slideName) {
   // trends = trends.slice(0, 7);
   for (let trend of trends) {
     let poster = trend.poster_path;
+    let backDrop = trend.backdrop_path;
     let title = trend.original_name ?? trend.title;
     let date = trend.release_date ?? trend.first_air_date;
     let detial = trend.overview;
@@ -360,10 +410,13 @@ function plotSlides(trends, slideName) {
       card.querySelector(".card").id = trend.id;
       card.setAttribute("type", trend.title == null ? "tv" : "movie");
 
-      card.querySelector("img").src = `https://image.tmdb.org/t/p/w342/${poster}`;
+      nextCard.querySelector("img").src = `${basePoster}${poster}`;
+      nextCard.querySelector("h4").innerHTML = `${title}`;
+      nextCard.querySelector("p").innerHTML = `${date}`;
+      card.querySelector("img").src = `${basePoster}${backDrop || poster}`;
       card
         .querySelector(".posterTitle")
-        .querySelector("img").src = `${baseImg}${poster}`;
+        .querySelector("img").src = `${basePoster}${poster}`;
       card.querySelector(".posterTitle").querySelector("h2").innerHTML = title;
       card.querySelector(".infos").innerHTML +=
         `<p style="color:rgb(199, 199, 199); display:inline;">${date.slice(
@@ -386,7 +439,7 @@ function plotSlides(trends, slideName) {
         .querySelector(".card")
         .setAttribute("type", trend.title == null ? "tv" : "movie");
 
-      card.querySelector("img").src = `${baseImg}${poster}`;
+      card.querySelector("img").src = `${basePoster}${poster}`;
       card.querySelector(".infos").innerHTML =
         `<p style=" display:inline; font-size:1.2rem;">${title}<p/>` +
         " " +
@@ -418,7 +471,7 @@ document.addEventListener("click", (event) => {
   }
 });
 
-document.addEventListener(
+window.addEventListener(
   "click",
   (event) => {
     if (event.target.nodeName == "BUTTON") {
@@ -441,18 +494,10 @@ function scrollSlide(direction, area) {
   // console.log(scrollVal);
   console.log(direction);
   if (direction == "next") {
-    if (set.id == "rec") {
-      counter += 1;
-    }
     let statu =
       parseInt(area.children[1].style.transform.replace(/\D/g, "")) || 0;
     // console.log(statu);
     // console.log(maxScroll);
-    if (statu > maxScroll - scrollVal * 3) {
-      console.log("stared");
-      trendPage += 1;
-      fetchTrend(trendPage);
-    }
 
     if (statu < maxScroll) {
       for (let bag of area.children) {
@@ -600,94 +645,103 @@ window.addEventListener(
   false
 );
 
-window.addEventListener(
-  "mousedown",
-  (event) => {
-    // for (let y of document.querySelectorAll(".card")) {
-    //   y.classList.remove("viewdCard");
-    // }
+if (isTouch) {
+  window.addEventListener("touchstart", appendLink, false);
+  // window.addEventListener("click", appendLink, false);
+} else {
+  window.addEventListener("mousedown", appendLink, false);
+}
 
-    try {
-      console.log(event.target.closest(".result"));
+function appendLink(event) {
+  // for (let y of document.querySelectorAll(".card")) {
+  //   y.classList.remove("viewdCard");
+  // }
+
+  try {
+    console.log(event.type);
+    // console.log(event.button);
+    console.log(event.target.closest(".result"));
+    openMovie(
+      event.target.closest(".result").id,
+      event.target.closest(".result").getAttribute("type"),
+      event.button,
+      event.type
+    );
+  } catch {}
+  try {
+    let dad = event.target.closest(".slide-dad");
+    let uncle = dad.querySelector(".slide-show");
+    let card = event.target.closest(".card");
+    let gage = (uncle.clientWidth / 5) * 4;
+    let realLeft = Math.round(
+      card.getBoundingClientRect().left - dad.getBoundingClientRect().left
+    );
+
+    let statu =
+      parseInt(uncle.children[1].style.transform.replace(/\D/g, "")) || 0;
+    console.log(event.target);
+    // console.log(gage + "gage");
+    // console.log(
+    //   Math.round(
+    //     card.getBoundingClientRect().left - dad.getBoundingClientRect().left - 8
+    //   )
+    // );
+    if (dad.id == "rec") {
       openMovie(
-        event.target.closest(".result").id,
-        event.target.closest(".result").getAttribute("type"),
+        event.target.closest(".card").id,
+        event.target.closest(".card").getAttribute("type"),
         event.button
       );
-    } catch {}
-    try {
-      let dad = event.target.closest(".slide-dad");
-      let uncle = dad.querySelector(".slide-show");
-      let card = event.target.closest(".card");
-      let gage = (uncle.clientWidth / 5) * 4;
-      let realLeft = Math.round(
-        card.getBoundingClientRect().left - dad.getBoundingClientRect().left
+      console.log(event.target.closest(".card").getAttribute("type"));
+    } else {
+      openMovie(
+        event.target.closest(".card").id,
+        event.target.closest(".card").getAttribute("type"),
+        1
       );
-
-      let statu =
-        parseInt(uncle.children[1].style.transform.replace(/\D/g, "")) || 0;
-      console.log(event.target);
-      // console.log(gage + "gage");
-      // console.log(
-      //   Math.round(
-      //     card.getBoundingClientRect().left - dad.getBoundingClientRect().left - 8
-      //   )
-      // );
-      if (dad.id == "rec") {
+      if (card.classList.contains("viewdCard")) {
         openMovie(
           event.target.closest(".card").id,
           event.target.closest(".card").getAttribute("type"),
           event.button
         );
         console.log(event.target.closest(".card").getAttribute("type"));
-      } else {
-        openMovie(
-          event.target.closest(".card").id,
-          event.target.closest(".card").getAttribute("type"),
-          1
-        );
-        if (card.classList.contains("viewdCard") && event.button == 0) {
-          openMovie(
-            event.target.closest(".card").id,
-            event.target.closest(".card").getAttribute("type"),
-            event.button
-          );
-          console.log(event.target.closest(".card").getAttribute("type"));
 
-          card.classList.toggle("viewdCard");
-          card.querySelector(".over-view").style.height = null;
-          card.querySelector("img").style.filter = null;
-        } else if (card.classList.contains("card")) {
-          if (realLeft > gage) {
-            for (let i of uncle.children) {
-              i.style.transform = `translateX(-${
-                statu + card.scrollWidth + 19
-              }px)`;
-            }
-          }
-          console.log("reach");
+        card.classList.toggle("viewdCard");
+        card.querySelector(".over-view").style.height = null;
+        card.querySelector("img").style.filter = null;
+      } else if (card.classList.contains("card")) {
+        if (realLeft > gage) {
           for (let i of uncle.children) {
-            i.classList.remove("viewdCard");
+            i.style.transform = `translateX(-${
+              statu + card.scrollWidth + 19
+            }px)`;
           }
-          card.classList.toggle("viewdCard");
-          card.querySelector(".over-view").style.height = "fit-content";
-          card.querySelector("img").style.filter = "blur(0px)";
         }
+        console.log("reach");
+        for (let i of uncle.children) {
+          i.classList.remove("viewdCard");
+        }
+        card.classList.toggle("viewdCard");
+        card.querySelector(".over-view").style.height = "fit-content";
+        card.querySelector("img").style.filter = "blur(0px)";
       }
-    } catch {}
-  },
-  false
-);
+    }
+  } catch {}
+}
+
 function openMovie(card, dataType, go) {
   console.log(card);
   let meta = { id: card, type: dataType };
   allLinks.links.push(meta);
   localStorage.setItem("tabs", JSON.stringify(allLinks));
-  console.log(localStorage.getItem("tabs"));
+  // console.log(localStorage.getItem("tabs"));
+  // console.log(localStorage.getItem("tabs"));
   sessionStorage.setItem("count", 0);
 
-  if (go == 0) {
-    window.open("movie1.html", "_blank");
+  if (go !== 2 && go !== 1) {
+    console.log("not touch");
+    window.open("movie1.html", "_self");
   }
 }
 

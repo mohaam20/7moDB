@@ -131,7 +131,10 @@ img {
   z-index: -1;
 }
 
-
+.backDropHolder > img {
+  object-fit: cover;
+  width: 100%;
+}
 /* 
 .backDropHolder::before {
   content: "";
@@ -164,12 +167,13 @@ img {
   text-transform: capitalize;
   /* background-color: rgba(0, 21, 45, 0.571); */
   background-image: linear-gradient(0, rgba(0, 21, 45, 0), rgb(0, 21, 45));
-  align-items: flex-end;
+  align-items: center;
   border-top: 1px solid var(--gold);
   width: 100%;
   min-height: 40%;
   margin-top: 60vh;
   display: flex;
+  justify-content: center;
   position: relative;
   box-shadow: 0px -50px 50px rgba(255, 242, 0, 0.214) !important;
 
@@ -177,76 +181,128 @@ img {
 }
 
 .mainTitle {
-  gap: 1.5rem;
-  margin: 5rem 0;
+  flex-wrap: wrap;
+  gap: 3rem;
+  margin-bottom: 5rem;
   margin-top: 0 !important;
   position: relative;
   align-items: flex-end;
   display: flex;
-  width: 100%;
+  flex-grow: 1;
   height: 4rem;
 }
 .mainTitle > * {
   margin: 1rem;
-}
-.mainTitle > .title {
-  text-shadow: 0 0 2px white;
-}
-.mainTitle > .air {
-  text-shadow: 0 0 1px white;
-  color: rgb(255, 227, 69);
-}
-.mainTitle > .media {
-  text-shadow: 0 0 1px white;
-  color: rgb(42, 130, 255);
-}
-.mainInfos > .story {
-  text-shadow: 0.2px 0.2px 1.5px white !important;
-  font-weight: 700;
-  line-height: 2rem;
-  min-width: 35%;
-  word-wrap: none;
-  word-break: keep-all;
-  overflow: hidden;
-  width: min-content;
-  text-shadow: 0 0 1px rgb(0, 0, 0);
+  max-height: 100%;
 }
 
-.story > p {
-  border-radius: 1rem;
-  padding: 1rem;
-  border: 1px solid var(--gold);
+.posterHold {
+  background-color: aqua;
+  min-width: 15rem;
+  max-width: 15rem;
 }
 
 .mainTitle img {
-  top: 4rem;
+  bottom: 0;
   box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.527) !important;
   border-radius: 1rem;
   height: 25rem;
   min-width: 10rem;
   max-width: 15rem;
   cursor: pointer;
-  position: relative;
+  position: absolute;
   border: 1.5px solid rgb(255, 213, 0);
   overflow: hidden;
 }
-.caster {
+
+.metaTitle {
+  height: min-content;
+  flex-wrap: wrap;
   display: flex;
+  gap: 1rem;
+}
+
+.metaTitle > * {
+  background-color: rgba(255, 255, 255, 0.097);
+  border: 1px solid var(--gold);
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: space-around;
   align-items: center;
+  gap: 0.5rem;
+}
+
+.metaTitle span {
+  height: fit-content;
+  text-shadow: 0 0 2px rgb(255, 225, 0);
+}
+.metaTitle p {
+  color: var(--gold);
+}
+
+.caster {
+  overflow: hidden;
+  height: fit-content;
+  flex-wrap: wrap;
+  display: flex;
+  align-items: flex-start;
   width: 100%;
   gap: 5rem;
 }
+
+.story {
+  flex-grow: 1;
+  flex-basis: 20rem;
+  min-height: 20rem !important;
+  width: calc(100% - 40rem);
+  text-shadow: 0.2px 0.2px 1.5px white !important;
+  font-weight: 700;
+  line-height: 2rem;
+  word-break: keep-all;
+  overflow: hidden;
+  text-shadow: 0 0 1px rgb(0, 0, 0);
+}
+
+.story > p {
+  height: 100% !important;
+  width: auto;
+  border-radius: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--gold);
+}
+
 .trailer {
+  flex-grow: 1;
+  flex-basis: 25rem;
+  margin-top: 2rem;
   border-radius: 2rem;
   border: 2px solid var(--main-light);
   height: 20rem;
 }
 #cast {
-  width: 60%;
+  max-width: 100% !important;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 }
+
 #cast .slide-show {
+  box-shadow: 0px 0px 0px black !important;
+  width: 90%;
+  background-color: rgba(0, 0, 0, 0);
   height: 20rem !important;
   max-width: 100% !important;
+}
+
+#cast > button {
+  transform: translateY(-20%);
+  border-radius: 0.2rem;
+  height: 4rem;
+}
+#cast .back {
+  right: 98%;
 }
 #cast .card {
   cursor: pointer;
@@ -500,6 +556,16 @@ button {
 }
 
 @media all and (max-width: 800px) {
+  .backDropHolder img {
+    height: 100%;
+    width: auto;
+    display: flex;
+    justify-content: center;
+  }
+  .backDropHolder {
+    display: flex;
+    justify-content: center;
+  }
   .mainInfos {
     justify-content: center;
     padding: 0 0.5rem;
@@ -517,11 +583,7 @@ button {
   #cast {
     width: 93%;
   }
-  .caster {
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
+
   .caster > .trailer {
     width: 90%;
   }
@@ -607,7 +669,7 @@ button {
     min-width: calc(calc(100% - 80px) / 5) !important;
   }
   #cast .card {
-    min-width: calc(calc(100% - 64px) / 4) !important;
+    min-width: calc(calc(100% - 96px) / 6) !important;
   }
   .viewdCard {
     min-width: calc(calc(calc(100% - 40px) / 5) * 2) !important;
