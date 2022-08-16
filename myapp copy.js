@@ -25,6 +25,9 @@ if (
 
 let allLinks = JSON.parse(localStorage.getItem("tabs")) || { links: [] };
 localStorage.setItem("tabs", JSON.stringify(allLinks));
+if (allLinks.links.length > 100) {
+  JSON.parse(localStorage.setItem("tabs", JSON.stringify({ links: [] })));
+}
 
 // let tabs = JSON.parse(localStorage.getItem("tabs")).links;
 
@@ -393,7 +396,16 @@ function scrollSlide(direction, area) {
       console.log("stared");
       trendPage += 1;
       fetchTrend(trendPage);
+      if (isTouch) {
+        console.log("should moveeeee");
+        console.log(statu - 1000 * trendPage);
+        for (let bag of area.children) {
+          console.log(bag);
+          bag.style.transform = `translateX(${statu - 4}px)`;
+        }
+      }
     }
+    statu = parseInt(area.children[1].style.transform.replace(/\D/g, "")) || 0;
     if (nextField.children[counter].className == "nextCard") {
       nextField.children[counter].style.display = "none";
       nextField.children[counter + 1].style.backgroundColor = "rgb(0, 86, 184)";
@@ -583,8 +595,33 @@ for (let i of document.querySelectorAll("a")) {
 }
 
 if (isTouch) {
-  window.addEventListener("touchstart", appendLink, false);
-  // window.addEventListener("click", appendLink, false);
+  window.addEventListener(
+    "touchstart",
+    (event) => {
+      try {
+        console.log(event.type);
+        // console.log(event.button);
+        console.log(event.target.closest(".result"));
+        openMovie(
+          event.target.closest(".result").id,
+          event.target.closest(".result").getAttribute("type"),
+          1,
+          event.type
+        );
+      } catch {}
+      try {
+        openMovie(
+          event.target.closest(".card").id,
+          event.target.closest(".card").getAttribute("type"),
+          1,
+          event.type
+        );
+        console.log(event.target.closest(".card").getAttribute("type"));
+      } catch {}
+    },
+    false
+  );
+  window.addEventListener("click", appendLink, false);
 } else {
   window.addEventListener("mousedown", appendLink, false);
 }
@@ -601,8 +638,7 @@ function appendLink(event) {
     openMovie(
       event.target.closest(".result").id,
       event.target.closest(".result").getAttribute("type"),
-      event.button,
-      event.type
+      event.button
     );
   } catch {}
   try {
@@ -668,11 +704,11 @@ function appendLink(event) {
 }
 
 function openMovie(card, dataType, go) {
-  console.log(go);
   let meta = { id: card, type: dataType };
+  console.log(meta + "is meta");
   allLinks.links.push(meta);
   localStorage.setItem("tabs", JSON.stringify(allLinks));
-  console.log(localStorage.getItem("tabs"));
+  // console.log(localStorage.getItem("tabs"));
   if (go !== 2 && go !== 1) {
     console.log("not touch");
     window.open("movie1.html", "_blank");

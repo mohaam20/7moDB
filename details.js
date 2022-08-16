@@ -46,17 +46,19 @@ console.log(videoType);
 
   let imdbId = raw.external_ids.imdb_id;
   console.log(imdbId);
-  let titleRate = await fetch(
-    `https://moviesdatabase.p.rapidapi.com/titles/${imdbId}/ratings`,
-    options
-  )
-    .then((response) => response.json())
-    .then((response) => response)
-    .catch((err) => console.error(err));
+  try {
+    let titleRate = await fetch(
+      `https://moviesdatabase.p.rapidapi.com/titles/${imdbId}/ratings`,
+      options
+    )
+      .then((response) => response.json())
+      .then((response) => response)
+      .catch((err) => console.error(err));
 
-  console.log(titleRate.results.averageRating);
-  document.querySelector(".rating").innerHTML +=
-    titleRate.results.averageRating;
+    console.log(titleRate.results.averageRating);
+    document.querySelector(".rating").innerHTML +=
+      titleRate.results.averageRating ?? raw.vote_average;
+  } catch {}
   console.log(raw);
 
   raw.genres.forEach((element) => {
@@ -118,15 +120,7 @@ let allLinks = JSON.parse(localStorage.getItem("tabs")) || { links: [] };
 localStorage.setItem("tabs", JSON.stringify(allLinks));
 
 let num = JSON.parse(localStorage.getItem("tabs")).links.length || 0;
-window.addEventListener("click", (event) => {
-  let card = event.target.closest(".card").id;
-  console.log(card);
 
-  allLinks.links.push(card);
-  localStorage.setItem("tabs", JSON.stringify(allLinks));
-  let logs = JSON.parse(localStorage.getItem("tabs")).links;
-  // window.open("movie1.html", "_blank");
-});
 // refrence constats
 let autoslide = true;
 let counter = 2;
@@ -225,7 +219,8 @@ window.addEventListener(
               (res) =>
                 res.original_language == "en" ||
                 res.original_language == "ar" ||
-                res.original_language == "ja"
+                res.original_language == "ja" ||
+                res.original_language == "fr"
             )
           )
           .then((res) => res.slice(0, 10))
@@ -243,7 +238,8 @@ window.addEventListener(
               (res) =>
                 res.original_language == "en" ||
                 res.original_language == "ar" ||
-                res.original_language == "ja"
+                res.original_language == "ja" ||
+                res.original_language == "fr"
             )
           )
           .then((res) => res.slice(0, 10))
@@ -292,7 +288,8 @@ searchBar.addEventListener(
               (res) =>
                 res.original_language == "en" ||
                 res.original_language == "ar" ||
-                res.original_language == "ja"
+                res.original_language == "ja" ||
+                res.original_language == "fr"
             )
           )
           .then((res) => res.slice(0, 10))
@@ -310,7 +307,8 @@ searchBar.addEventListener(
               (re) =>
                 re.original_language == "en" ||
                 re.original_language == "ar" ||
-                res.original_language == "ja"
+                res.original_language == "ja" ||
+                res.original_language == "fr"
             )
           )
           .then((res) => res.slice(0, 10))
@@ -646,8 +644,31 @@ window.addEventListener(
 );
 
 if (isTouch) {
-  window.addEventListener("touchstart", appendLink, false);
-  // window.addEventListener("click", appendLink, false);
+  window.addEventListener(
+    "touchstart",
+    (event) => {
+      try {
+        console.log(event.type);
+        // console.log(event.button);
+        console.log(event.target.closest(".result"));
+        openMovie(
+          event.target.closest(".result").id,
+          event.target.closest(".result").getAttribute("type"),
+          1
+        );
+      } catch {}
+      try {
+        openMovie(
+          event.target.closest(".card").id,
+          event.target.closest(".card").getAttribute("type"),
+          1
+        );
+        console.log(event.target.closest(".card").getAttribute("type"));
+      } catch {}
+    },
+    false
+  );
+  window.addEventListener("click", appendLink, false);
 } else {
   window.addEventListener("mousedown", appendLink, false);
 }
@@ -664,8 +685,7 @@ function appendLink(event) {
     openMovie(
       event.target.closest(".result").id,
       event.target.closest(".result").getAttribute("type"),
-      event.button,
-      event.type
+      event.button
     );
   } catch {}
   try {
@@ -731,8 +751,8 @@ function appendLink(event) {
 }
 
 function openMovie(card, dataType, go) {
-  console.log(card);
   let meta = { id: card, type: dataType };
+  console.log(card + dataType + "type of click");
   allLinks.links.push(meta);
   localStorage.setItem("tabs", JSON.stringify(allLinks));
   // console.log(localStorage.getItem("tabs"));
