@@ -1,9 +1,41 @@
-if (sessionStorage.getItem("count") == null) {
-  sessionStorage.setItem("count", 0);
-  console.log("first time");
-} else {
-  console.log("not again");
+// window.addEventListener("hashchange", () => {
+//   console.log(`The current URL hash is `);
+// });
+
+// if (location.hash.length == 0) {
+//   removeEventListener("popstate", channnn);
+// }
+console.log(location.hash);
+
+addEventListener("popstate", channnn);
+
+let allFav;
+let allLinks;
+let infos;
+
+allFav = JSON.parse(localStorage.getItem("favs")) || { laters: [] };
+localStorage.setItem("favs", JSON.stringify(allFav));
+
+allLinks = JSON.parse(localStorage.getItem("tabs")) || { links: [] };
+localStorage.setItem("tabs", JSON.stringify(allLinks));
+
+infos = JSON.parse(localStorage.getItem("tabs"));
+console.log(infos);
+
+function channnn() {
+  console.log(window.history);
+  let hashs = location.hash.split("-")[0];
+  let hash2 = location.hash.split("-")[1];
+  sessionStorage.setItem("movieId", hashs.substring(1));
+  sessionStorage.setItem("type", hash2);
+  window.scrollTo({ top: 0 });
+  location.reload();
+  // init();
 }
+let lock = window.location.pathname.split("/")[1];
+console.log(lock);
+console.log(location.hash);
+
 const options = {
   method: "GET",
   headers: {
@@ -11,7 +43,8 @@ const options = {
     "X-RapidAPI-Host": "moviesdatabase.p.rapidapi.com",
   },
 };
-
+let failVids = [];
+let possibleVids = [];
 let isTouch = false;
 if (
   /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -21,81 +54,13 @@ if (
   // some code..
   isTouch = true;
 } else isTouch = false;
-
-let infos = JSON.parse(localStorage.getItem("tabs"));
-console.log(infos);
-if (sessionStorage.getItem("count") < 1) {
-  sessionStorage.setItem(
-    "movieId",
-    `${infos.links[infos.links.length - 1].id}`
-  );
-  sessionStorage.setItem("type", `${infos.links[infos.links.length - 1].type}`);
-
-  sessionStorage.setItem("count", 1);
-}
-
-let realInfos = sessionStorage.getItem("movieId");
-let videoType = sessionStorage.getItem("type");
-console.log(realInfos);
-console.log(videoType);
-
-(async () => {
-  let raw = await fetch(
-    `https://api.themoviedb.org/3/${videoType}/${realInfos}?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&append_to_response=reviews,videos,credits,similar,external_ids`
-  ).then((res) => res.json());
-
-  let imdbId = raw.external_ids.imdb_id;
-  console.log(imdbId);
-  try {
-    let titleRate = await fetch(
-      `https://moviesdatabase.p.rapidapi.com/titles/${imdbId}/ratings`,
-      options
-    )
-      .then((response) => response.json())
-      .then((response) => response)
-      .catch((err) => console.error(err));
-
-    console.log(titleRate.results.averageRating);
-    document.querySelector(".rating").innerHTML +=
-      titleRate.results.averageRating ?? raw.vote_average;
-  } catch {}
-  console.log(raw);
-
-  raw.genres.forEach((element) => {
-    document.querySelector(".genre").innerHTML += `/ ${element.name}`;
-  });
-  plotSlides(raw.similar.results, simiSlide);
-  document.title = raw.title ?? raw.original_name;
-  mainTitle.querySelector(".title").innerHTML = raw.title ?? raw.original_name;
-  document.querySelector(".air").innerHTML += (
-    raw.release_date ?? raw.first_air_date
-  ).slice(0, 4);
-  document.querySelector(".media").innerHTML +=
-    videoType == "movie" ? "moive" : "tv-show";
-  mainOverview.innerHTML = raw.overview;
-  mainDop.src = `${baseDrop}${raw.backdrop_path || raw.poster_path}`;
-  mainPoster.src = `${baseImg}${raw.poster_path}`;
-  plotCast(raw.credits.cast, castSlide);
-  document
-    .querySelector("#similar")
-    .querySelector(
-      "h2"
-    ).innerHTML += `${videoType}s <i class="fa-solid fa-angle-right">`;
-  for (let k of raw.videos.results) {
-    if (k.type == "Trailer") {
-      console.log(k.type);
-      console.log(raw.videos.results.indexOf(k));
-      console.log(k.key);
-      document.querySelector(
-        ".trailer"
-      ).src = `https://www.youtube.com/embed/${k.key}`;
-      break;
-    }
-  }
-  console.log(document.querySelector(".trailer"));
-})();
-
-// Dom Elements
+var tag;
+var firstScriptTag;
+var player;
+let realInfos;
+let videoType;
+// console.log(realInfos);
+// console.log(videoType);
 const mainTitle = document.querySelector(".mainTitle");
 const mainOverview = document
   .querySelector(".mainInfos")
@@ -112,12 +77,179 @@ const simiSlide = document.querySelector("#similar");
 const topSlide = document.querySelector("#topMovies");
 const top2Slide = document.querySelector("#topShows");
 const top3Slide = document.querySelector("#topAnimes");
+const menuOpen = document.querySelector(".burger");
+const navBar = document.querySelector(".menu");
+const bigMark = document.querySelector(".favMain");
 // const mainSlide = document.querySelector("#rec");
 const movieCard = document.querySelector(".card-temp");
 // const nextField = document.querySelector(".next-rec");
 // Dom Elements
-let allLinks = JSON.parse(localStorage.getItem("tabs")) || { links: [] };
-localStorage.setItem("tabs", JSON.stringify(allLinks));
+
+bigMark.addEventListener("click", () => {
+  if (bigMark.querySelector("i").classList.contains("bookMarkDone")) {
+    bigMark.querySelector(".bookMarkPlus").innerHTML = "+";
+    bigMark.querySelector("i").classList.toggle("bookMarkDone");
+
+    for (let i of allFav.laters) {
+      if (i.id == realInfos) {
+        console.log(i.id);
+        console.log(realInfos);
+        console.log("this is best");
+        console.log(allFav.laters.indexOf(i));
+        console.log(allFav.laters.indexOf(i));
+        allFav.laters.splice(allFav.laters.indexOf(i), 1);
+      }
+    }
+  } else {
+    bigMark.querySelector("i").classList.toggle("bookMarkDone");
+    bigMark.querySelector(".bookMarkPlus").innerHTML = "";
+    allFav.laters.unshift({ id: realInfos, type: videoType });
+  }
+  localStorage.setItem("favs", JSON.stringify(allFav));
+});
+
+async function init() {
+  window.scrollTo({ top: 0 });
+  console.log(window.history);
+  console.log(location.hash);
+
+  if (location.hash.length == 0) {
+    console.log("i am here");
+    sessionStorage.setItem(
+      "movieId",
+      `${infos.links[infos.links.length - 1].id}`
+    );
+    sessionStorage.setItem(
+      "type",
+      `${infos.links[infos.links.length - 1].type}`
+    );
+    history.replaceState(
+      null,
+      null,
+      document.location.pathname +
+        "#" +
+        `${sessionStorage.getItem("movieId")}-${sessionStorage.getItem("type")}`
+    );
+    // location.hash = `${sessionStorage.getItem(
+    //   "movieId"
+    // )}-${sessionStorage.getItem("type")}`;
+    console.log("import");
+  } else {
+    console.log("i am here");
+
+    let hashs = location.hash.split("-")[0];
+    let hash2 = location.hash.split("-")[1];
+    sessionStorage.setItem("movieId", hashs.substring(1));
+    sessionStorage.setItem("type", hash2);
+  }
+  // if (sessionStorage.getItem("count") == null) {
+  //   sessionStorage.setItem("count", 0);
+  //   console.log("first time");
+  // } else {
+  //   console.log("not again");
+  // }
+
+  // if (sessionStorage.getItem("count") < 1) {
+  //   sessionStorage.setItem(
+  //     "movieId",
+  //     `${infos.links[infos.links.length - 1].id}`
+  //   );
+  //   sessionStorage.setItem(
+  //     "type",
+  //     `${infos.links[infos.links.length - 1].type}`
+  //   );
+
+  //   sessionStorage.setItem("count", 1);
+  // }
+
+  realInfos = sessionStorage.getItem("movieId");
+  videoType = sessionStorage.getItem("type");
+
+  let raw = await fetch(
+    `https://api.themoviedb.org/3/${videoType}/${realInfos}?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&append_to_response=reviews,videos,credits,similar,external_ids`
+  ).then((res) => res.json());
+
+  let imdbId = raw.external_ids.imdb_id;
+  console.log(imdbId);
+  try {
+    let titleRate = await fetch(
+      `https://moviesdatabase.p.rapidapi.com/titles/${imdbId}/ratings`,
+      options
+    )
+      .then((response) => response.json())
+      .then((response) => response)
+      .catch((err) => console.error(err));
+
+    console.log(titleRate.results.averageRating);
+    document.querySelector(
+      ".rating"
+    ).innerHTML = `<i class="fa-brands fa-imdb"></i> : ${
+      titleRate.results.averageRating ?? raw.vote_average
+    }`;
+  } catch {}
+  console.log(raw);
+
+  raw.genres.forEach((element) => {
+    document.querySelector(
+      ".genre"
+    ).innerHTML = `<p>genres</p> / ${element.name}`;
+  });
+  simiSlide.querySelector(".slide-show").innerHTML = "";
+  plotSlides(raw.similar.results, simiSlide);
+
+  mainTitle.querySelector(".title").innerHTML = raw.title ?? raw.original_name;
+  document.title = raw.title ?? raw.original_name;
+
+  document.querySelector(".air").innerHTML = `<p>release date</p> ${(
+    raw.release_date ?? raw.first_air_date
+  ).slice(0, 4)}`;
+  document.querySelector(".media").innerHTML = `<p>type</p>${
+    videoType == "movie" ? "moive" : "tv-show"
+  }`;
+
+  mainOverview.innerHTML = raw.overview;
+  mainDop.src = `${baseDrop}${raw.backdrop_path || raw.poster_path}`;
+  mainPoster.src = `${baseImg}${raw.poster_path}`;
+
+  console.log(raw.credits);
+  castSlide.querySelector(".slide-show").innerHTML = "";
+  plotCast(raw.credits.cast, castSlide);
+  document
+    .querySelector("#similar")
+    .querySelector(
+      "h2"
+    ).innerHTML = `similar ${videoType}s <i class="fa-solid fa-angle-right">`;
+  possibleVids = raw.videos.results;
+
+  for (let i of allFav.laters) {
+    if (i.id == realInfos) {
+      // console.log("this is best");
+      bigMark.querySelector("i").classList.toggle("bookMarkDone");
+      bigMark.querySelector(".bookMarkPlus").innerHTML = "";
+      break;
+    } else {
+      bigMark.querySelector("i").classList.remove("bookMarkDone");
+      bigMark.querySelector(".bookMarkPlus").innerHTML = "+";
+    }
+  }
+  tag = document.createElement("script");
+
+  tag.src = "https://www.youtube.com/iframe_api";
+  firstScriptTag = document.getElementsByTagName("script")[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  // for (let k of possibleVids) {
+  //   if (k.type == "Trailer" && !failVids.includes(k.key)) {
+  //     // document.querySelector(
+  //     //   "#trailer"
+  //     // ).src = `https://www.youtube.com/embed/${k.key}`;
+  //     player.loadVideoById({ videoId: k.key ,endSeconds: 0  });
+  //   }
+  // }
+  console.log(document.querySelector(".trailer"));
+}
+
+// Dom Elements
 
 let num = JSON.parse(localStorage.getItem("tabs")).links.length || 0;
 
@@ -148,7 +280,11 @@ window.addEventListener("scroll", (event) => {
   }%)`;
 });
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("load", () => {
+  console.log(location.hash);
+  // sessionStorage.setItem("movieId", hashs.substring(1));
+  // sessionStorage.setItem("type", hash2);
+  init();
   fetch(
     "https://api.themoviedb.org/3/movie/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&region=us"
   )
@@ -304,9 +440,9 @@ searchBar.addEventListener(
           .then((res) => res.json())
           .then((res) =>
             res.results.filter(
-              (re) =>
-                re.original_language == "en" ||
-                re.original_language == "ar" ||
+              (res) =>
+                res.original_language == "en" ||
+                res.original_language == "ar" ||
                 res.original_language == "ja" ||
                 res.original_language == "fr"
             )
@@ -368,15 +504,20 @@ function searchResults(movies) {
 
 //scroll
 
-function plotCast(trends, slideName) {
+async function plotCast(trends, slideName) {
   for (let trend of trends) {
+    let cast = await fetch(
+      `https://api.themoviedb.org/3/credit/${trend.credit_id}?api_key=5e060480a887e5981aa743bc33a74e40`
+    ).then((res) => res.json());
+    // console.log(cast.person);
     let poster = trend.profile_path;
     let title = trend.name;
     let detial = trend.character;
     let card = movieCard.content.cloneNode(true);
 
-    card.querySelector(".card").id = title;
+    card.querySelector(".card").id = cast.person.id;
     card.querySelector(".card").setAttribute("type", "person");
+    card.querySelector(".card").href = `person.html#${cast.person.id}`;
 
     card.querySelector("img").src = `${basePoster}${poster}`;
     card.querySelector(".infos").innerHTML =
@@ -392,6 +533,7 @@ function plotCast(trends, slideName) {
 
 function plotSlides(trends, slideName) {
   // trends = trends.slice(0, 7);
+
   for (let trend of trends) {
     let poster = trend.poster_path;
     let backDrop = trend.backdrop_path;
@@ -411,6 +553,7 @@ function plotSlides(trends, slideName) {
       nextCard.querySelector("img").src = `${basePoster}${poster}`;
       nextCard.querySelector("h4").innerHTML = `${title}`;
       nextCard.querySelector("p").innerHTML = `${date}`;
+
       card.querySelector("img").src = `${basePoster}${backDrop || poster}`;
       card
         .querySelector(".posterTitle")
@@ -432,11 +575,22 @@ function plotSlides(trends, slideName) {
         // console.log(mainSlide.querySelector(".slide-show").clientWidth);
       }
     } else {
+      card.querySelector(".card").href = `#${trend.id}-${
+        trend.title == null ? "tv" : "movie"
+      }`;
       card.querySelector(".card").id = trend.id;
       card
         .querySelector(".card")
         .setAttribute("type", trend.title == null ? "tv" : "movie");
 
+      for (let i of allFav.laters) {
+        if (i.id == trend.id) {
+          card.querySelector(".fa-bookmark").classList.add("bookMarkDone");
+          card.querySelector(".bookMarkPlus").innerHTML =
+            '<i class="fa-solid fa-check"></i>';
+          break;
+        }
+      }
       card.querySelector("img").src = `${basePoster}${poster}`;
       card.querySelector(".infos").innerHTML =
         `<p style=" display:inline; font-size:1.2rem;">${title}<p/>` +
@@ -472,7 +626,7 @@ document.addEventListener("click", (event) => {
 window.addEventListener(
   "click",
   (event) => {
-    if (event.target.nodeName == "BUTTON") {
+    if (event.target.className == "next" || event.target.className == "back") {
       let area = event.target.parentNode.querySelector(".slide-show");
       console.log(area);
       let direction = event.target.className;
@@ -678,6 +832,19 @@ function appendLink(event) {
   //   y.classList.remove("viewdCard");
   // }
 
+  if (event.target !== menuOpen && !navBar.contains(event.target)) {
+    navBar.classList.remove("showNav");
+  }
+  let card = event.target.closest(".card");
+  if (card == null) {
+    console.log("close all");
+    document.querySelectorAll(".card").forEach((e) => {
+      e.classList.remove("viewdCard");
+    });
+    document.querySelectorAll(".bookMark").forEach((e) => {
+      e.classList.remove("bookMarkSee");
+    });
+  }
   try {
     console.log(event.type);
     // console.log(event.button);
@@ -691,7 +858,7 @@ function appendLink(event) {
   try {
     let dad = event.target.closest(".slide-dad");
     let uncle = dad.querySelector(".slide-show");
-    let card = event.target.closest(".card");
+    let book = card.querySelector(".bookMark");
     let gage = (uncle.clientWidth / 5) * 4;
     let realLeft = Math.round(
       card.getBoundingClientRect().left - dad.getBoundingClientRect().left
@@ -706,6 +873,30 @@ function appendLink(event) {
     //     card.getBoundingClientRect().left - dad.getBoundingClientRect().left - 8
     //   )
     // );
+    if (event.target.classList.contains("bookMark")) {
+      if (
+        event.target
+          .querySelector(".fa-bookmark")
+          .classList.contains("bookMarkDone")
+      ) {
+        event.target.querySelector("i").classList.remove("bookMarkDone");
+        event.target.querySelector(".bookMarkPlus").innerHTML = "+";
+        for (let i of allFav.laters) {
+          if (i.id == card.id) {
+            allFav.laters.splice(allFav.laters.indexOf(i), 1);
+          }
+        }
+        localStorage.setItem("favs", JSON.stringify(allFav));
+      } else {
+        addFav(card.id, card.getAttribute("type"));
+        event.target.querySelector("i").classList.add("bookMarkDone");
+        event.target.querySelector(".bookMarkPlus").innerHTML =
+          '<i class="fa-solid fa-check"></i>';
+        console.log(event.target.querySelector(".bookMarkPlus"));
+      }
+
+      return;
+    }
     if (dad.id == "rec") {
       openMovie(
         event.target.closest(".card").id,
@@ -719,7 +910,11 @@ function appendLink(event) {
         event.target.closest(".card").getAttribute("type"),
         1
       );
-      if (card.classList.contains("viewdCard")) {
+      if (card.classList.contains("viewdCard") || dad.id == "cast") {
+        if (dad.id !== "cast") {
+          book.classList.toggle("bookMarkSee");
+          card.classList.toggle("viewdCard");
+        }
         openMovie(
           event.target.closest(".card").id,
           event.target.closest(".card").getAttribute("type"),
@@ -727,9 +922,9 @@ function appendLink(event) {
         );
         console.log(event.target.closest(".card").getAttribute("type"));
 
-        card.classList.toggle("viewdCard");
         card.querySelector(".over-view").style.height = null;
         card.querySelector("img").style.filter = null;
+        return;
       } else if (card.classList.contains("card")) {
         if (realLeft > gage) {
           for (let i of uncle.children) {
@@ -739,9 +934,18 @@ function appendLink(event) {
           }
         }
         console.log("reach");
+
         for (let i of uncle.children) {
+          let kid = i.querySelector(".bookMark");
           i.classList.remove("viewdCard");
+          try {
+            kid.classList.remove("bookMarkSee");
+          } catch {
+            console.log("did");
+          }
         }
+        book.classList.toggle("bookMarkSee");
+
         card.classList.toggle("viewdCard");
         card.querySelector(".over-view").style.height = "fit-content";
         card.querySelector("img").style.filter = "blur(0px)";
@@ -755,17 +959,102 @@ function openMovie(card, dataType, go) {
   console.log(card + dataType + "type of click");
   allLinks.links.push(meta);
   localStorage.setItem("tabs", JSON.stringify(allLinks));
+  console.log("pushed");
   // console.log(localStorage.getItem("tabs"));
-  // console.log(localStorage.getItem("tabs"));
-  sessionStorage.setItem("count", 0);
+  // sessionStorage.setItem("count", 0);
 
   if (go !== 2 && go !== 1) {
     console.log("not touch");
-    window.open("movie1.html", "_self");
+    if (dataType == "person") {
+      window.open("person.html", "_blank");
+    } else {
+      location.hash = card + "-" + dataType;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      // init();
+
+      // location.reload();
+      // if (lock == "movie1.html") {
+      //   window.reload();
+      // } else {
+      //   window.reload();
+      // }
+    }
   }
 }
 
 function stopShit(event) {
   event.preventDefault();
   console.log("this is link");
+}
+
+function addFav(meta, kind) {
+  allFav.laters.unshift({ id: meta, type: kind });
+  localStorage.setItem("favs", JSON.stringify(allFav));
+}
+
+menuOpen.addEventListener("click", () => {
+  navBar.classList.toggle("showNav");
+  if (navBar.classList.contains("showNav")) {
+    menuOpen.innerHTML = '<i class="fa-solid fa-xmark"></i> close';
+  } else {
+    menuOpen.innerHTML = '<i class="fa-solid fa-bars"> </i>menu';
+  }
+});
+
+function onYouTubeIframeAPIReady() {
+  for (let k of possibleVids) {
+    if (k.type == "Trailer" && !failVids.includes(k.key)) {
+      console.log(k.key);
+      player = new YT.Player("trailer", {
+        height: "390",
+        width: "640",
+        videoId: k.key,
+        playerVars: {
+          playsinline: 1,
+        },
+        events: {
+          onReady: onPlayerReady,
+          onStateChange: onPlayerStateChange,
+        },
+      });
+      // document.querySelector(
+      //   "#trailer"
+      // ).src = `https://www.youtube.com/embed/${k.key}`;
+      // player.loadVideoById({ videoId: k.key, endSeconds: 0 });
+    }
+  }
+}
+
+// 4. The API will call this function when the video player is ready.
+function onPlayerReady(event) {
+  console.log(event.target.getPlayerState());
+
+  if (!player) {
+    console.log("Player could not be found.");
+  } else if (event.target.getPlayerState() == -1) {
+    console.log(player);
+    player.destroy();
+    player.innerHTML = `<div class="trailer" id="trailer"></div>`;
+  }
+  if (event.target.getPlayerState() == 5) {
+    console.log("diss");
+    player.distroy();
+  }
+  // event.target.playVideo();
+}
+
+// 5. The API calls this function when the player's state changes.
+//    The function indicates that when playing a video (state=1),
+//    the player should play for six seconds and then stop.
+var done = false;
+function onPlayerStateChange(event) {
+  console.log(event.data);
+  if (event.data == YT.PlayerState.PLAYING && !done) {
+    setTimeout(stopVideo, 6000);
+    done = true;
+  }
+}
+function stopVideo() {
+  player.stopVideo();
 }

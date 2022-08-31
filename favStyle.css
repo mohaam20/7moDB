@@ -2,7 +2,7 @@
   padding: 0;
   box-sizing: border-box;
   margin: 0;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   height: fit-content;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -10,22 +10,10 @@
 a {
   appearance: none;
   text-decoration: none;
-  color: inherit;
 }
 i {
+  color: gold;
   pointer-events: none;
-}
-
-button {
-  padding: 0 00.5rem;
-  cursor: pointer;
-  border: none;
-  background: none;
-}
-
-li {
-  appearance: none;
-  list-style: none;
 }
 
 :root {
@@ -36,15 +24,9 @@ li {
   --gold: rgb(255, 208, 0);
 }
 
-img {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-}
 .cardLoad {
   overflow: hidden;
   max-width: 90%;
-  z-index: 3;
   position: absolute;
   top: 50%;
   left: 0;
@@ -64,7 +46,7 @@ img {
 }
 
 html {
-  overflow-x: hidden;
+  overflow: auto;
 }
 
 body {
@@ -81,7 +63,7 @@ header {
 
   position: relative;
   height: 3.5rem;
-  width: 100vw;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -94,7 +76,6 @@ header {
   height: 100%;
   justify-content: space-between;
   width: 65rem;
-  max-width: 75rem;
   padding: 0 2rem;
 }
 
@@ -242,6 +223,35 @@ header {
   background-color: var(--main-light);
   transform: scale(1.05);
 }
+button {
+  padding: 0 00.5rem;
+  cursor: pointer;
+}
+
+img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.card {
+  flex-basis: 15.2rem;
+  z-index: 4;
+  box-shadow: 0px 0px 5px rgb(0, 0, 0) !important;
+  border-radius: 1rem;
+  height: 25rem;
+
+  margin: 2rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border: 1.5px solid rgb(255, 255, 255);
+  box-shadow: 0px 0px 3px black;
+}
+.card:hover > img {
+  filter: blur(3px);
+  /* filter: brightness(50%) !important; */
+}
 .infos {
   border-top: 2px solid rgb(255, 208, 0);
   z-index: 6;
@@ -257,7 +267,7 @@ header {
   transition: all 0.5s ease;
   top: 100%;
   width: 100%;
-  max-height: 100%;
+  height: 80%;
 }
 
 .card:hover .infos {
@@ -265,61 +275,29 @@ header {
   transform: translateY(-100%);
 }
 
-.posterTitle {
-  margin: 0 2rem;
-  align-items: flex-end;
+.card:hover .endFav {
+  transform: translateX(-50%) translateY(0) rotate(180deg);
+}
+
+.endFav {
   display: flex;
-  position: relative;
-  top: 0;
-  z-index: 99;
-  top: 0;
-  height: 0;
-  gap: 2rem;
-}
-.posterTitle h2 {
-  margin: 1rem;
-}
-.posterTitle * {
-  text-shadow: 3px 3px 5px black;
-  position: relative;
-  bottom: 2rem;
-}
-.posterTitle img {
-  border: 1px solid rgb(250, 255, 148);
-  border-radius: 0.5rem;
-  box-shadow: 0 0 5px black;
-  width: 10rem;
-  height: 15rem;
+  align-items: center;
+  justify-content: center;
+  z-index: 9;
+  font-size: 2rem;
+  border: 0.5px solid var(--gold);
+  background-color: rgba(236, 0, 0, 0.859);
+  left: 50%;
+  top: 5%;
+  transform: translateX(-50%) translateY(-200%);
+  position: absolute;
+  border-radius: 50%;
+  height: 3rem;
+  width: 3rem;
 }
 
-.infos .over-view {
-  height: 7rem;
-  overflow: hidden;
-  font-size: rem;
-}
-
-.infos button {
-  background: none;
-  border-radius: 1rem;
-}
-
-.card {
-  overflow-anchor: none;
-  z-index: 4;
-  box-shadow: 0px 0px 5px rgb(0, 0, 0) !important;
-  border-radius: 1rem;
-  height: 25rem;
-  width: 15rem;
-  margin: 2rem;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  border: 1.5px solid rgb(255, 255, 255);
-  box-shadow: 0px 0px 3px black;
-}
-.card:hover > img {
-  filter: blur(3px);
-  /* filter: brightness(50%) !important; */
+.endFav i {
+  color: wheat !important;
 }
 
 .results {
@@ -327,7 +305,7 @@ header {
   overflow: hidden;
   border-radius: 1rem;
   top: 101%;
-  background-color: rgba(0, 65, 157, 0.556);
+  background-color: rgba(0, 46, 98, 0.511);
   list-style: none;
   z-index: 99;
   position: absolute;
@@ -339,6 +317,7 @@ header {
 .results li {
   width: 100%;
   cursor: pointer;
+  gap: 2rem;
   align-items: center;
   display: flex;
   height: 5.5rem;
@@ -391,13 +370,14 @@ header {
 }
 
 .slide-show {
+  overflow: visible;
   padding: 0.5rem 0;
-  height: 18rem;
-  box-shadow: 0px 0px 25px rgba(176, 255, 250, 0.207);
+  box-shadow: 0px 0px 25px rgb(0, 0, 0);
   border-radius: 1rem;
-  max-width: var(--slide-width);
-  width: 65rem;
-  overflow: hidden;
+  max-width: 65rem;
+  width: fit-content !important;
+  flex-wrap: wrap;
+  justify-content: space-around;
   display: flex;
   position: relative;
   /* scroll-behavior: smooth; */
@@ -405,14 +385,13 @@ header {
 }
 
 .slide-dad {
+  height: fit-content;
   max-width: var(--slide-width);
-
+  width: fit-content;
   margin: 0.5rem;
   position: relative;
-  /* align-items: center;
   display: flex;
-  justify-content: center;
-  flex-direction: column; */
+  flex-direction: column;
 }
 
 .slide-dad > button {
@@ -445,7 +424,7 @@ header {
   transition: all 0.5s ease;
   min-width: 12rem;
   height: 100%;
-  margin: 0 0.5rem;
+  margin: 0.5rem;
 }
 
 .slide-dad *::-webkit-scrollbar {
@@ -453,6 +432,9 @@ header {
 }
 
 .slide-title {
+  -webkit-text-stroke: 0.5px rgba(255, 217, 0, 0.615);
+
+  z-index: 2;
   text-shadow: 0px 0px 5px rgba(176, 255, 250, 0.692);
   font-size: 2rem;
   letter-spacing: 0.1rem;
@@ -464,170 +446,42 @@ header {
 .slide-dad i {
   color: rgb(255, 208, 0);
 }
-
-#rec {
-  color: white;
-  margin: 1rem;
-  padding-top: 2rem;
-  display: flex;
-  max-width: 90vw;
-  width: 70rem;
-}
-#rec .card {
-  background-image: linear-gradient(0, black, white);
-  margin: 0;
-  min-width: 100% !important;
-}
-#rec .slide-title {
-  top: 0;
-  left: 0.5rem;
-  position: absolute;
-}
-#rec .slide-show {
-  gap: 1rem;
-  padding: 0.5rem;
-  height: 35rem;
-  margin: 1rem;
-  width: fit-content;
-  max-width: 70%;
-}
-#rec .next-rec {
-  padding: 1rem;
-  flex-direction: column;
-  margin: 1rem;
-  width: 20rem;
-  max-height: 35rem;
-  height: fit-content;
-  background-color: aqua;
-  box-shadow: 0px 0px 25px rgba(176, 255, 250, 0.207);
-  border-radius: 1rem;
-  max-width: 55rem;
-  overflow: auto;
-  display: flex;
-  position: relative;
-  scroll-behavior: smooth;
-  background-color: var(--main-mid);
-}
-
-#rec .next {
-  left: 70%;
-  transform: translateX(-2rem);
-}
-
-#rec * {
-  transition: all 0.5s ease;
-}
-
-#rec .card::after {
-  pointer-events: none;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 70%;
-  z-index: 4;
-  content: "";
-  position: absolute;
-  background-image: linear-gradient(0, black, rgba(255, 255, 255, 0));
-}
-
-.nextCard img {
-  border-radius: 0.5rem;
-  width: 4rem;
-  height: 6rem;
-}
-
-.nextCard {
-  font-size: 70%;
-  padding: 0.5rem;
-  background-color: var(--main-mid);
-  z-index: 4;
-  border-radius: 1rem;
-  display: flex;
-  align-items: flex-end;
-  height: fit-content;
-  gap: 2rem;
-}
-
-.nextCard p {
-  color: rgb(141, 141, 141);
-}
-.nextCard h4 {
-  max-width: 80%;
-  overflow: hidden;
-}
-.nextCard span {
-  text-transform: capitalize;
-  color: white;
-  padding: 1rem 0;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-}
-
-.next-title {
-  text-shadow: 0px 0px 5px rgba(176, 255, 250, 0.692);
-
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  position: absolute;
-  right: 19%;
-  transform: translateY(-100%);
-  text-transform: capitalize;
-}
-
-.bookMark {
-  overflow: visible;
-  font-size: 3rem;
-  position: absolute;
-  top: -1rem;
-  right: 10%;
-  height: fit-content;
-  z-index: 99;
-  background: none !important;
-  border: none;
-  display: none;
-}
-.bookMarkPlus {
-  color: rgb(255, 255, 255) !important;
-  position: absolute;
-
-  transform: translate(-105%, -10%);
-}
-.bookMark::before {
-  text-transform: capitalize;
-  display: none;
-  position: absolute;
-  white-space: nowrap;
-  color: beige;
-  content: "add to watchlist";
-  font-size: 1rem;
-  background-color: rgba(128, 128, 128, 0.838);
-  padding: 0.2rem 0.5rem;
-  border-radius: 0.5rem;
-  top: 50%;
-  right: 100%;
-  max-height: 100%;
-}
-.bookMark:hover::before {
-  display: initial;
-}
-.bookMark > i {
-  text-shadow: 0px 0px 4px black;
-}
-.bookMarkSee {
-  display: block;
-}
-.bookMarkPlus > i {
-  font-size: 1.5rem;
-  position: relative;
-  right: 30%;
-  transform: translateY(-20%);
-}
-.bookMarkDone {
-  color: green !important;
-}
-
+/* 
 @media all and (max-width: 800px) {
+  .backDropHolder img {
+    height: 100%;
+    width: auto;
+    display: flex;
+    justify-content: center;
+  }
+  .backDropHolder {
+    display: flex;
+    justify-content: center;
+  }
+  .mainInfos {
+    justify-content: center;
+    padding: 0 0.5rem;
+  }
+  .mainTitle > span {
+    position: relative;
+    top: 100%;
+  }
+  .mainInfos > .story {
+    min-width: 90%;
+  }
+  #cast .slide-show {
+    width: 100%;
+  }
+  #cast {
+    width: 93%;
+  }
+
+  .caster > .trailer {
+    width: 90%;
+  }
+  .mainTitle img {
+    height: 20rem !important;
+  }
   .slide-show {
     max-height: 70vh;
   }
@@ -667,13 +521,10 @@ header {
 
 @media all and (orientation: landscape) {
   .slide-show {
-    height: 78vh !important;
+    height: 25rem !important;
   }
   .slide-show {
     margin-bottom: 5vh;
-  }
-  .next-rec {
-    max-height: 78vh !important;
   }
 }
 
@@ -681,13 +532,11 @@ header {
   .card {
     min-width: calc(calc(90vw - 80px) / 5) !important;
   }
+
   .viewdCard {
     min-width: calc(calc(calc(90vw - 40px) / 5) * 2) !important;
   }
 
-  .next-rec {
-    max-height: 75vh !important;
-  }
   .slide-show {
     max-height: 75vh;
   }
@@ -711,7 +560,10 @@ header {
   .card {
     min-width: calc(calc(100% - 80px) / 5) !important;
   }
+  #cast .card {
+    min-width: calc(calc(100% - 96px) / 6) !important;
+  }
   .viewdCard {
     min-width: calc(calc(calc(100% - 40px) / 5) * 2) !important;
   }
-}
+} */

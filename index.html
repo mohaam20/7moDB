@@ -18,7 +18,7 @@
   <body id="main">
     <header>
       <div class="head-cont">
-        <a href="#" class="home"><img src="logo.png" alt="7mobox" /></a>
+        <a href="#" class="home"><img src="/logos/logo.png" alt="7mobox" /></a>
         <div class="search">
           <input
             type="text"
@@ -41,6 +41,32 @@
             >
           </ul>
         </div>
+
+        <button class="burger"><i class="fa-solid fa-bars"> </i>menu</button>
+        <nav class="menu">
+          <!-- <div class="topNav">
+            <button class="closeMenu">
+              <i class="fa-solid fa-xmark"></i> close
+            </button>
+          </div> -->
+          <ul>
+            <li>
+              <a href="favs.html">
+                <i class="fa-solid fa-list"></i> your watch list</a
+              >
+            </li>
+            <li>
+              <a href="favs.html">
+                <i class="fa-solid fa-list"></i> your watch list</a
+              >
+            </li>
+            <li>
+              <a href="favs.html">
+                <i class="fa-solid fa-list"></i> your watch list</a
+              >
+            </li>
+          </ul>
+        </nav>
       </div>
     </header>
 
@@ -63,7 +89,12 @@
             target="_blank"
             class="card"
           >
+            <button class="bookMark">
+              <i class="fa-solid fa-bookmark"></i>
+              <i class="bookMarkPlus">+</i>
+            </button>
             <img class="img-fluid" src="https://source.unsplash.com/random" />
+
             <div class="infos">
               <div class="posterTitle">
                 <img src="https://source.unsplash.com/random" alt="" />
@@ -106,54 +137,6 @@
 
     <!-- end1............................................ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ -->
 
-    <div class="slide-dad" id="topMovies">
-      <h2 class="slide-title">
-        top movies of all time <i class="fa-solid fa-angle-right"></i>
-      </h2>
-      <button class="back"><i class="fa-solid fa-angle-left"></i></button>
-      <button class="next"><i class="fa-solid fa-angle-right"></i></button>
-
-      <div class="slide-show">
-        <!-- <template class="card-temp"
-          ><div class="card">
-            <img class="img-fluid" src="https://source.unsplash.com/random" />
-            <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>
-          </div></template
-        > -->
-      </div>
-    </div>
-    <div class="slide-dad" id="topShows">
-      <h2 class="slide-title">
-        top serieses of all time <i class="fa-solid fa-angle-right"></i>
-      </h2>
-      <button class="back"><i class="fa-solid fa-angle-left"></i></button>
-      <button class="next"><i class="fa-solid fa-angle-right"></i></button>
-
-      <div class="slide-show">
-        <template class="card-temp"
-          ><div class="card">
-            <img class="img-fluid" src="https://source.unsplash.com/random" />
-            <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>
-          </div></template
-        >
-      </div>
-    </div>
-    <div class="slide-dad" id="topAnimes">
-      <h2 class="slide-title">
-        top animes of all time <i class="fa-solid fa-angle-right"></i>
-      </h2>
-      <button class="back"><i class="fa-solid fa-angle-left"></i></button>
-      <button class="next"><i class="fa-solid fa-angle-right"></i></button>
-
-      <div class="slide-show">
-        <template class="card-temp"
-          ><div class="card">
-            <img class="img-fluid" src="https://source.unsplash.com/random" />
-            <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>
-          </div></template
-        >
-      </div>
-    </div>
     <div class="slide-dad" id="movieTrends">
       <h2 class="slide-title">
         trending movies <i class="fa-solid fa-angle-right"></i>
@@ -187,6 +170,49 @@
         >
       </div>
     </div>
+
+    <div class="slide-dad" id="topMovies">
+      <h2 class="slide-title">
+        top movies of all time <i class="fa-solid fa-angle-right"></i>
+      </h2>
+      <button class="back"><i class="fa-solid fa-angle-left"></i></button>
+      <button class="next"><i class="fa-solid fa-angle-right"></i></button>
+
+      <div class="slide-show"></div>
+    </div>
+    <div class="slide-dad" id="topShows">
+      <h2 class="slide-title">
+        top serieses of all time <i class="fa-solid fa-angle-right"></i>
+      </h2>
+      <button class="back"><i class="fa-solid fa-angle-left"></i></button>
+      <button class="next"><i class="fa-solid fa-angle-right"></i></button>
+
+      <div class="slide-show">
+        <template class="card-temp"
+          ><div class="card">
+            <img class="img-fluid" src="https://source.unsplash.com/random" />
+            <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>
+          </div></template
+        >
+      </div>
+    </div>
+    <div class="slide-dad" id="topAnimes">
+      <h2 class="slide-title">
+        top animes of all time <i class="fa-solid fa-angle-right"></i>
+      </h2>
+      <button class="back"><i class="fa-solid fa-angle-left"></i></button>
+      <button class="next"><i class="fa-solid fa-angle-right"></i></button>
+
+      <div class="slide-show">
+        <template class="card-temp"
+          ><div class="card">
+            <img class="img-fluid" src="https://source.unsplash.com/random" />
+            <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>
+          </div></template
+        >
+      </div>
+    </div>
+
     <script src="myapp copy.js"></script>
   </body>
 </html>
