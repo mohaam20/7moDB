@@ -58,54 +58,10 @@ let baseImg = "http://image.tmdb.org/t/p/w342/";
 let baseDrop = "http://image.tmdb.org/t/p/w1280/";
 // refrence constats
 
-addEventListener("DOMContentLoaded", () => {
+addEventListener("load", () => {
   // localStorage.clear();
   sessionStorage.clear();
-  fetch(
-    "https://api.themoviedb.org/3/movie/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&region=us"
-  )
-    .then((res) => res.json())
-    .then((res) => res.results)
-    .then((res) => {
-      // console.log(res);
-      plotSlides(res, topSlide);
-    });
-  fetch(
-    "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=en|ar&page=1&region=us"
-  )
-    .then((res) => res.json())
-    .then((res) => res.results)
-    .then((res) => {
-      // console.log(res);
-      plotSlides(res, top2Slide);
-    });
-  fetch(
-    "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=ja&page=1"
-  )
-    .then((res) => res.json())
-    .then((res) => res.results)
-    .then((res) => {
-      // console.log(res);
-      plotSlides(res, top3Slide);
-    });
-  fetch(
-    "https://api.themoviedb.org/3/trending/movie/day?api_key=5e060480a887e5981aa743bc33a74e40"
-  )
-    .then((res) => res.json())
-    .then((res) => res.results)
-    .then((res) => {
-      // console.log(res);
-      plotSlides(res, slide1);
-    });
-  fetch(
-    "https://api.themoviedb.org/3/trending/tv/day?api_key=5e060480a887e5981aa743bc33a74e40"
-  )
-    .then((res) => res.json())
-    .then((res) => res.results)
-    .then((res) => {
-      // console.log(res);
-      plotSlides(res, slide2);
-    });
+
   fetch(
     `https://api.themoviedb.org/3/discover/movie?api_key=5e060480a887e5981aa743bc33a74e40&sort_by=release_date.desc&include_adult=false&include_video=false&page=${trendPage}&vote_average.gte=7&with_keywords=avengers&with_watch_monetization_types=flatrate`
   )
@@ -120,6 +76,51 @@ addEventListener("DOMContentLoaded", () => {
     )
     .then((res) => {
       plotSlides(res, mainSlide);
+      fetch(
+        "https://api.themoviedb.org/3/movie/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&region=us"
+      )
+        .then((res) => res.json())
+        .then((res) => res.results)
+        .then((res) => {
+          // console.log(res);
+          plotSlides(res, topSlide);
+          fetch(
+            "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=en|ar&page=1&region=us"
+          )
+            .then((res) => res.json())
+            .then((res) => res.results)
+            .then((res) => {
+              // console.log(res);
+              plotSlides(res, top2Slide);
+              fetch(
+                "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=ja&page=1"
+              )
+                .then((res) => res.json())
+                .then((res) => res.results)
+                .then((res) => {
+                  // console.log(res);
+                  plotSlides(res, top3Slide);
+                  fetch(
+                    "https://api.themoviedb.org/3/trending/movie/day?api_key=5e060480a887e5981aa743bc33a74e40"
+                  )
+                    .then((res) => res.json())
+                    .then((res) => res.results)
+                    .then((res) => {
+                      // console.log(res);
+                      plotSlides(res, slide1);
+                      fetch(
+                        "https://api.themoviedb.org/3/trending/tv/day?api_key=5e060480a887e5981aa743bc33a74e40"
+                      )
+                        .then((res) => res.json())
+                        .then((res) => res.results)
+                        .then((res) => {
+                          // console.log(res);
+                          plotSlides(res, slide2);
+                        });
+                    });
+                });
+            });
+        });
     });
 });
 
