@@ -121,6 +121,8 @@ addEventListener("load", () => {
                             let allImages = document.querySelectorAll("img");
                             console.log(allImages);
                             for (let i of allImages) {
+                              console.log(i.src);
+
                               console.log(i.complete);
                               // console.log(i.src);
                               let base = i.src;
