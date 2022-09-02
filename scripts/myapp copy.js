@@ -127,6 +127,14 @@ addEventListener("load", () => {
     console.log(allImages);
     for (let i of allImages) {
       console.log(i.complete);
+      console.log(i.src);
+      let base = i.src;
+      if (i.complete == false) {
+        let timestamp = new Date().getTime();
+
+        i.src = base + `?t=` + timestamp;
+      }
+      console.log(i.src);
     }
   }, 100);
 });
