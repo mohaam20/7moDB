@@ -131,7 +131,7 @@ addEventListener("load", () => {
                                 console.log(i.src);
                               }
                             }
-                          }, 100);
+                          }, 4000);
                         });
                     });
                 });
