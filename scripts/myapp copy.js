@@ -369,6 +369,7 @@ function plotSlides(trends, slideName) {
         .querySelector(".card")
         .setAttribute("type", trend.title == null ? "tv" : "movie");
       card.querySelector("img").src = `${baseImg}${poster}`;
+      console.log(card.querySelector("img").complete);
       for (let i of allFav.laters) {
         if (i.id == trend.id) {
           card.querySelector(".fa-bookmark").classList.add("bookMarkDone");
