@@ -79,39 +79,6 @@ addEventListener("load", () => {
     });
   setTimeout(() => {
     fetch(
-      "https://api.themoviedb.org/3/movie/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&region=us"
-    )
-      .then((res) => res.json())
-      .then((res) => res.results)
-      .then((res) => {
-        // console.log(res);
-        plotSlides(res, topSlide);
-      });
-  }, 900);
-  setTimeout(() => {
-    fetch(
-      "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=en|ar&page=1&region=us"
-    )
-      .then((res) => res.json())
-      .then((res) => res.results)
-      .then((res) => {
-        // console.log(res);
-        plotSlides(res, top2Slide);
-      });
-  }, 1300);
-  setTimeout(() => {
-    fetch(
-      "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=ja&page=1"
-    )
-      .then((res) => res.json())
-      .then((res) => res.results)
-      .then((res) => {
-        // console.log(res);
-        plotSlides(res, top3Slide);
-      });
-  }, 2000);
-  setTimeout(() => {
-    fetch(
       "https://api.themoviedb.org/3/trending/movie/day?api_key=5e060480a887e5981aa743bc33a74e40"
     )
       .then((res) => res.json())
@@ -120,7 +87,7 @@ addEventListener("load", () => {
         // console.log(res);
         plotSlides(res, slide1);
       });
-  }, 2800);
+  }, 800);
   setTimeout(() => {
     fetch(
       "https://api.themoviedb.org/3/trending/tv/day?api_key=5e060480a887e5981aa743bc33a74e40"
@@ -131,7 +98,40 @@ addEventListener("load", () => {
         // console.log(res);
         plotSlides(res, slide2);
       });
-  }, 3200);
+  }, 1300);
+  setTimeout(() => {
+    fetch(
+      "https://api.themoviedb.org/3/movie/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&region=us"
+    )
+      .then((res) => res.json())
+      .then((res) => res.results)
+      .then((res) => {
+        // console.log(res);
+        plotSlides(res, topSlide);
+      });
+  }, 2000);
+  setTimeout(() => {
+    fetch(
+      "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=en|ar&page=1&region=us"
+    )
+      .then((res) => res.json())
+      .then((res) => res.results)
+      .then((res) => {
+        // console.log(res);
+        plotSlides(res, top2Slide);
+      });
+  }, 2500);
+  setTimeout(() => {
+    fetch(
+      "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=ja&page=1"
+    )
+      .then((res) => res.json())
+      .then((res) => res.results)
+      .then((res) => {
+        // console.log(res);
+        plotSlides(res, top3Slide);
+      });
+  }, 3000);
 });
 
 // search
