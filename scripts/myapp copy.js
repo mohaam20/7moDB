@@ -76,71 +76,52 @@ addEventListener("load", () => {
     )
     .then((res) => {
       plotSlides(res, mainSlide);
-      fetch(
-        "https://api.themoviedb.org/3/movie/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&region=us"
-      )
-        .then((res) => res.json())
-        .then((res) => res.results)
-        .then((res) => {
-          // console.log(res);
-          plotSlides(res, topSlide);
-          fetch(
-            "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=en|ar&page=1&region=us"
-          )
-            .then((res) => res.json())
-            .then((res) => res.results)
-            .then((res) => {
-              // console.log(res);
-              plotSlides(res, top2Slide);
-              fetch(
-                "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=ja&page=1"
-              )
-                .then((res) => res.json())
-                .then((res) => res.results)
-                .then((res) => {
-                  // console.log(res);
-                  plotSlides(res, top3Slide);
-                  fetch(
-                    "https://api.themoviedb.org/3/trending/movie/day?api_key=5e060480a887e5981aa743bc33a74e40"
-                  )
-                    .then((res) => res.json())
-                    .then((res) => res.results)
-                    .then((res) => {
-                      // console.log(res);
-                      plotSlides(res, slide1);
-                      fetch(
-                        "https://api.themoviedb.org/3/trending/tv/day?api_key=5e060480a887e5981aa743bc33a74e40"
-                      )
-                        .then((res) => res.json())
-                        .then((res) => res.results)
-                        .then((res) => {
-                          // console.log(res);
-                          plotSlides(res, slide2);
-                        }).then(() => {
-                          setTimeout(() => {
-                            let allImages = document.querySelectorAll("img");
-                            console.log(allImages);
-                            for (let i of allImages) {
-                              console.log(i.src);
-
-                              console.log(i.complete);
-                              // console.log(i.src);
-                              let base = i.src;
-                              if (i.complete == false) {
-                                let timestamp = new Date().getTime();
-
-                                i.src = base + `?t=` + timestamp;
-                                console.log(i.src);
-                              }
-                            }
-                          }, 4000);
-                        });
-                    });
-                });
-            });
-        });
     });
- 
+  fetch(
+    "https://api.themoviedb.org/3/movie/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&region=us"
+  )
+    .then((res) => res.json())
+    .then((res) => res.results)
+    .then((res) => {
+      // console.log(res);
+      plotSlides(res, topSlide);
+    });
+  fetch(
+    "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=en|ar&page=1&region=us"
+  )
+    .then((res) => res.json())
+    .then((res) => res.results)
+    .then((res) => {
+      // console.log(res);
+      plotSlides(res, top2Slide);
+    });
+  fetch(
+    "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=ja&page=1"
+  )
+    .then((res) => res.json())
+    .then((res) => res.results)
+    .then((res) => {
+      // console.log(res);
+      plotSlides(res, top3Slide);
+    });
+  fetch(
+    "https://api.themoviedb.org/3/trending/movie/day?api_key=5e060480a887e5981aa743bc33a74e40"
+  )
+    .then((res) => res.json())
+    .then((res) => res.results)
+    .then((res) => {
+      // console.log(res);
+      plotSlides(res, slide1);
+    });
+  fetch(
+    "https://api.themoviedb.org/3/trending/tv/day?api_key=5e060480a887e5981aa743bc33a74e40"
+  )
+    .then((res) => res.json())
+    .then((res) => res.results)
+    .then((res) => {
+      // console.log(res);
+      plotSlides(res, slide2);
+    });
 });
 
 // search
@@ -369,7 +350,6 @@ function plotSlides(trends, slideName) {
         .querySelector(".card")
         .setAttribute("type", trend.title == null ? "tv" : "movie");
       card.querySelector("img").src = `${baseImg}${poster}`;
-      console.log(card.querySelector("img").complete);
       for (let i of allFav.laters) {
         if (i.id == trend.id) {
           card.querySelector(".fa-bookmark").classList.add("bookMarkDone");
