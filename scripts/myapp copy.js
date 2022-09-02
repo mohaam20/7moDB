@@ -116,28 +116,29 @@ addEventListener("load", () => {
                         .then((res) => {
                           // console.log(res);
                           plotSlides(res, slide2);
+                        }).then(() => {
+                          setTimeout(() => {
+                            let allImages = document.querySelectorAll("img");
+                            console.log(allImages);
+                            for (let i of allImages) {
+                              console.log(i.complete);
+                              // console.log(i.src);
+                              let base = i.src;
+                              if (i.complete == false) {
+                                let timestamp = new Date().getTime();
+
+                                i.src = base + `?t=` + timestamp;
+                                console.log(i.src);
+                              }
+                            }
+                          }, 100);
                         });
                     });
                 });
             });
         });
     });
-  setTimeout(() => {
-    let allImages = document.querySelectorAll("img");
-    console.log(allImages);
-    for (let i of allImages) {
-//       console.log(i.complete);
-//       console.log(i.src);
-      let base = i.src;
-      if (i.complete == false) {
-        let timestamp = new Date().getTime();
-
-        i.src = base + `?t=` + timestamp;
-        console.log(i.src);
-
-      }
-    }
-  }, 6000);
+ 
 });
 
 // search
