@@ -136,7 +136,7 @@ addEventListener("load", () => {
       }
       console.log(i.src);
     }
-  }, 2000);
+  }, 6000);
 });
 
 // search
