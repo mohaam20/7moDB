@@ -122,6 +122,13 @@ addEventListener("load", () => {
             });
         });
     });
+  setTimeout(() => {
+    let allImages = document.querySelectorAll("img");
+    console.log(allImages);
+    for (let i of allImages) {
+      console.log(i.complete);
+    }
+  }, 100);
 });
 
 // search
