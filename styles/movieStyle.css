@@ -1,4 +1,5 @@
 * {
+  /* outline: 1px solid black; */
   padding: 0;
   box-sizing: border-box;
   margin: 0;
@@ -70,12 +71,13 @@ header {
 }
 
 .head-cont {
+  max-width: 100%;
   position: relative;
   display: flex;
   height: 100%;
   justify-content: space-between;
   width: 65rem;
-  padding: 0 2rem;
+  /* padding: 0 2rem; */
 }
 
 .home {
@@ -223,6 +225,10 @@ img {
   transform: scale(1.05);
 }
 
+.menu li:hover i {
+  color: white;
+}
+
 .backDropHolder {
   top: 0;
   display: flex;
@@ -280,8 +286,7 @@ img {
   justify-content: center;
   position: relative;
   box-shadow: 0px -50px 50px rgba(255, 242, 0, 0.214) !important;
-
-  z-index: 9;
+  z-index: 4;
 }
 
 .mainTitle {
@@ -319,6 +324,7 @@ img {
 }
 
 .metaTitle {
+  max-width: 90vw;
   height: min-content;
   flex-wrap: wrap;
   display: flex;
@@ -331,6 +337,7 @@ img {
   padding: 0.2rem 0.5rem;
   border-radius: 0.5rem;
   font-size: 1.5rem;
+  flex-wrap: wrap;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -386,7 +393,7 @@ img {
   border: 2px solid var(--main-light);
   height: 20rem;
 }
-#cast,
+.top-dad,
 .special {
   max-width: 100% !important;
   width: 100%;
@@ -394,7 +401,7 @@ img {
   align-items: center;
 }
 
-#cast .slide-show,
+.top-dad .slide-show,
 .special .slide-show {
   box-shadow: 0px 0px 0px black !important;
   width: 90%;
@@ -403,27 +410,21 @@ img {
   max-width: 100% !important;
 }
 
-#cast > button,
-.special > button {
-  transform: translateY(-20%) !important;
-  border-radius: 0.2rem !important;
-  height: 4rem !important;
-}
-#cast .back,
+.top-dad .back,
 .special .back {
   right: 98%;
 }
-#cast .card,
+.top-dad .card,
 .special .card {
   cursor: pointer;
   /* pointer-events: none; */
   width: 40rem !important;
 }
-#cast .card:hover .infos {
+.top-dad .card:hover .infos {
   min-height: 50%;
   transform: translateY(0);
 }
-#cast .infos {
+.top-dad .infos {
   position: absolute !important;
   bottom: 0 !important;
   top: initial;
@@ -463,11 +464,14 @@ button {
   max-height: 100%;
 }
 
-.card:hover .infos {
+.card img:hover + .infos {
   min-height: 50%;
   transform: translateY(-100%);
 }
-
+.infos:hover {
+  min-height: 50%;
+  transform: translateY(-100%);
+}
 .posterTitle {
   margin: 0 2rem;
   align-items: flex-end;
@@ -600,10 +604,12 @@ button {
   border-radius: 1rem;
   max-width: var(--slide-width);
   width: 65rem;
-  overflow: hidden;
+  /* scroll-snap-type: x mandatory; */
+  /* scroll-snap-align: start; */
+  overflow: auto;
   display: flex;
   position: relative;
-  /* scroll-behavior: smooth; */
+  scroll-behavior: smooth;
   background-color: var(--main-mid);
 }
 
@@ -670,12 +676,12 @@ button {
 }
 
 .favMain {
+  z-index: 5;
   font-size: 4rem;
   position: absolute;
-  top: 100%;
+  top: 3.6rem;
   right: 10rem;
   height: 6rem;
-  overflow: hidden;
   background: none !important;
   border: none;
 }
@@ -686,28 +692,189 @@ button {
   bottom: 1.5rem;
 }
 
-.favMain > .bookMarkPlus {
+.favMain > i > i {
+  font-size: 1.5rem;
+  color: white;
   position: absolute;
-  bottom: 1.7rem;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+}
+
+.favMain::after {
+  z-index: 99;
+  width: 6rem;
+  font-size: 1rem;
+  text-transform: capitalize;
+  color: rgb(255, 255, 255);
+  content: "add to watch later";
+  background-color: rgba(128, 128, 128, 0.645);
+  position: absolute;
+  top: 70%;
+  border-radius: 0.2rem;
+  display: none;
+  right: 0%;
+}
+
+.favMain:hover::after {
+  display: block;
+}
+
+#mainSeen {
+  right: 14rem;
+}
+#mainSeen::after {
+  content: "add to watched";
+}
+
+#mainCustom::after {
+  content: "";
+}
+#mainCustom {
+  right: 18rem;
+}
+.listOptions > * {
+  background-color: rgba(0, 65, 195, 0.659);
+  /* box-shadow: 0 -1rem 5px black; */
+  height: auto;
+  width: 8rem;
+  border-top: 1px solid var(--gold);
+}
+#mainCustom:hover .listOptions {
+  mix-blend-mode: overlay;
+
+  display: block;
+}
+#mainCustom li:hover {
+  background-color: rgba(255, 242, 0, 0.678);
+}
+#custom:hover .listOptions::after {
+  content: "";
+  position: absolute;
+  top: -10%;
+  /* background-color: red; */
+  left: 100%;
+  bottom: 0;
+  width: 20%;
+}
+
+#mainCustom:hover .listOptions::after {
+  content: "";
+  /* background-color: red; */
+  position: absolute;
+  top: -10%;
+  left: 100%;
+  bottom: 0;
+  width: 20%;
+}
+#mainCustom .listOptions {
+  list-style: none;
+  text-shadow: 0 0 1px black;
+  text-transform: capitalize;
+  color: rgb(255, 255, 255);
+  background-color: rgba(0, 65, 195, 0.659);
+  width: 8rem;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.453);
+  border-radius: 0.2rem;
+  font-size: 1.5rem;
+  right: 110%;
+  top: 50%;
+  position: absolute;
+  display: none;
+}
+
+#mainCustom .listOptions li:hover {
+  background-color: rgba(138, 138, 138, 0.678);
+}
+#mainCustom::before {
+  content: "0";
+  display: none;
+}
+
+#seen {
+  transform: translateY(120%);
+}
+
+#seen::before {
+  content: "add to seen";
+}
+
+#custom {
+  transform: translateY(240%);
+}
+#custom:hover .listOptions {
+  display: flex;
+}
+#custom .listOptions *:first-child {
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+#custom .listOptions *:last-child {
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+
+#custom .listOptions {
+  flex-wrap: wrap-reverse;
+  filter: drop-shadow(0 0 0.2em rgb(0, 36, 94));
+  max-height: 20rem;
+  transform: translateY(min(calc(16rem - 105%), 0rem));
+  list-style: none;
+  flex-direction: column;
+  /* overflow-y: auto; */
+  /* text-shadow: 0 0 1px black; */
+  text-transform: capitalize;
+  color: rgb(255, 255, 255);
+  /* background-color: rgba(0, 65, 195, 0.659); */
+  /* min-width: 8rem; */
+  /* box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.453); */
+  /* border-radius: 0.2rem; */
+  font-size: 1rem;
+  right: 115%;
+  width: fit-content;
+  position: absolute;
+  display: none;
+}
+
+#custom .listOptions li:hover {
+  background-color: rgba(255, 242, 0, 0.678);
+}
+#custom::before {
+  content: "0";
+  display: none;
 }
 
 .bookMark {
+  border-radius: 0.2rem 0 0 0.2rem;
+
+  transition: all 0.5s;
   overflow: visible;
   font-size: 3rem;
   position: absolute;
-  top: -1rem;
-  right: 10%;
-  height: fit-content;
+  color: white;
+  top: 2rem;
+  right: 0;
+  padding-right: 2rem !important;
+  padding: 1rem;
+  height: 2rem;
+  outline: solid 1px black;
   z-index: 99;
-  background: none !important;
+  background-color: var(--gold);
   border: none;
   display: none;
 }
-.bookMarkPlus {
-  color: rgb(255, 255, 255) !important;
+.bookMark > i {
   position: absolute;
+  left: 50%;
+  top: 50%;
+  text-shadow: 0 0 1px black;
+  transform: translate(-50%, -50%);
+  color: inherit;
+  font-size: 1rem;
+}
 
-  transform: translate(-105%, -10%);
+.bookMark:hover {
+  background-color: white !important;
+  color: var(--gold) !important;
 }
 .bookMark::before {
   text-transform: capitalize;
@@ -720,30 +887,85 @@ button {
   background-color: rgba(128, 128, 128, 0.838);
   padding: 0.2rem 0.5rem;
   border-radius: 0.5rem;
-  top: 50%;
-  right: 100%;
+  top: 0%;
+  right: 110%;
   max-height: 100%;
 }
 .bookMark:hover::before {
   display: initial;
 }
-.bookMark > i {
-  text-shadow: 0px 0px 4px black;
-}
+
 .bookMarkSee {
   display: block;
 }
-.bookMarkPlus > i {
+/* .bookMarkPlus > i {
   font-size: 1.5rem;
   position: relative;
   right: 30%;
   transform: translateY(-20%);
+} */
+.favMain .bookMarkDone {
+  color: green;
+  background: none;
 }
-.bookMarkDone {
-  color: green !important;
+.card .bookMarkDone {
+  background-color: green !important;
+}
+
+.special .listOptions {
+  transform: translateY(min(calc(11rem - 105%), 0rem)) !important;
+  /* transform: translateY(-3rem) !important; */
+  max-height: 18rem !important;
+}
+.top-dad > button,
+.special > button {
+  transform: translateY(-20%) !important;
+  border-radius: 0.2rem !important;
+  height: 4rem !important;
+}
+
+@media all and (max-width: 500px) {
+  .burger {
+    border-radius: 2.5rem;
+  }
 }
 
 @media all and (max-width: 800px) {
+  .top-dad .back,
+  #actorMovies .back,
+  #actorShows .back {
+    right: 86%;
+  }
+  .special .listOptions {
+    transform: translateY(min(calc(5rem - 105%), 0rem)) !important;
+  }
+  .listOptions li {
+    font-size: 0.7rem;
+  }
+  .favMain {
+    right: 2rem;
+  }
+  #mainSeen {
+    right: 6rem;
+  }
+  #mainCustom {
+    right: 10rem;
+  }
+  .showNav {
+    transform: translateX(-5%) translateY(0) scale(1);
+  }
+  .burger {
+    min-width: 2.5rem;
+    margin-left: 0.2rem;
+  }
+
+  .slide-dad > button {
+    /* transform: scale(1.5) !important; */
+    width: 3rem;
+    height: 3rem;
+    top: 70%;
+  }
+
   .backDropHolder img {
     height: 100%;
     width: auto;
@@ -765,11 +987,11 @@ button {
   .mainInfos > .story {
     min-width: 90%;
   }
-  #cast .slide-show,
+  .top-dad .slide-show,
   .special .slide-show {
     width: 100%;
   }
-  #cast,
+  .top-dad,
   .special {
     width: 93%;
   }
@@ -858,7 +1080,7 @@ button {
   .card {
     min-width: calc(calc(100% - 80px) / 5) !important;
   }
-  #cast .card,
+  .top-dad .card,
   .special .card {
     min-width: calc(calc(100% - 96px) / 6);
   }

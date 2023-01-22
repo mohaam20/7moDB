@@ -14,7 +14,7 @@
     />
     <link rel="icon" href="/logos/title-logo.png" type="image/x-icon" />
     <link rel="stylesheet" href="/styles/favStyle.css" />
-    <script src="/scripts/fav.js" defer></script>
+    <script src="/scripts/max.js" defer></script>
   </head>
   <body>
     <div class="pattern"></div>
@@ -95,13 +95,7 @@
         <i class="fa-solid fa-clock"></i> your watchlist
         <i class="fa-solid fa-angle-right"></i>
       </h2>
-      <div class="filter">
-        <select name="filter" class="filterOpt">
-          <option value="all">all</option>
-          <option value="movie">movies</option>
-          <option value="tv">tv shows</option>
-        </select>
-      </div>
+
       <div class="slide-show">
         <template class="card-temp"
           ><a href="movie1.html" onclick="stopShit(event)" class="card">
@@ -115,89 +109,6 @@
           <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>
         </div> -->
       </div>
-    </div>
-    <div class="slide-dad" id="seen">
-      <h2 class="slide-title">
-        <i class="fa-solid fa-eye"></i> watched
-        <i class="fa-solid fa-angle-right"></i>
-      </h2>
-      <div class="filter">
-        <select name="filter" class="filterOpt">
-          <option value="all">all</option>
-          <option value="movie">movies</option>
-          <option value="tv">tv shows</option>
-        </select>
-      </div>
-      <div class="slide-show">
-        <template class="card-temp"
-          ><a href="movie1.html" onclick="stopShit(event)" class="card">
-            <button class="endFav"><i class="fa-solid fa-xmark"></i></button>
-            <img class="img-fluid" src="https://source.unsplash.com/random" />
-            <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>
-          </a></template
-        >
-        <!-- <div class="card">
-          <img class="img-fluid" src="https://source.unsplash.com/random" />
-          <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>
-        </div> -->
-      </div>
-    </div>
-    <div class="slide-dad" id="customLists">
-      <h2 class="slide-title">
-        <i class="fa-solid fa-list"></i> your Lists
-        <i class="fa-solid fa-angle-right"></i>
-      </h2>
-      <section class="fomrWrapper">
-        <form id="createList">
-          <input id="listTitle" placeholder="list title" type="text" />
-          <input id="listDesk" placeholder="list description" type="text" />
-          <button id="listBtn" type="submit">create new</button>
-        </form>
-      </section>
-      <template class="dropTemplate">
-        <div class="dropList" draggable="true">
-          <div class="dropTitle">
-            <img src="/logos/list3.jpg" draggable="false" class="wall" alt="" />
-            <div class="textTitle">
-              <h2 class="slide-title">your List</h2>
-              <p class="listdeskOut">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit,
-                fuga.
-              </p>
-            </div>
-            <div class="listOptions">
-              <button class="showList">
-                <i class="fa-solid fa-chevron-down"></i>
-              </button>
-              <button class="delList"><i class="fa-solid fa-xmark"></i></button>
-              <button class="arrange"><i class="fa-solid fa-bars"></i></button>
-            </div>
-          </div>
-          <div class="slide-show">
-            <div class="filter">
-              <select name="filter" class="filterOpt">
-                <option value="all">all</option>
-                <option value="movie">movies</option>
-                <option value="tv">tv shows</option>
-              </select>
-            </div>
-            <template class="card-temp"
-              ><a href="movie1.html" onclick="stopShit(event)" class="card">
-                <button class="endFav">
-                  <i class="fa-solid fa-xmark"></i>
-                </button>
-                <img
-                  class="img-fluid"
-                  src="https://source.unsplash.com/random"
-                />
-                <span class="infos"
-                  >Lorem ipsum dolor sit amet consectetur.</span
-                >
-              </a></template
-            >
-          </div>
-        </div>
-      </template>
     </div>
   </body>
 </html>

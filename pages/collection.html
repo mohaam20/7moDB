@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="icon" href="/logos/title-logo.png" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+      integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script src="/scripts/max.js" defer></script>
+
+    <link rel="stylesheet" href="/styles/colect.css" />
+  </head>
+  <body>
+    <header>
+      <div class="head-cont">
+        <a href="/index.html" class="home"
+          ><img src="/logos/logo.png" alt="7mobox"
+        /></a>
+        <div class="search">
+          <input
+            type="text"
+            placeholder="Search"
+            id="search_area"
+            autocomplete="off"
+          />
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <ul class="results" style="display: none">
+            <template class="result_temp"
+              ><li data-pop="" class="result">
+                <a href="movie1.html">
+                  <img src="https://source.unsplash.com/random" alt="results" />
+                  <p class="res_title">movie title</p>
+                </a>
+              </li></template
+            >
+          </ul>
+        </div>
+
+        <button class="burger"><i class="fa-solid fa-bars"> </i>menu</button>
+        <nav class="menu">
+          <!-- <div class="topNav">
+            <button class="closeMenu">
+              <i class="fa-solid fa-xmark"></i> close
+            </button>
+          </div> -->
+          <ul>
+            <li>
+              <a href="/pages/favs.html#watchLater">
+                <i class="fa-solid fa-clock"></i> your watch list</a
+              >
+            </li>
+            <li>
+              <a href="/pages/favs.html#seen">
+                <i class="fa-solid fa-eye"></i> your watches</a
+              >
+            </li>
+            <li>
+              <a href="/pages/favs.html#customLists">
+                <i class="fa-solid fa-list"></i> lists</a
+              >
+            </li>
+            <li>
+              <a href="/pages/favs.html#customLists">
+                <i class="fa-solid fa-circle-info"></i> about
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <div class="backDropHolder">
+      <img src="/logos/drop-holder.png" class="backDropImg" alt="" />
+    </div>
+
+    <div class="mainInfos">
+      <div class="slide-dad top-dad" id="cast">
+        <h2 class="slide-title">
+          <i class="fa-solid fa-angle-left"></i> cast
+          <i class="fa-solid fa-angle-right"></i>
+        </h2>
+
+        <div class="slide-show">
+          <template class="card-temp"
+            ><a href="movie1.html" onclick="stopShit(event)" class="card">
+              <button class="bookMark" id="later">
+                <i class="fa-solid fa-clock"></i>
+              </button>
+              <button class="bookMark" id="seen">
+                <i class="fa-solid fa-eye"></i>
+              </button>
+              <button class="bookMark" id="custom">
+                <i class="fa-solid fa-list"></i>
+                <ul class="listOptions">
+                  <h5>add to list</h5>
+                  <li id="creatList">create List +</li>
+                </ul>
+              </button>
+              <img class="img-fluid" src="https://source.unsplash.com/random" />
+              <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>
+            </a></template
+          >
+        </div>
+        <button class="nextPage">
+          <i class="fa-solid fa-circle-chevron-down"></i>
+        </button>
+      </div>
+    </div>
+  </body>
+</html>

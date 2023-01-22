@@ -52,32 +52,48 @@
           </div> -->
           <ul>
             <li>
-              <a href="favs.html">
-                <i class="fa-solid fa-list"></i> your watch list</a
+              <a href="/pages/favs.html#watchLater">
+                <i class="fa-solid fa-clock"></i> your watch list</a
               >
             </li>
             <li>
-              <a href="favs.html">
-                <i class="fa-solid fa-list"></i> your watch list</a
+              <a href="/pages/favs.html#seen">
+                <i class="fa-solid fa-eye"></i> your watches</a
               >
             </li>
             <li>
-              <a href="favs.html">
-                <i class="fa-solid fa-list"></i> your watch list</a
+              <a href="/pages/favs.html#customLists">
+                <i class="fa-solid fa-list"></i> lists</a
               >
+            </li>
+            <li>
+              <a href="/pages/favs.html#customLists">
+                <i class="fa-solid fa-circle-info"></i> about
+              </a>
             </li>
           </ul>
         </nav>
       </div>
-      <button class="favMain">
-        <i class="fa-solid fa-bookmark"></i>
-        <i class="bookMarkPlus">+</i></button>
+      
     </header>
     
+    <button class="favMain" id="mainLater">
+      <i class="fa-solid fa-bookmark"><i class="fa-solid fa-clock"></i></i>
+      </button>
+    <button class="favMain" id="mainSeen">
+      <i class="fa-solid fa-bookmark"><i class="fa-solid fa-eye"></i></i>
+      
+    <button class="favMain" id="mainCustom">
+      <i class="fa-solid fa-bookmark"><i class="fa-solid fa-list"></i></i>
+      <ul class="listOptions">
+        <h5>add to list</h5>
+        <a href="/pages/favs.html#customLists" id="creatList">create List +</a>
+      </ul>
+      </button>
 
     <div class="backDropHolder">
       <img
-        src="drop-holder.png"
+        src="/logos/drop-holder.png"
         class="backDropImg"
         alt=""
       />
@@ -85,25 +101,25 @@
     
     <div class="mainInfos">
       <div class="mainTitle">
-        <span class="posterHold"><img src="poster-holder.png" alt="" /></span>
+        <span class="posterHold"><img src="/logos/poster-holder.png" alt="" /></span>
         <h2 class="title">dexter</h2>
         
        </div>
        <span class="metaTitle">
+        <span class="boss"><p>director</p><a href=""></a></span>
+        <span class="boss2"><p>creator</p><a href=""></a></span>
         <span class="air"></span>
-        <span class="genre"></span>
+        <span class="genre"><p>genres</p></span>
         <span class="media"></span>
-        <span class="media"><p>type</p></span>
-        <span class="media"><p>type</p></span>
-        <span class="media"><p>type</p></span>
+        
          <span class="rating"> </span>
         </span>
       <section class="caster">
         <div class="trailer" id="trailer"></div>
         <!-- <iframe class="trailer" width="560" height="315"  title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>  -->
         <div class="story"><span>overview <i class="fa-solid fa-angle-right"></i></span><p class="text"></p></div>
-        </section>
-        <div class="slide-dad" id="cast">
+      </section>
+        <div class="slide-dad top-dad" id="cast">
           <h2 class="slide-title">
             cast <i class="fa-solid fa-angle-right"></i>
           </h2>
@@ -113,19 +129,78 @@
           <div class="slide-show">
             <template class="card-temp"
               ><a href="movie1.html" onclick="stopShit(event)" class="card">
-                <button class="bookMark">
-                  <i class="fa-solid fa-bookmark"></i>
-                  <i class="bookMarkPlus">+</i>
+                <button class="bookMark" id="later">
+                  <i class="fa-solid fa-clock"></i>
+                </button>
+                <button class="bookMark" id="seen">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+                <button class="bookMark" id="custom">
+                  <i class="fa-solid fa-list"></i>
+                  <ul class="listOptions">
+                    <h5>add to list</h5>
+                    <li id="creatList">create List +</li>
+                  </ul>
                 </button>
                 <img class="img-fluid" src="https://source.unsplash.com/random" />
                 <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>
               </a></template
             >
           </div>
-    </div>
+       </div>
+        <div class="slide-dad top-dad" id="seasons">
+          <h2 class="slide-title">
+            seasons <i class="fa-solid fa-angle-right"></i>
+          </h2>
+          <button class="back"><i class="fa-solid fa-angle-left"></i></button>
+          <button class="next"><i class="fa-solid fa-angle-right"></i></button>
+    
+          <div class="slide-show">
+            <template class="card-temp"
+              ><a href="movie1.html" onclick="stopShit(event)" class="card">
+                <button class="bookMark" id="later">
+                  <i class="fa-solid fa-clock"></i>
+                </button>
+                <button class="bookMark" id="seen">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+                <button class="bookMark" id="custom">
+                  <i class="fa-solid fa-list"></i>
+                  <ul class="listOptions">
+                    <h5>add to list</h5>
+                    <li id="creatList">create List +</li>
+                  </ul>
+                </button>
+                <img class="img-fluid" src="https://source.unsplash.com/random" />
+                <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>
+              </a></template
+            >
+          </div>
+       </div>
     
     </div>
     <div class="containter">
+      <div class="slide-dad" id="recommend">
+        <h2 class="slide-title">
+          recommendations </i>
+        </h2>
+        <button class="back"><i class="fa-solid fa-angle-left"></i></button>
+        <button class="next"><i class="fa-solid fa-angle-right"></i></button>
+  
+        <div class="slide-show">
+          <template class="card-temp"
+            ><a href="movie1.html" onclick="stopShit(event)" class="card">
+              <button class="bookMark">
+                <i class="fa-solid fa-bookmark"></i>
+                <i class="bookMarkPlus">+</i>
+              </button>
+              <img class="img-fluid" src="https://source.unsplash.com/random" />
+              <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>
+
+            </a></template
+          >
+        </div>
+      </div>
       <div class="slide-dad" id="similar">
         <h2 class="slide-title">
           similar </i>

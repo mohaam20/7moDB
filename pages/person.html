@@ -52,19 +52,24 @@
           </div> -->
           <ul>
             <li>
-              <a href="favs.html">
-                <i class="fa-solid fa-list"></i> your watch list</a
+              <a href="/pages/favs.html#watchLater">
+                <i class="fa-solid fa-clock"></i> your watch list</a
               >
             </li>
             <li>
-              <a href="favs.html">
-                <i class="fa-solid fa-list"></i> your watch list</a
+              <a href="/pages/favs.html#seen">
+                <i class="fa-solid fa-eye"></i> your watches</a
               >
             </li>
             <li>
-              <a href="favs.html">
-                <i class="fa-solid fa-list"></i> your watch list</a
+              <a href="/pages/favs.html#customLists">
+                <i class="fa-solid fa-list"></i> lists</a
               >
+            </li>
+            <li>
+              <a href="/pages/favs.html#customLists">
+                <i class="fa-solid fa-circle-info"></i> about
+              </a>
             </li>
           </ul>
         </nav>
@@ -93,12 +98,7 @@
        </div>
        <span class="metaTitle">
         <span class="air"><p>release date</p></span>
-        <span class="genre"><p>genres</p></span>
-        <span class="media"><p>type</p></span>
-        <span class="media"><p>type</p></span>
-        <span class="media"><p>type</p></span>
-        <span class="media"><p>type</p></span>
-         <span class="rating"><i class="fa-brands fa-imdb"></i> : </span>
+        
         </span>
       <section class="caster">
         <div class="trailer" id="trailer"></div>
@@ -136,9 +136,18 @@
         <div class="slide-show">
           <template class="card-temp"
             ><a href="movie1.html" onclick="stopShit(event)" class="card">
-              <button class="bookMark">
-                <i class="fa-solid fa-bookmark"></i>
-                <i class="bookMarkPlus">+</i>
+              <button class="bookMark" id="later">
+                <i class="fa-solid fa-clock"></i>
+              </button>
+              <button class="bookMark" id="seen">
+                <i class="fa-solid fa-eye"></i>
+              </button>
+              <button class="bookMark" id="custom">
+                <i class="fa-solid fa-list"></i>
+                <ul class="listOptions">
+                  <h5>add to list</h5>
+                  <li id="creatList">create List +</li>
+                </ul>
               </button>
               <img class="img-fluid" src="https://source.unsplash.com/random" />
               <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>

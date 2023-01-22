@@ -18,6 +18,7 @@
     <title>7mobox</title>
   </head>
   <body id="main">
+    <div class="pattern"></div>
     <header>
       <div class="head-cont">
         <a href="#" class="home"><img src="/logos/logo.png" alt="7mobox" /></a>
@@ -53,26 +54,31 @@
           </div> -->
           <ul>
             <li>
-              <a href="/pages/favs.html">
-                <i class="fa-solid fa-list"></i> your watch list</a
+              <a href="/pages/favs.html#watchLater">
+                <i class="fa-solid fa-clock"></i> your watch list</a
               >
             </li>
             <li>
-              <a href="/pages/favs.html">
-                <i class="fa-solid fa-list"></i> your watch list</a
+              <a href="/pages/favs.html#seen">
+                <i class="fa-solid fa-eye"></i> your watches</a
               >
             </li>
             <li>
-              <a href="/pages/favs.html">
-                <i class="fa-solid fa-list"></i> your watch list</a
+              <a href="/pages/favs.html#customLists">
+                <i class="fa-solid fa-list"></i> lists</a
               >
+            </li>
+            <li>
+              <a href="/pages/favs.html#customLists">
+                <i class="fa-solid fa-circle-info"></i> about
+              </a>
             </li>
           </ul>
         </nav>
       </div>
     </header>
 
-    <div class="slide-dad" id="rec">
+    <main class="slide-dad" id="rec">
       <h2 class="slide-title">
         recommended <i class="fa-solid fa-angle-right"></i>
       </h2>
@@ -91,9 +97,20 @@
             target="_blank"
             class="card"
           >
-            <button class="bookMark">
-              <i class="fa-solid fa-bookmark"></i>
-              <i class="bookMarkPlus">+</i>
+            <button class="bookMark" id="later">
+              <i class="fa-solid fa-clock"></i>
+            </button>
+            <button class="bookMark" id="seen">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+
+            <button class="bookMark" id="custom">
+              <i class="fa-solid fa-list"></i>
+              <ul class="listOptions">
+                <h5>add to list</h5>
+
+                <li id="creatList">create List +</li>
+              </ul>
             </button>
             <img class="img-fluid" src="https://source.unsplash.com/random" />
 
@@ -135,7 +152,7 @@
           >
         </div> -->
       </div>
-    </div>
+    </main>
 
     <!-- end1............................................ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ -->
 
