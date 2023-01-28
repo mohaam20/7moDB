@@ -84,18 +84,18 @@ async function init(page) {
   ).then((res) => res.json());
 
   console.log(allGens);
-  console.log(location.hash.slice(10));
-
-  for (let i of allGens.genres) {
-    if (i.id == `${location.hash.slice(10)}`) {
-      genTitle.innerHTML = `${i.name} </br> ${genType}s`;
-      console.log(i.name);
-    }
-  }
+  console.log(location.hash.slice(6));
+  genTitle.innerHTML = `${location.hash.slice(6)} </br> ${genType}s`;
+  //   for (let i of allGens.genres) {
+  //     if (i.id == `${location.hash.slice(6)}`) {
+  //       genTitle.innerHTML = `${i.name} </br> ${genType}s`;
+  //       console.log(i.name);
+  //     }
+  //   }
 
   let raw = await fetch(
-    `https://api.themoviedb.org/3/discover/${genType}?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&sort_by=popularity.desc&include_adult=false&vote_count.gte=1000&include_video=false&page=${page}&vote_average.gte=7&with_genres=${location.hash.slice(
-      10
+    `https://api.themoviedb.org/3/discover/${genType}?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&sort_by=popularity.desc&include_adult=false&vote_count.gte=1000&include_video=false&page=${page}&vote_average.gte=7&primary_release_year=${location.hash.slice(
+      6
     )}`
   ).then((res) => res.json());
   console.log(raw);

@@ -71,9 +71,11 @@ for (const i of Object.entries(yours)) {
 //   // window.open("movie1.html", "_blank");
 // });
 // refrence constats
+let goal;
 let trueScroll = true;
 let autoslide = true;
 let counter = 2;
+let mainCount = 1;
 let trendPage = 1;
 nextField.children[1].style.display = "none";
 let baseImg = "http://image.tmdb.org/t/p/w342/";
@@ -85,7 +87,7 @@ addEventListener("load", () => {
   sessionStorage.clear();
 
   fetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=5e060480a887e5981aa743bc33a74e40&sort_by=release_date.desc&include_adult=false&include_video=false&page=${trendPage}&vote_average.gte=7&with_keywords=avengers&with_watch_monetization_types=flatrate`
+    `https://api.themoviedb.org/3/discover/movie?api_key=5e060480a887e5981aa743bc33a74e40&vote_count.gte=1000&sort_by=release_date.desc&include_adult=false&include_video=false&page=${trendPage}&vote_average.gte=8&with_keywords=avengers&with_watch_monetization_types=flatrate`
   )
     .then((res) => res.json())
     .then((res) => res.results.filter((res) => res.original_language !== "sd"))
@@ -541,6 +543,7 @@ document.addEventListener(
       // console.log(area);
       let direction = event.target.className;
       if (event.target.parentNode.id == "rec") {
+        // scrollSlide(direction, area);
         scrollSlide2(direction, area);
       } else {
         scrollSlide(direction, area);
@@ -554,43 +557,74 @@ function scrollSlide2(direction, area) {
   let set = area.parentNode;
   let currentScroll = area.scrollLeft;
   let card = area.querySelector(".card");
-  let scrollVal = card.scrollWidth;
+  let scrollVal = area.clientWidth;
   let maxScroll = area.scrollWidth - area.clientWidth;
-  // console.log(currentScroll);
-  // console.log(scrollVal);
-  console.log(direction);
+
   if (direction == "next") {
-    counter += 1;
+    for (let step = 0; step <= mainCount + 2; step++) {
+      // Runs 5 times, with values of step 0 through 4.
+      console.log(step);
+      nextField.children[step].style.display = "none";
+      nextField.children[step + 1].style.backgroundColor = "rgb(0, 86, 184)";
+      nextField.children[step + 1].style.transform = "scale(1.1)";
+      nextField.children[step + 1].style.zIndex = "10";
+    }
+    counter = Math.floor(area.scrollLeft / scrollVal + 3);
     let statu =
       parseInt(area.children[1].style.transform.replace(/\D/g, "")) || 0;
     // console.log(statu);
+    // console.log(statu);
     // console.log(maxScroll);
 
-    if (nextField.children[counter].className == "nextCard") {
-      nextField.children[counter].style.display = "none";
-      nextField.children[counter + 1].style.backgroundColor = "rgb(0, 86, 184)";
-      nextField.children[counter + 1].style.transform = "scale(1.1)";
-      nextField.children[counter + 1].style.zIndex = "10";
-    }
+    let comprmize = statu / scrollVal;
+    console.log(area.scrollWidth + "dddddddddddddddddddddddddddddddd  ");
 
+    // if (nextField.children[counter].className == "nextCard") {
+    //   nextField.children[counter].style.display = "none";
+    //   nextField.children[counter + 1].style.backgroundColor = "rgb(0, 86, 184)";
+    //   nextField.children[counter + 1].style.transform = "scale(1.1)";
+    //   nextField.children[counter + 1].style.zIndex = "10";
+    // }
+    // console.log(
+    //   area.scrollLeft,
+    //   area.children[counter - 2].offsetLeft,
+    //   area.offsetWidth * (counter - 3),
+    //   counter
+    // );
+
+    goal =
+      area.children[counter - 2].offsetLeft -
+      area.offsetWidth * (counter - 3) -
+      8;
+    console.log(goal);
+
+    // area.scrollLeft = Math.ceil(
+    //   area.scrollLeft +
+    //     area.scrollWidth -
+    //     area.children[area.children.length - 1].offsetLeft +
+    //     8
+    // );
+
+    area.scrollLeft = mainCount * area.offsetWidth + goal;
+    if (goal > 0) {
+      console.log(area.scrollLeft);
+    }
     if (statu < maxScroll) {
-      for (let bag of area.children) {
-        bag.style.transform = `translateX(-${statu + card.clientWidth + 19}px)`;
-      }
+      // for (let bag of area.children) {
+      //   bag.style.transform = `translateX(-${scrollVal * mainCount  }px)`;
+      // }
+      // area.scrollLeft += scrollVal;
     }
     statu = parseInt(area.children[1].style.transform.replace(/\D/g, "")) || 0;
-    if (statu > maxScroll - scrollVal * 6) {
-      console.log("stared");
+    // console.log(area.scrollWidth - area.scrollLeft);
+    // console.log(area.offsetWidth * 7);
+    // console.log(area.scrollWidth - area.scrollLeft < area.offsetWidth * 7);
+    console.log(Math.ceil(area.scrollWidth / area.scrollLeft));
+    if (Math.ceil(area.scrollWidth / area.scrollLeft) < 5) {
+      console.log("fetch new");
+
       trendPage += 1;
       fetchTrend(trendPage);
-
-      console.log("should moveeeee");
-      console.log(statu);
-      // console.log(Math.ceil(statu / (scrollVal * 10)));
-      for (let bag of area.children) {
-        // console.log(bag);
-        bag.style.transform = `-translateX(${statu - 4}px)`;
-      }
     }
     // if (set.id == "movieTrends" || set.id == "tvTrends") {
     //   area.scrollLeft += scrollVal * 4 + 77;
@@ -598,41 +632,48 @@ function scrollSlide2(direction, area) {
     //   console.log("captin");
     //   area.scrollLeft += scrollVal + 19;
     // }
+    mainCount += 1;
   } else if (direction == "back") {
-    console.log(counter + " this is counter");
-    if (nextField.children[counter].className == "nextCard" && counter > 2) {
-      nextField.children[counter].style.display = "flex";
-      nextField.children[counter + 1].style.backgroundColor = null;
-      nextField.children[counter + 1].style.transform = "scale(1)";
-      nextField.children[counter + 1].style.zIndex = 4;
-      counter -= 1;
+    for (
+      let step = mainCount + 2;
+      step < nextField.children.length - 2;
+      step++
+    ) {
+      // Runs 5 times, with values of step 0 through 4.
+      console.log(step);
+      nextField.children[step - 1].style.display = "flex";
+      nextField.children[step].style.backgroundColor = null;
+      nextField.children[step].style.transform = "scale(1)";
+      nextField.children[step].style.zIndex = null;
     }
+    area.scrollLeft = (mainCount - 2) * area.offsetWidth + goal;
 
-    let statu =
-      parseInt(area.children[1].style.transform.replace(/\D/g, "")) || 0;
-    console.log(statu);
-    if (statu == maxScroll) {
-      console.log("error here");
-      for (let bag of area.children) {
-        bag.style.transform = `translateX(0)`;
-      }
-    } else {
-      console.log("error here");
+    // let statu =
+    //   parseInt(area.children[1].style.transform.replace(/\D/g, "")) || 0;
+    // console.log(statu);
+    // if (statu == maxScroll) {
+    //   console.log("error here");
+    //   for (let bag of area.children) {
+    //     bag.style.transform = `translateX(0)`;
+    //   }
+    // } else {
+    //   console.log("error here");
 
-      for (let bag of area.children) {
-        bag.style.transform = `translateX(-${
-          statu - (card.clientWidth + 19)
-        }px)`;
-      }
-    }
+    //   for (let bag of area.children) {
+    //     bag.style.transform = `translateX(-${
+    //       statu - (card.clientWidth + 19)
+    //     }px)`;
+    //   }
+    // }
 
     // if (set.id == "movieTrends" || set.id == "tvTrends") {
     //   area.scrollLeft -= scrollVal * 4 + 77;
     // } else if (set.id == "rec") {
     //   area.scrollLeft -= scrollVal + 19;
     // }
+    mainCount -= 1;
   } else if (direction == "back" && currentScroll == maxScroll) {
-    area.scrollLeft = 0;
+    // area.scrollLeft = 0;
   }
 }
 function scrollSlide(direction, area) {
@@ -643,66 +684,63 @@ function scrollSlide(direction, area) {
   // console.log(currentScroll);
   // console.log(scrollVal);
   console.log(direction);
-  if (set.id == "rec") {
-  } else {
-    trueScroll = false;
-    if (direction == "next") {
-      if (Math.ceil(area.scrollLeft) % (scrollVal + 16) == 0) {
-        area.scrollLeft += scrollVal + 16;
-      } else {
-        if (area.scrollWidth - area.offsetWidth - area.scrollLeft > scrollVal) {
-          area.scrollLeft =
-            Math.ceil(area.scrollLeft / (scrollVal + 16)) * (scrollVal + 16);
-        }
-      }
-    } else if (direction == "back") {
-      if (Math.floor(area.scrollLeft) % (scrollVal + 16) == 0) {
-        area.scrollLeft -= scrollVal + 16;
-      } else {
+  trueScroll = false;
+  if (direction == "next") {
+    if (Math.ceil(area.scrollLeft) % (scrollVal + 16) == 0) {
+      area.scrollLeft += scrollVal + 16;
+    } else {
+      if (area.scrollWidth - area.offsetWidth - area.scrollLeft > scrollVal) {
         area.scrollLeft =
-          (Math.ceil(area.scrollLeft / (scrollVal + 16)) - 1) *
-          (scrollVal + 16);
+          Math.ceil(area.scrollLeft / (scrollVal + 16)) * (scrollVal + 16);
       }
+    }
+  } else if (direction == "back") {
+    if (Math.floor(area.scrollLeft) % (scrollVal + 16) == 0) {
+      area.scrollLeft -= scrollVal + 16;
+    } else {
+      area.scrollLeft =
+        (Math.ceil(area.scrollLeft / (scrollVal + 16)) - 1) * (scrollVal + 16);
     }
   }
 }
 
-document.addEventListener(
+window.addEventListener(
   "click",
   (event) => {
-    if (
-      event.target.className == "more" &&
-      event.target.innerHTML == "more..."
-    ) {
-      let data = event.target.parentNode.querySelector(".over-view");
-      data.style.minHeight = "fit-content";
-      data.style.height = "100%";
-      event.target.innerHTML = "less";
-    } else if (
-      event.target.className == "more" &&
-      event.target.innerHTML == "less"
-    ) {
-      let data = event.target.parentNode.querySelector(".over-view");
-      data.style.height = "4rem";
-      event.target.innerHTML = "more...";
-    }
-    if (event.target.className == "over-view") {
-      let data = event.target.parentNode.querySelector(".over-view");
-      event.target.parentNode.querySelector(".more").innerHTML = "more...";
-      data.style.height = "4rem";
+    let area = mainSlide.querySelector(".slide-show");
+    for (let k = 2; k < nextField.children.length; k++) {
+      if (event.target.closest(".nextCard") == nextField.children[k]) {
+        console.log(nextField.children[k]);
+        console.log(k);
+        if (k >= nextField.children.length - 5) {
+          trendPage += 1;
+          fetchTrend(trendPage);
+        }
+        mainCount = k - 3;
+        for (let step = 0; step <= mainCount + 3; step++) {
+          // Runs 5 times, with values of step 0 through 4.
+          console.log(step);
+          nextField.children[step].style.display = "none";
+          nextField.children[step + 1].style.backgroundColor =
+            "rgb(0, 86, 184)";
+          nextField.children[step + 1].style.transform = "scale(1.1)";
+          nextField.children[step + 1].style.zIndex = "10";
+        }
+
+        goal =
+          area.children[counter - 2].offsetLeft -
+          area.offsetWidth * (counter - 3) -
+          8;
+        console.log(goal);
+
+        area.scrollLeft = (mainCount + 1) * area.offsetWidth;
+        mainCount += 2;
+      }
     }
   },
   true
 );
 // scroll;
-
-function newScroller(area) {
-  let key = area.id;
-  scrollVals[key] += 1;
-  let kids = area.querySelector(".slide-show").children;
-  console.log(scrollVals[key]);
-  kids[scrollVals[key]].scrollIntoView({ block: "end", inline: "nearest" });
-}
 
 fetch(
   `https://api.themoviedb.org/3/search/movie?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&query=jaws&page=1&include_adult=false&append_to_response=videos,images`
@@ -742,41 +780,10 @@ mainSlide.addEventListener("mouseleave", () => {
 
 const autoScroll = setInterval(() => {
   if (autoslide) {
-    let area = mainSlide.querySelector(".slide-show");
-    let card = mainSlide.querySelector(".card");
-    let scrollVal = card.scrollWidth;
-    let maxScroll = area.scrollWidth - area.clientWidth;
-    counter += 1;
-
-    let statu =
-      parseInt(area.children[1].style.transform.replace(/\D/g, "")) || 0;
-    // console.log(statu);
-    // console.log(maxScroll);
-
-    if (nextField.children[counter].className == "nextCard") {
-      nextField.children[counter].style.display = "none";
-      nextField.children[counter + 1].style.backgroundColor = "rgb(0, 86, 184)";
-      nextField.children[counter + 1].style.transform = "scale(1.1)";
-      nextField.children[counter + 1].style.zIndex = "10";
-    }
-
-    if (statu < maxScroll) {
-      for (let bag of area.children) {
-        bag.style.transform = `translateX(-${statu + area.clientWidth}px)`;
-      }
-    }
-    statu = parseInt(area.children[1].style.transform.replace(/\D/g, "")) || 0;
-    if (statu > maxScroll - scrollVal * 6) {
-      console.log("stared");
-      trendPage += 1;
-      fetchTrend(trendPage);
-      for (let bag of area.children) {
-        // console.log(bag);
-        bag.style.transform = `-translateX(${statu - 4}px)`;
-      }
-    }
+    // scrollSlide2("next", mainSlide.querySelector(".slide-show"));
+    // scrollSlide("next", mainSlide.querySelector(".slide-show"));
   }
-}, 5000);
+}, 2500);
 
 window.addEventListener(
   "resize",
@@ -785,17 +792,19 @@ window.addEventListener(
 
     console.log("it is moving");
     setTimeout(() => {
-      for (let bag of area.children) {
-        bag.style.transform = `translateX(-${
-          (counter - 2) * area.clientWidth
-        }px)`;
-      }
-      for (let h of document.querySelectorAll(".card")) {
-        // console.log(h);
-        if (h.closest(".slide-dad").id !== "rec") {
-          h.style.transform = `translateX(0px)`;
-        }
-      }
+      area.scrollLeft =
+        Math.round(area.scrollLeft / area.offsetWidth) * area.offsetWidth;
+      // for (let bag of area.children) {
+      //   bag.style.transform = `translateX(-${
+      //     (counter - 2) * area.clientWidth
+      //   }px)`;
+      // }
+      // for (let h of document.querySelectorAll(".card")) {
+      //   // console.log(h);
+      //   if (h.closest(".slide-dad").id !== "rec") {
+      //     h.style.transform = `translateX(0px)`;
+      //   }
+      // }
     }, 2000);
   },
   false
@@ -935,7 +944,7 @@ function appendLink(event) {
       let mesure1 = Math.floor(card.offsetLeft - uncle.scrollLeft + 11);
       let mesure2 = uncle.clientWidth - card.offsetWidth;
       console.log(mesure1 >= mesure2);
-      if (mesure1 >= mesure2) {
+      if (mesure1 >= mesure2 && dad.id !== "rec") {
         setTimeout(() => {
           uncle.scrollLeft += card.offsetWidth / 2 + 11;
         }, 400);
@@ -964,8 +973,10 @@ function stopShit(event) {
     event.preventDefault();
     console.log("stoop nav");
   }
-  if (unit.classList.contains("viewdCard") && unit.closest("#rec") == null) {
-    event.preventDefault();
+  if (unit.classList.contains("viewdCard")) {
+    if (unit.closest("#rec") !== null && isTouch) {
+      event.preventDefault();
+    }
   } else {
     for (let i of unit.children) {
       i.classList.remove("bookMarkSee");
@@ -1044,11 +1055,14 @@ const action2 = action1((ele) => {
 
   if (Math.floor(ele.scrollLeft) % (scrollVal + 16) == 0) {
   } else {
-    ele.scrollLeft =
-      Math.round(Math.floor(ele.scrollLeft) / (scrollVal + 16)) *
-      (scrollVal + 16);
-    // keepScroll = false;
-    console.log(keepScroll);
+    if (ele.parentNode.id == "rec") {
+    } else {
+      ele.scrollLeft =
+        Math.round(Math.floor(ele.scrollLeft) / (scrollVal + 16)) *
+        (scrollVal + 16);
+      // keepScroll = false;
+      console.log(keepScroll);
+    }
   }
 });
 document.querySelectorAll(".slide-show").forEach((ele) => {
@@ -1056,7 +1070,7 @@ document.querySelectorAll(".slide-show").forEach((ele) => {
   ele.addEventListener("scroll", (event) => {
     action2(ele);
     console.log(trueScroll);
-    if (trueScroll) {
+    if (trueScroll && ele.parentNode.id !== "rec") {
       ele.parentNode.querySelector(".next").style.opacity = "0";
       ele.parentNode.querySelector(".back").style.opacity = "0";
     }

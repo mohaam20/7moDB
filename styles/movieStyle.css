@@ -702,6 +702,7 @@ button {
 }
 
 .favMain::after {
+  transition: all 0.5s;
   z-index: 99;
   width: 6rem;
   font-size: 1rem;
@@ -712,11 +713,13 @@ button {
   position: absolute;
   top: 70%;
   border-radius: 0.2rem;
-  display: none;
+  /* display: none; */
+  transform: scale(0);
   right: 0%;
 }
 
 .favMain:hover::after {
+  transform: scale(1);
   display: block;
 }
 
@@ -742,7 +745,7 @@ button {
 }
 #mainCustom:hover .listOptions {
   mix-blend-mode: overlay;
-
+  transform: scale(1);
   display: block;
 }
 #mainCustom li:hover {
@@ -768,6 +771,8 @@ button {
   width: 20%;
 }
 #mainCustom .listOptions {
+  border-radius: 0.5rem;
+  transition: all 0.5s;
   list-style: none;
   text-shadow: 0 0 1px black;
   text-transform: capitalize;
@@ -780,7 +785,9 @@ button {
   right: 110%;
   top: 50%;
   position: absolute;
-  display: none;
+  /* display: none; */
+  transform: scale(0);
+  transform-origin: top right;
 }
 
 #mainCustom .listOptions li:hover {
@@ -791,6 +798,13 @@ button {
   display: none;
 }
 
+#mainCustom .listOptions *:first-child {
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+#mainCustom .listOptions *:last-child {
+  border-radius: 0 0 0.5rem 0.5rem;
+}
 #seen {
   transform: translateY(120%);
 }
@@ -905,6 +919,9 @@ button {
   transform: translateY(-20%);
 } */
 .favMain .bookMarkDone {
+  opacity: 0.8;
+  transform: scale(0.9);
+  transform-origin: top;
   color: green;
   background: none;
 }
@@ -922,6 +939,42 @@ button {
   transform: translateY(-20%) !important;
   border-radius: 0.2rem !important;
   height: 4rem !important;
+}
+
+#disc {
+  width: fit-content;
+  padding: 0.5rem;
+  border-radius: 0.2rem 0.2rem 0 0;
+  background-color: rgb(255, 238, 0);
+  position: absolute;
+  top: 0;
+  right: 10%;
+  transform-origin: bottom;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.525);
+  transform: translateY(-100%) scale(1.5);
+}
+
+#disc::after {
+  transition: all 0.5s;
+  text-transform: capitalize;
+  padding: 0.2rem;
+  left: -50%;
+  bottom: 110%;
+  content: "discover";
+  background-color: rgba(128, 128, 128, 0.562);
+  color: white;
+  border-radius: 0.2rem;
+  position: absolute;
+  /* display: none; */
+  transform: scale(0);
+  transform-origin: bottom;
+}
+#disc:hover::after {
+  transform: scale(1);
+  display: block;
+}
+#disc * {
+  color: white;
 }
 
 @media all and (max-width: 500px) {

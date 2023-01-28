@@ -13,9 +13,9 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <script src="/scripts/max.js" defer></script>
+    <script src="/scripts/discover.js" defer></script>
 
-    <link rel="stylesheet" href="/styles/colect.css" />
+    <link rel="stylesheet" href="/styles/colect2.css" />
   </head>
   <body>
     <header>
@@ -77,20 +77,39 @@
     </header>
 
     <div class="backDropHolder">
-      <img src="/logos/drop-holder.png" class="backDropImg" alt="" />
+      <img src="/logos/discover.jpg" class="backDropImg" alt="" />
     </div>
 
     <div class="mainInfos">
-      <a href="/pages/discover.html" id="disc">
-        <i class="fa-solid fa-dharmachakra"></i
-      ></a>
-
       <div class="slide-dad top-dad" id="cast">
-        <h2 class="slide-title">
-          <i class="fa-solid fa-angle-left"></i> cast
-          <i class="fa-solid fa-angle-right"></i>
+        <h2 class="slide-title titleZero">
+          <i class="fa-solid fa-dharmachakra"></i> discover
         </h2>
-
+        <div class="filters filtersZero">
+          <select name="date" id="dateFilter">
+            <option value="" disabled>date</option>
+            <option value="2022" disabled>2022</option>
+            <option value="">all</option>
+          </select>
+          <select name="genre" id="genreFilter">
+            <option value="Drama" selected>drama</option>
+            <option value="" disabled>genre</option>
+          </select>
+          <select name="lang" id="langFilter">
+            <option value="" disabled selected>language</option>
+            <option value="">all</option>
+          </select>
+          <select name="type" id="typeFilter">
+            <option value="" disabled>type</option>
+            <option value="movie" selected>movie</option>
+            <option value="tv">tv-show</option>
+          </select>
+          <select name="rate" id="rateFilter">
+            <option value="" disabled>rating</option>
+            <option value="7" selected>7</option>
+          </select>
+          <button id="startFilter"><i class="fa-solid fa-filter"></i></button>
+        </div>
         <div class="slide-show">
           <template class="card-temp"
             ><a href="movie1.html" onclick="stopShit(event)" class="card">

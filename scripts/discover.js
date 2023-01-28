@@ -10,6 +10,14 @@ const genreBox = document.querySelector("#cast");
 const genTitle = document.querySelector(".slide-title");
 const mainDop = document.querySelector(".backDropHolder").querySelector("img");
 const nextPage = document.querySelector(".nextPage");
+const dateFilter = document.querySelector("#dateFilter");
+const rateFilter = document.querySelector("#rateFilter");
+const typeFilter = document.querySelector("#typeFilter");
+const langFilter = document.querySelector("#langFilter");
+const genreFilter = document.querySelector("#genreFilter");
+const filterStart = document.querySelector("#startFilter");
+const filtersContainer = document.querySelector(".filters");
+const discoverTitle = document.querySelector(".slide-title");
 
 // Dom Elements
 
@@ -54,52 +62,153 @@ let baseDrop = "http://image.tmdb.org/t/p/w1280/";
 
 window.addEventListener("load", () => {
   console.log(location.hash);
+
   // sessionStorage.setItem("movieId", hashs.substring(1));
   // sessionStorage.setItem("type", hash2);
-  init(1);
+  // init(1);
+});
+
+let tvGenres = [];
+let movieGenres = [];
+
+let allGens = fetch(
+  `https://api.themoviedb.org/3/genre/movie/list?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US`
+)
+  .then((res) => res.json())
+  .then((res) => {
+    addOptions(res, movieGenres);
+    console.log(movieGenres);
+  });
+
+let allGens2 = fetch(
+  `https://api.themoviedb.org/3/genre/tv/list?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US`
+)
+  .then((res) => res.json())
+  .then((res) => {
+    addOptions(res, tvGenres);
+    console.log(tvGenres);
+    changeGenres();
+  });
+
+let allLangs = [
+  { code: "en", name: "English" },
+  { code: "fr", name: "French" },
+  { code: "es", name: "Spanish" },
+  { code: "it", name: "Italian" },
+  { code: "de", name: "German" },
+  { code: "pt", name: "Portuguese" },
+  { code: "zh", name: "Chinese" },
+  { code: "ja", name: "Japanese" },
+  { code: "ko", name: "Korean" },
+  { code: "hi", name: "Hindi" },
+  { code: "ar", name: "Arabic" },
+  { code: "ru", name: "Russian" },
+  { code: "tr", name: "Turkish" },
+  { code: "th", name: "Thai" },
+  { code: "id", name: "Indonesian" },
+  { code: "vi", name: "Vietnamese" },
+  { code: "sw", name: "Swahili" },
+  { code: "fa", name: "Persian" },
+  { code: "bn", name: "Bengali" },
+  { code: "nl", name: "Dutch" },
+];
+
+for (let i of allLangs) {
+  langFilter.options[langFilter.options.length] = new Option(i.name, i.code);
+}
+function addOptions(list, newList) {
+  console.log(list);
+  for (let i of list.genres) {
+    console.log(i.name);
+    console.log("butt");
+
+    newList.push({ name: i.name, id: i.id });
+  }
+}
+
+function changeGenres() {
+  console.log("here dude");
+  genreFilter.options.length = 0;
+  let target = typeFilter.value == "movie" ? movieGenres : tvGenres;
+  console.log(target);
+  for (let i of target) {
+    genreFilter.options[genreFilter.options.length] = new Option(i.name, i.id);
+  }
+}
+
+typeFilter.addEventListener("pointerup", changeGenres);
+console.log(genreFilter.options[0].value);
+(() => {
+  for (let i = 2022; i > 1965; i--) {
+    console.log(i);
+    dateFilter.options[dateFilter.options.length] = new Option(i, i);
+  }
+
+  for (let i = 10; i >= 1; i--) {
+    console.log(i);
+    rateFilter.options[rateFilter.options.length] = new Option(i, i);
+  }
+})();
+let raws = fetch(
+  `https://api.themoviedb.org/3/discover/movie?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&sort_by=popularity.desc&include_adult=false&vote_count.gte=1000&include_video=false&page=1&vote_average.gte=all&with_genres=null`
+).then((res) => {
+  console.log(res.json());
 });
 
 async function init(page) {
+  console.log(page);
   if (isTouch) {
     menuOpen.innerHTML = '<i class="fa-solid fa-bars">';
   } else {
     menuOpen.innerHTML = '<i class="fa-solid fa-bars"> </i>menu';
   }
 
-  if (location.hash.length == 0) {
-    open("/index.html", "_self");
-  } else {
-    console.log("i am here");
-
-    let hashs = location.hash.split("-")[0];
-    let hash2 = location.hash.split("-")[1];
-
-    realInfos = hashs.substring(1);
-    videoType = hash2;
-  }
-  console.log(location.hash.slice(1, 3));
-  let genType = location.hash.slice(1, 3) == "tv" ? "tv" : "movie";
-  let allGens = await fetch(
-    `https://api.themoviedb.org/3/genre/${genType}/list?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US`
-  ).then((res) => res.json());
-
   console.log(allGens);
   console.log(location.hash.slice(10));
 
-  for (let i of allGens.genres) {
-    if (i.id == `${location.hash.slice(10)}`) {
-      genTitle.innerHTML = `${i.name} </br> ${genType}s`;
-      console.log(i.name);
-    }
-  }
+  //   for (let i of allGens.genres) {
+  //     if (i.id == `${location.hash.slice(10)}`) {
+  //       genTitle.innerHTML = `${i.name} </br> ${genType}s`;
+  //       console.log(i.name);
+  //     }
+  //   }
+
+  let T = typeFilter.value || "movie";
+  console.log(T);
+
+  console.log(genreFilter.value);
+  let L = langFilter.value || "";
+  let R = rateFilter.value || 7;
+  let G = genreFilter.value;
+  let D = +dateFilter.value || "";
+
+  console.log(T);
+  // if (!G) {
+  //   if (T == "tv") {
+  //     console.log("555");
+  //   } else {
+  //     G = 18;
+  //   }
+  //   console.log("exist");
+  // }
+
+  console.log(T + " " + G + " " + D + " " + R);
+  console.log(D + 1);
 
   let raw = await fetch(
-    `https://api.themoviedb.org/3/discover/${genType}?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&sort_by=popularity.desc&include_adult=false&vote_count.gte=1000&include_video=false&page=${page}&vote_average.gte=7&with_genres=${location.hash.slice(
-      10
-    )}`
+    `https://api.themoviedb.org/3/discover/${T}?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&primary_release_year=${D}&sort_by=popularity.desc&sort_by=vote_average.desc&include_adult=false&vote_count.gte=10&include_video=false&page=${page}&vote_average.lte=${R}
+    &with_genres=${G}&release_date.gte=${D}&release_date.lte${
+      D + 1
+    }&first_air_date_year=${D}&with_original_language=${L}
+    `
   ).then((res) => res.json());
   console.log(raw);
-  plotSlides(raw.results, genreBox);
+  if ([T, G].includes(undefined)) {
+    console.log("it works");
+    alert("no results exists");
+  } else {
+    plotSlides(raw.results, genreBox);
+  }
   // mainOverview.innerHTML = raw.overview;
   let numf = Math.floor(Math.random() * raw.results.length);
   console.log(numf);
@@ -112,6 +221,25 @@ async function init(page) {
   // mainPoster.alt = raw.title ?? raw.original_name;
 }
 
+filterStart.addEventListener("click", () => {
+  genreBox.querySelector(".slide-show").innerHTML = "";
+  if (filtersContainer.classList.contains("filtersZero")) {
+    setTimeout(() => {
+      init("1");
+    }, 1000);
+  } else {
+    init("1");
+  }
+  filtersContainer.classList.remove("filtersZero");
+  discoverTitle.classList.remove("titleZero");
+  console.log(filtersContainer);
+
+  // let T = typeFilter.value || "movie";
+  // let R = rateFilter.value
+  // let G =
+  // console.log(T);
+  // console.log("555");
+});
 // search
 
 window.addEventListener(
@@ -123,8 +251,8 @@ window.addEventListener(
     ) {
     } else {
       for (let i of document.querySelectorAll(".card")) {
-        console.log(i.dataset.navto);
-        console.log(i);
+        // console.log(i.dataset.navto);
+        // console.log(i);
         i.setAttribute("data-navto", false);
       }
     }
@@ -439,7 +567,9 @@ document.addEventListener(
 // scroll;
 
 window.addEventListener("scroll", (event) => {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+  if (
+    Math.ceil(window.innerHeight + window.scrollY) >= document.body.offsetHeight
+  ) {
     console.log("End of page");
 
     // console.log(newPage);
@@ -453,6 +583,7 @@ nextPage.addEventListener("pointerup", (event) => {
     Math.ceil(
       (genreBox.querySelector(".slide-show").children.length - 1) / 20
     ) + 1;
+  console.log(newPage);
   init(newPage);
 });
 window.addEventListener("pointerup", appendLink, false);

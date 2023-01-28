@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>watch list</title>
+    <title>Document</title>
+    <link rel="icon" href="/logos/title-logo.png" type="image/x-icon" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
@@ -12,13 +13,11 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <link rel="icon" href="/logos/title-logo.png" type="image/x-icon" />
-    <link rel="stylesheet" href="/styles/favStyle.css" />
-    <script src="/scripts/max.js" defer></script>
+    <script src="/scripts/maxDate.js" defer></script>
+
+    <link rel="stylesheet" href="/styles/colect.css" />
   </head>
   <body>
-    <div class="pattern"></div>
-
     <header>
       <div class="head-cont">
         <a href="/index.html" class="home"
@@ -33,16 +32,17 @@
           />
           <i class="fa-solid fa-magnifying-glass"></i>
           <ul class="results" style="display: none">
-            <template class="result_temp">
-              <li data-pop="" class="result">
+            <template class="result_temp"
+              ><li data-pop="" class="result">
                 <a href="movie1.html">
                   <img src="https://source.unsplash.com/random" alt="results" />
                   <p class="res_title">movie title</p>
                 </a>
-              </li>
-            </template>
+              </li></template
+            >
           </ul>
         </div>
+
         <button class="burger"><i class="fa-solid fa-bars"> </i>menu</button>
         <nav class="menu">
           <!-- <div class="topNav">
@@ -75,39 +75,46 @@
         </nav>
       </div>
     </header>
-    <!-- <section id="panner">
-      <label class="list" id="watchList" for="watchLater">
-        <i class="fa-regular fa-clock"></i> watch later
-        <img src="/logos/list1.jpg" alt="watchList" />
-      </label>
-      <label class="list" id="watched" for="">
-        <i class="fa-solid fa-eye"></i> watched
-        <img src="/logos/list2.jpg" alt="watched" />
-      </label>
-      <label class="list" id="yourList">
-        <i class="fa-solid fa-list"></i> your lists
-        <img src="/logos/list3.jpg" alt="yourList" />
-      </label>
-    </section> -->
 
-    <div class="slide-dad" id="watchLater">
-      <h2 class="slide-title">
-        <i class="fa-solid fa-clock"></i> your watchlist
-        <i class="fa-solid fa-angle-right"></i>
-      </h2>
+    <div class="backDropHolder">
+      <img src="/logos/drop-holder.png" class="backDropImg" alt="" />
+    </div>
 
-      <div class="slide-show">
-        <template class="card-temp"
-          ><a href="movie1.html" onclick="stopShit(event)" class="card">
-            <button class="endFav"><i class="fa-solid fa-xmark"></i></button>
-            <img class="img-fluid" src="https://source.unsplash.com/random" />
-            <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>
-          </a></template
-        >
-        <!-- <div class="card">
-          <img class="img-fluid" src="https://source.unsplash.com/random" />
-          <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>
-        </div> -->
+    <div class="mainInfos">
+      <a href="/pages/discover.html" id="disc">
+        <i class="fa-solid fa-dharmachakra"></i
+      ></a>
+
+      <div class="slide-dad top-dad" id="cast">
+        <h2 class="slide-title">
+          <i class="fa-solid fa-angle-left"></i> cast
+          <i class="fa-solid fa-angle-right"></i>
+        </h2>
+
+        <div class="slide-show">
+          <template class="card-temp"
+            ><a href="movie1.html" onclick="stopShit(event)" class="card">
+              <button class="bookMark" id="later">
+                <i class="fa-solid fa-clock"></i>
+              </button>
+              <button class="bookMark" id="seen">
+                <i class="fa-solid fa-eye"></i>
+              </button>
+              <button class="bookMark" id="custom">
+                <i class="fa-solid fa-list"></i>
+                <ul class="listOptions">
+                  <h5>add to list</h5>
+                  <li id="creatList">create List +</li>
+                </ul>
+              </button>
+              <img class="img-fluid" src="https://source.unsplash.com/random" />
+              <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>
+            </a></template
+          >
+        </div>
+        <button class="nextPage">
+          <i class="fa-solid fa-circle-chevron-down"></i>
+        </button>
       </div>
     </div>
   </body>
