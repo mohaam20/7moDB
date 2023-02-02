@@ -461,6 +461,20 @@ window.addEventListener("load", () => {
 window.addEventListener(
   "click",
   (event) => {
+    console.log(event.target.className);
+    // if (event.target.className == "bookMark") {
+    //   let movie = {
+    //     id: event.target.parentNode.id,
+    //     type: event.target.parentNode.getAttribute("type"),
+    //   };
+    //   console.log(movie);
+    // }
+    if (event.target.closest("#rec")) {
+      autoslide = false;
+      setTimeout(() => {
+        autoslide = true;
+      }, 7000);
+    }
     if (ressTemp !== event.target && !ressTemp.contains(event.target)) {
       ressTemp.innerHTML = null;
     }
@@ -474,16 +488,7 @@ window.addEventListener(
           `https://api.themoviedb.org/3/search/movie?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&query=${searchBar.value}&page=1&include_adult=false`
         )
           .then((res) => res.json())
-          .then((res) =>
-            res.results.filter(
-              (res) =>
-                res.original_language == "en" ||
-                res.original_language == "ar" ||
-                res.original_language == "ja" ||
-                res.original_language == "fr"
-            )
-          )
-          .then((res) => res.slice(0, 10))
+          .then((res) => res.results.slice(0, 10))
           .then((res) => {
             // allResult.push(...res);
             // allUnsorted.push(...res);
@@ -493,16 +498,7 @@ window.addEventListener(
           `https://api.themoviedb.org/3/search/tv?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&query=${searchBar.value}&include_adult=false`
         )
           .then((res) => res.json())
-          .then((res) =>
-            res.results.filter(
-              (res) =>
-                res.original_language == "en" ||
-                res.original_language == "ar" ||
-                res.original_language == "ja" ||
-                res.original_language == "fr"
-            )
-          )
-          .then((res) => res.slice(0, 10))
+          .then((res) => res.results.slice(0, 10))
           .then((res) => {
             // allResult.push(...res);
             // allUnsorted.push(...res);
@@ -546,29 +542,12 @@ searchBar.addEventListener(
       // ).then((res) => {
       //   console.log(res.json());
       // });
-      // fetch(
-      //   `https://api.themoviedb.org/3/search/person?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&query=${searchBar.value}&page=1&include_adult=false`
-      // )
-      //   .then((res) => res.json())
-      //   .then((res) => {
-      //     // console.log(res);
-      //     manSearchResults(res.results);
-      //   }),
       Promise.all([
         fetch(
           `https://api.themoviedb.org/3/search/movie?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&query=${searchBar.value}&page=1&include_adult=false`
         )
           .then((res) => res.json())
-          .then((res) =>
-            res.results.filter(
-              (res) =>
-                res.original_language == "en" ||
-                res.original_language == "ar" ||
-                res.original_language == "ja" ||
-                res.original_language == "fr"
-            )
-          )
-          .then((res) => res.slice(0, 10))
+          .then((res) => res.results.slice(0, 10))
           .then((res) => {
             // allResult.push(...res);
             // allUnsorted.push(...res);
@@ -578,16 +557,7 @@ searchBar.addEventListener(
           `https://api.themoviedb.org/3/search/tv?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&query=${searchBar.value}&include_adult=false`
         )
           .then((res) => res.json())
-          .then((res) =>
-            res.results.filter(
-              (res) =>
-                res.original_language == "en" ||
-                res.original_language == "ar" ||
-                res.original_language == "ja" ||
-                res.original_language == "fr"
-            )
-          )
-          .then((res) => res.slice(0, 10))
+          .then((res) => res.results.slice(0, 10))
           .then((res) => {
             // allResult.push(...res);
             // allUnsorted.push(...res);
@@ -718,6 +688,9 @@ function searchResultsMixed(movies) {
     } else {
       let poster = movie.poster_path;
       let title = movie.original_name ?? movie.original_title;
+      if (movie.original_language !== "ar" && movie.name) {
+        title = movie.name;
+      }
       let date = movie.release_date ?? movie.first_air_date;
       let card = resTemp.cloneNode(true).querySelector("li");
       // console.log(movie.popularity + " " + title);

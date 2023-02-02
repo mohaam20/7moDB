@@ -119,8 +119,8 @@ for (let i of allLangs) {
 function addOptions(list, newList) {
   console.log(list);
   for (let i of list.genres) {
-    console.log(i.name);
-    console.log("butt");
+    // console.log(i.name);
+    // console.log("butt");
 
     newList.push({ name: i.name, id: i.id });
   }
@@ -142,7 +142,7 @@ typeFilter.addEventListener("change", changeGenres);
 console.log(genreFilter.options[0].value);
 (() => {
   for (let i = 2022; i > 1965; i--) {
-    console.log(i);
+    // console.log(i);
     dateFilter.options[dateFilter.options.length] = new Option(i, i);
   }
 
@@ -280,16 +280,7 @@ window.addEventListener(
           `https://api.themoviedb.org/3/search/movie?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&query=${searchBar.value}&page=1&include_adult=false`
         )
           .then((res) => res.json())
-          .then((res) =>
-            res.results.filter(
-              (res) =>
-                res.original_language == "en" ||
-                res.original_language == "ar" ||
-                res.original_language == "ja" ||
-                res.original_language == "fr"
-            )
-          )
-          .then((res) => res.slice(0, 10))
+          .then((res) => res.results.slice(0, 10))
           .then((res) => {
             // allResult.push(...res);
             // allUnsorted.push(...res);
@@ -299,16 +290,7 @@ window.addEventListener(
           `https://api.themoviedb.org/3/search/tv?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&query=${searchBar.value}&include_adult=false`
         )
           .then((res) => res.json())
-          .then((res) =>
-            res.results.filter(
-              (res) =>
-                res.original_language == "en" ||
-                res.original_language == "ar" ||
-                res.original_language == "ja" ||
-                res.original_language == "fr"
-            )
-          )
-          .then((res) => res.slice(0, 10))
+          .then((res) => res.results.slice(0, 10))
           .then((res) => {
             // allResult.push(...res);
             // allUnsorted.push(...res);
@@ -357,16 +339,7 @@ searchBar.addEventListener(
           `https://api.themoviedb.org/3/search/movie?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&query=${searchBar.value}&page=1&include_adult=false`
         )
           .then((res) => res.json())
-          .then((res) =>
-            res.results.filter(
-              (res) =>
-                res.original_language == "en" ||
-                res.original_language == "ar" ||
-                res.original_language == "ja" ||
-                res.original_language == "fr"
-            )
-          )
-          .then((res) => res.slice(0, 10))
+          .then((res) => res.results.slice(0, 10))
           .then((res) => {
             // allResult.push(...res);
             // allUnsorted.push(...res);
@@ -376,16 +349,7 @@ searchBar.addEventListener(
           `https://api.themoviedb.org/3/search/tv?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&query=${searchBar.value}&include_adult=false`
         )
           .then((res) => res.json())
-          .then((res) =>
-            res.results.filter(
-              (res) =>
-                res.original_language == "en" ||
-                res.original_language == "ar" ||
-                res.original_language == "ja" ||
-                res.original_language == "fr"
-            )
-          )
-          .then((res) => res.slice(0, 10))
+          .then((res) => res.results.slice(0, 10))
           .then((res) => {
             // allResult.push(...res);
             // allUnsorted.push(...res);
@@ -450,6 +414,9 @@ function searchResultsMixed(movies) {
     } else {
       let poster = movie.poster_path;
       let title = movie.original_name ?? movie.original_title;
+      if (movie.original_language !== "ar" && movie.name) {
+        title = movie.name;
+      }
       let date = movie.release_date ?? movie.first_air_date;
       let card = resTemp.cloneNode(true).querySelector("li");
       // console.log(movie.popularity + " " + title);
@@ -485,7 +452,10 @@ function plotSlides(trends, slideName) {
   for (let trend of trends) {
     let poster = trend.poster_path;
     let backDrop = trend.backdrop_path;
-    let title = trend.original_name ?? trend.title;
+    let title = trend.name ?? trend.title;
+    if (trend.original_language == "ar") {
+      title = trend.original_name ?? trend.original_title;
+    }
     let date = trend.release_date ?? trend.first_air_date;
     let detial = trend.overview;
     let card = movieCard.content.cloneNode(true);

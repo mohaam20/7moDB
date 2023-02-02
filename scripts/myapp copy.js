@@ -197,16 +197,7 @@ window.addEventListener(
           `https://api.themoviedb.org/3/search/movie?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&query=${searchBar.value}&page=1&include_adult=false`
         )
           .then((res) => res.json())
-          .then((res) =>
-            res.results.filter(
-              (res) =>
-                res.original_language == "en" ||
-                res.original_language == "ar" ||
-                res.original_language == "ja" ||
-                res.original_language == "fr"
-            )
-          )
-          .then((res) => res.slice(0, 10))
+          .then((res) => res.results.slice(0, 10))
           .then((res) => {
             // allResult.push(...res);
             // allUnsorted.push(...res);
@@ -216,16 +207,7 @@ window.addEventListener(
           `https://api.themoviedb.org/3/search/tv?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&query=${searchBar.value}&include_adult=false`
         )
           .then((res) => res.json())
-          .then((res) =>
-            res.results.filter(
-              (res) =>
-                res.original_language == "en" ||
-                res.original_language == "ar" ||
-                res.original_language == "ja" ||
-                res.original_language == "fr"
-            )
-          )
-          .then((res) => res.slice(0, 10))
+          .then((res) => res.results.slice(0, 10))
           .then((res) => {
             // allResult.push(...res);
             // allUnsorted.push(...res);
@@ -274,16 +256,7 @@ searchBar.addEventListener(
           `https://api.themoviedb.org/3/search/movie?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&query=${searchBar.value}&page=1&include_adult=false`
         )
           .then((res) => res.json())
-          .then((res) =>
-            res.results.filter(
-              (res) =>
-                res.original_language == "en" ||
-                res.original_language == "ar" ||
-                res.original_language == "ja" ||
-                res.original_language == "fr"
-            )
-          )
-          .then((res) => res.slice(0, 10))
+          .then((res) => res.results.slice(0, 10))
           .then((res) => {
             // allResult.push(...res);
             // allUnsorted.push(...res);
@@ -293,16 +266,7 @@ searchBar.addEventListener(
           `https://api.themoviedb.org/3/search/tv?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&query=${searchBar.value}&include_adult=false`
         )
           .then((res) => res.json())
-          .then((res) =>
-            res.results.filter(
-              (res) =>
-                res.original_language == "en" ||
-                res.original_language == "ar" ||
-                res.original_language == "ja" ||
-                res.original_language == "fr"
-            )
-          )
-          .then((res) => res.slice(0, 10))
+          .then((res) => res.results.slice(0, 10))
           .then((res) => {
             // allResult.push(...res);
             // allUnsorted.push(...res);
@@ -378,7 +342,7 @@ function searchResultsMixed(movies) {
     return numb - numa;
   });
   movies = movies.slice(0, 7);
-
+  console.log(movies);
   for (let movie of movies) {
     console.log(movie);
     if (movie.known_for_department) {
@@ -406,6 +370,9 @@ function searchResultsMixed(movies) {
     } else {
       let poster = movie.poster_path;
       let title = movie.original_name ?? movie.original_title;
+      if (movie.original_language !== "ar" && movie.name) {
+        title = movie.name;
+      }
       let date = movie.release_date ?? movie.first_air_date;
       let card = resTemp.cloneNode(true).querySelector("li");
       // console.log(movie.popularity + " " + title);
@@ -794,7 +761,7 @@ mainSlide.addEventListener("mouseleave", () => {
 
 const autoScroll = setInterval(() => {
   if (autoslide) {
-    scrollSlide2("next", mainSlide.querySelector(".slide-show"));
+    // scrollSlide2("next", mainSlide.querySelector(".slide-show"));
     // scrollSlide("next", mainSlide.querySelector(".slide-show"));
   }
 }, 3500);
