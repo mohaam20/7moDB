@@ -5,6 +5,11 @@
 // if (location.hash.length == 0) {
 //   removeEventListener("popstate", channnn);
 // }
+fetch(
+  "https://api.themoviedb.org/3/tv/37854/season/3?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US"
+).then((res) => {
+  console.log(res.json());
+});
 console.log(location.hash);
 
 addEventListener("popstate", channnn);
@@ -78,6 +83,7 @@ const resTemp = ressTemp.querySelector(".result_temp").content;
 const metaData = document.querySelector(".metaTitle");
 const castSlide = document.querySelector("#cast");
 const seasSlide = document.querySelector("#seasons");
+const epislide = document.querySelector("#episodes");
 const slide1 = document.querySelector("#movieTrends");
 const slide2 = document.querySelector("#tvTrends");
 const simiSlide = document.querySelector("#similar");
@@ -176,14 +182,39 @@ async function init() {
   //   sessionStorage.setItem("count", 1);
   // }
 
+  console.log(realInfos, videoType);
+
   let raw = await fetch(
-    `https://api.themoviedb.org/3/${videoType}/${realInfos}?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&append_to_response=reviews,aggregate_credits,videos,credits,recommendations,similar,external_ids`
+    `https://api.themoviedb.org/3/tv/${realInfos}/season/${videoType}?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&append_to_response=reviews,aggregate_credits,videos,genres,credits,recommendations,similar,external_ids`
   ).then((res) => res.json());
+
+  let rawz = await fetch(
+    `https://api.themoviedb.org/3/tv/${realInfos}?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&append_to_response=reviews,aggregate_credits,videos,genres,credits,recommendations,similar,external_ids`
+  ).then((res) => res.json());
+
+  console.log(raw);
+  console.log(rawz);
   mainOverview.innerHTML = raw.overview;
   mainDop.src = `${baseDrop}${raw.backdrop_path || raw.poster_path}`;
   mainPoster.src = `${baseImg}${raw.poster_path}`;
   mainPoster.alt = raw.title ?? raw.original_name;
-  let imdbId = raw.external_ids.imdb_id;
+  let imdbId = rawz.external_ids.imdb_id;
+  try {
+    let titleRate = await fetch(
+      `https://moviesdatabase.p.rapidapi.com/titles/${imdbId}/ratings`,
+      options
+    )
+      .then((response) => response.json())
+      .then((response) => response)
+      .catch((err) => console.error(err));
+
+    console.log(titleRate.results.averageRating);
+    document.querySelector(
+      ".rating"
+    ).innerHTML = `<i class="fa-brands fa-imdb"></i> : ${
+      titleRate.results.averageRating ?? raw.vote_average
+    }`;
+  } catch {}
   console.log(imdbId);
   document.querySelector(
     ".rating"
@@ -206,25 +237,20 @@ async function init() {
   } catch {}
   console.log(raw);
 
-  mainTitle.querySelector(".title").innerHTML = raw.title ?? raw.original_name;
-  document.title = raw.title ?? raw.original_name;
-
-  if (
-    (raw.languages && raw.languages[0] !== "ar") ||
-    raw.spoken_languages[`iso_639_1`] !== "ar"
-  ) {
-    mainTitle.querySelector(".title").innerHTML = raw.name ?? raw.title;
-
-    document.title = raw.name ?? raw.original_name ?? raw.title;
-  }
-  let shortDate = (raw.release_date ?? raw.first_air_date).slice(0, 4);
+  mainTitle.querySelector(
+    ".title"
+  ).innerHTML = `<a style="color:gold;" href=/pages/movie1.html#${realInfos}-tv> ${
+    rawz.name ?? rawz.original_name
+  } </a> : ${raw.name ?? raw.original_name}`;
+  document.title = raw.name ?? raw.original_name;
+  let shortDate = (raw.air_date ?? raw.first_air_date ?? "unknown").slice(0, 4);
   let dateEle = document.querySelector(".air");
-  dateEle.innerHTML = `<p>release date</p> <a href="/pages/expand.html#${videoType}-${shortDate}">${shortDate}</a>`;
+  dateEle.innerHTML = `<p>release date</p> <a href="/pages/expand.html#tv-${shortDate}">${shortDate}</a>`;
   document.querySelector(".media").innerHTML = `<p>type</p>${
     videoType == "movie" ? "moive" : "tv-show"
   }`;
 
-  raw.genres.forEach((element) => {
+  rawz.genres.forEach((element) => {
     document.querySelector(
       ".genre"
     ).innerHTML += ` /<a href="/pages/collection.html#${
@@ -262,68 +288,65 @@ async function init() {
       console.log(res);
     });
   castSlide.querySelector(".slide-show").innerHTML = "";
-  castSlide.querySelector(
-    ".slide-title"
-  ).href = `/pages/fullLists.html#cast-${videoType}-${realInfos}`;
   if (raw.aggregate_credits) {
-    plotCast(raw.aggregate_credits.cast.slice(0, 20), castSlide);
+    plotCast(raw.credits.cast, castSlide);
 
-    if (raw.seasons.length > 0 && raw.seasons[0].poster_path !== null) {
-      plotSeas(raw.seasons, seasSlide);
+    if (rawz.seasons.length > 0 && rawz.seasons[0].poster_path !== null) {
+      plotSeas(rawz.seasons, seasSlide);
     } else {
       seasSlide.remove();
     }
+    // plotCast(raw.aggregate_credits.cast.slice(0, 20), castSlide);
   } else {
     seasSlide.remove();
     plotCast(raw.credits.cast, castSlide);
   }
 
+  if (raw.episodes.length > 0 && raw.episodes[0].poster_path !== null) {
+    plotEpisode(raw.episodes, epislide);
+  } else {
+    epislide.remove();
+  }
+
   simiSlide.querySelector(".slide-show").innerHTML = "";
   recoSlide.querySelector(".slide-show").innerHTML = "";
-  plotSlides(raw.similar.results, simiSlide);
-  plotSlides(raw.recommendations.results, recoSlide);
-  if (raw.recommendations.results.length == 0) {
+  plotSlides(rawz.similar.results, simiSlide);
+  plotSlides(rawz.recommendations.results, recoSlide);
+  if (rawz.recommendations.results.length == 0) {
     recoSlide.remove();
   } else {
     document
       .querySelector("#recommend")
       .querySelector(
-        ".slide-title"
-      ).href = `/pages/fullLists.html#recommend-${videoType}-${realInfos}`;
-    document
-      .querySelector("#recommend")
-      .querySelector(
-        ".slide-title"
-      ).innerHTML = `${videoType}s recommendations <i class="fa-solid fa-angle-right">`;
+        "h2"
+      ).innerHTML = `tv s recommendations <i class="fa-solid fa-angle-right">`;
   }
-  if (raw.similar.results.length == 0) {
+  if (rawz.similar.results.length == 0) {
     similar.remove();
   } else {
     document
       .querySelector("#similar")
       .querySelector(
-        ".slide-title"
-      ).href = `/pages/fullLists.html#similar-${videoType}-${realInfos}`;
-    document
-      .querySelector("#similar")
-      .querySelector(
-        ".slide-title"
-      ).innerHTML = `similar ${videoType}s <i class="fa-solid fa-angle-right">`;
+        "h2"
+      ).innerHTML = `similar tv s <i class="fa-solid fa-angle-right">`;
   }
 
   if (raw.seasons) {
     console.log("seasons here");
   }
-  if (raw.videos.results.length == 0) {
+  if (raw.videos.results.length == 0 && rawz.videos.results.length == 0) {
     document.querySelector("#trailer").remove();
   } else {
     tag = document.createElement("script");
-
     tag.src = "https://www.youtube.com/iframe_api";
     firstScriptTag = document.getElementsByTagName("script")[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
   }
-  possibleVids = raw.videos.results;
+  if (raw.videos.results.length !== 0) {
+    possibleVids = raw.videos.results;
+  } else {
+    possibleVids = rawz.videos.results;
+  }
 
   for (let i of allFav.laters) {
     if (i.id == realInfos) {
@@ -399,61 +422,51 @@ window.addEventListener("load", () => {
   // sessionStorage.setItem("movieId", hashs.substring(1));
   // sessionStorage.setItem("type", hash2);
   init();
-  setTimeout(() => {
-    fetch(
-      "https://api.themoviedb.org/3/movie/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&region=us"
-    )
-      .then((res) => res.json())
-      .then((res) => res.results)
-      .then((res) => {
-        // console.log(res);
-        plotSlides(res, topSlide);
-      });
-  }, 200);
-  setTimeout(() => {
-    fetch(
-      "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=en|ar&page=1&region=us"
-    )
-      .then((res) => res.json())
-      .then((res) => res.results)
-      .then((res) => {
-        // console.log(res);
-        plotSlides(res, top2Slide);
-      });
-  }, 300);
-  setTimeout(() => {
-    fetch(
-      "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=ja&page=1"
-    )
-      .then((res) => res.json())
-      .then((res) => res.results)
-      .then((res) => {
-        // console.log(res);
-        plotSlides(res, top3Slide);
-      });
-  }, 400);
-  setTimeout(() => {
-    fetch(
-      "https://api.themoviedb.org/3/trending/movie/day?api_key=5e060480a887e5981aa743bc33a74e40"
-    )
-      .then((res) => res.json())
-      .then((res) => res.results)
-      .then((res) => {
-        // console.log(res);
-        plotSlides(res, slide1);
-      });
-  }, 500);
-  setTimeout(() => {
-    fetch(
-      "https://api.themoviedb.org/3/trending/tv/day?api_key=5e060480a887e5981aa743bc33a74e40"
-    )
-      .then((res) => res.json())
-      .then((res) => res.results)
-      .then((res) => {
-        // console.log(res);
-        plotSlides(res, slide2);
-      });
-  }, 600);
+  fetch(
+    "https://api.themoviedb.org/3/movie/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&region=us"
+  )
+    .then((res) => res.json())
+    .then((res) => res.results)
+    .then((res) => {
+      // console.log(res);
+      plotSlides(res, topSlide);
+    });
+  fetch(
+    "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=en|ar&page=1&region=us"
+  )
+    .then((res) => res.json())
+    .then((res) => res.results)
+    .then((res) => {
+      // console.log(res);
+      plotSlides(res, top2Slide);
+    });
+  fetch(
+    "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=ja&page=1"
+  )
+    .then((res) => res.json())
+    .then((res) => res.results)
+    .then((res) => {
+      // console.log(res);
+      plotSlides(res, top3Slide);
+    });
+  fetch(
+    "https://api.themoviedb.org/3/trending/movie/day?api_key=5e060480a887e5981aa743bc33a74e40"
+  )
+    .then((res) => res.json())
+    .then((res) => res.results)
+    .then((res) => {
+      // console.log(res);
+      plotSlides(res, slide1);
+    });
+  fetch(
+    "https://api.themoviedb.org/3/trending/tv/day?api_key=5e060480a887e5981aa743bc33a74e40"
+  )
+    .then((res) => res.json())
+    .then((res) => res.results)
+    .then((res) => {
+      // console.log(res);
+      plotSlides(res, slide2);
+    });
 });
 
 // search
@@ -722,7 +735,7 @@ function searchResultsMixed(movies) {
       let card = resTemp.cloneNode(true).querySelector("li");
       // console.log(movie.popularity + " " + title);
       card.id = movie.id;
-      card.querySelector("a").href = `#${movie.id}-${
+      card.querySelector("a").href = `/pages/movie1.html#${movie.id}-${
         movie.title == null ? "tv" : "movie"
       }`;
       card.setAttribute("type", movie.title == null ? "tv" : "movie");
@@ -795,6 +808,48 @@ async function plotSeas(trends, slideName) {
       `<p style=" display:inline; font-size:1rem; "> air date :${sesDate}<p/>` +
       " " +
       `<p style=" display:inline; font-size:1rem; ">number of episodes : ${trend.episode_count}<p/>`;
+
+    if (poster != null) {
+      slideName.querySelector(".slide-show").append(card);
+    }
+  }
+}
+
+async function plotEpisode(trends, slideName) {
+  console.log(trends);
+  for (let trend of trends) {
+    // console.log(trend);
+    let episodeRev = document.createElement("p");
+
+    let poster = trend.still_path;
+    let title = trend.name;
+    let sesDate = trend.air_date;
+    let card = movieCard.content.cloneNode(true);
+    card.querySelector(".card").id = trend.id;
+    card.querySelector(".card").setAttribute("type", "person");
+    card.querySelector(".card").href = `season.html#${trend.id}`;
+    episodeRev.innerHTML = " i am text ";
+
+    card.querySelector("img").src = `${basePoster}${poster}`;
+    card.querySelector(".infos").innerHTML =
+      `<p style=" display:inline; font-size:1.2rem; color:gold;">${title}<p/>` +
+      " " +
+      `<p style=" display:inline; font-size:1rem; "> rating :${trend.vote_average}<p/>` +
+      " " +
+      `<p style=" display:inline; font-size:1rem; ">run time : ${trend.runtime}<p/>`;
+    // card.querySelector(".infos").append(episodeRev);
+    // episodeRev.classList.add("episodDet");
+
+    card
+      .querySelector(".card")
+      .querySelectorAll("BUTTON")
+      .forEach((e) => {
+        e.remove();
+      });
+    card.querySelector(".card").addEventListener("click", (e) => {
+      console.log("ssssaaaaa");
+      e.preventDefault();
+    });
 
     if (poster != null) {
       slideName.querySelector(".slide-show").append(card);
@@ -1084,6 +1139,7 @@ function appendLink(event) {
       "..." +
       uncle.scrollWidth
   );
+
   if (event.target.classList.contains("bookMark")) {
     if (event.target.classList.contains("bookMarkDone")) {
       event.target.classList.remove("bookMarkDone");

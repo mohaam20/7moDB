@@ -99,12 +99,18 @@ addEventListener("load", () => {
       "https://api.themoviedb.org/3/trending/movie/day?api_key=5e060480a887e5981aa743bc33a74e40"
     )
       .then((res) => res.json())
-      .then((res) => res.results)
       .then((res) => {
-        // console.log(res);
+        console.log(res);
+        return res.results;
+      })
+      .then((res) => {
+        console.log(res);
+        slide1.querySelector(".slide-title").href =
+          "pages/fullLists.html#trend-movie";
         plotSlides(res, slide1);
       });
   }, 800);
+
   setTimeout(() => {
     fetch(
       "https://api.themoviedb.org/3/trending/tv/day?api_key=5e060480a887e5981aa743bc33a74e40"
@@ -113,17 +119,21 @@ addEventListener("load", () => {
       .then((res) => res.results)
       .then((res) => {
         // console.log(res);
+        slide2.querySelector(".slide-title").href =
+          "pages/fullLists.html#trend-tv";
         plotSlides(res, slide2);
       });
   }, 1300);
   setTimeout(() => {
     fetch(
-      "https://api.themoviedb.org/3/movie/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&region=us"
+      "https://api.themoviedb.org/3/movie/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&adult=false"
     )
       .then((res) => res.json())
       .then((res) => res.results)
       .then((res) => {
         // console.log(res);
+        topSlide.querySelector(".slide-title").href =
+          "pages/fullLists.html#top-movie";
         plotSlides(res, topSlide);
       });
   }, 2000);
@@ -135,6 +145,8 @@ addEventListener("load", () => {
       .then((res) => res.results)
       .then((res) => {
         // console.log(res);
+        top2Slide.querySelector(".slide-title").href =
+          "pages/fullLists.html#top-tv";
         plotSlides(res, top2Slide);
       });
   }, 2500);
@@ -146,6 +158,8 @@ addEventListener("load", () => {
       .then((res) => res.results)
       .then((res) => {
         // console.log(res);
+        top3Slide.querySelector(".slide-title").href =
+          "pages/fullLists.html#top-tv-ja";
         plotSlides(res, top3Slide);
       });
   }, 3000);
@@ -780,10 +794,10 @@ mainSlide.addEventListener("mouseleave", () => {
 
 const autoScroll = setInterval(() => {
   if (autoslide) {
-    // scrollSlide2("next", mainSlide.querySelector(".slide-show"));
+    scrollSlide2("next", mainSlide.querySelector(".slide-show"));
     // scrollSlide("next", mainSlide.querySelector(".slide-show"));
   }
-}, 2500);
+}, 3500);
 
 window.addEventListener(
   "resize",
@@ -974,9 +988,7 @@ function stopShit(event) {
     console.log("stoop nav");
   }
   if (unit.classList.contains("viewdCard")) {
-    if (unit.closest("#rec") !== null && isTouch) {
-      event.preventDefault();
-    }
+    event.preventDefault();
   } else {
     for (let i of unit.children) {
       i.classList.remove("bookMarkSee");

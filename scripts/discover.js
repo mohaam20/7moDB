@@ -131,12 +131,14 @@ function changeGenres() {
   genreFilter.options.length = 0;
   let target = typeFilter.value == "movie" ? movieGenres : tvGenres;
   console.log(target);
+  genreFilter.options[0] = new Option("all", null);
+
   for (let i of target) {
     genreFilter.options[genreFilter.options.length] = new Option(i.name, i.id);
   }
 }
 
-typeFilter.addEventListener("pointerup", changeGenres);
+typeFilter.addEventListener("change", changeGenres);
 console.log(genreFilter.options[0].value);
 (() => {
   for (let i = 2022; i > 1965; i--) {
@@ -178,11 +180,11 @@ async function init(page) {
 
   console.log(genreFilter.value);
   let L = langFilter.value || "";
-  let R = rateFilter.value || 7;
+  let R = rateFilter.value || "";
   let G = genreFilter.value;
   let D = +dateFilter.value || "";
 
-  console.log(T);
+  console.log(G);
   // if (!G) {
   //   if (T == "tv") {
   //     console.log("555");

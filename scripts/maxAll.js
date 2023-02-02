@@ -38,6 +38,7 @@ localStorage.setItem("watched", JSON.stringify(allSeen));
 let yours = JSON.parse(localStorage.getItem("customs")) || {};
 console.log(yours);
 
+let fetchQuery;
 // for (let i in yours) {
 //   console.log(yours[i].title);
 //   console.log(JSON.parse(JSON.stringify(yours[i])));
@@ -56,6 +57,46 @@ window.addEventListener("load", () => {
   console.log(location.hash);
   // sessionStorage.setItem("movieId", hashs.substring(1));
   // sessionStorage.setItem("type", hash2);
+  if (location.hash.includes("trend")) {
+    genTitle.innerHTML = `trending </br> ${location.hash.split("-")[1]}s`;
+
+    fetchQuery = `https://api.themoviedb.org/3/trending/${
+      location.hash.split("-")[1]
+    }/day?api_key=5e060480a887e5981aa743bc33a74e40`;
+  } else if (location.hash.includes("similar")) {
+    fetchQuery = `https://api.themoviedb.org/3/${location.hash.split("-")[1]}/${
+      location.hash.split("-")[2]
+    }?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&append_to_response=similar`;
+  } else if (location.hash.includes("cast")) {
+    fetchQuery = `https://api.themoviedb.org/3/${location.hash.split("-")[1]}/${
+      location.hash.split("-")[2]
+    }?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&append_to_response=aggregate_credits,credits`;
+  } else if (location.hash.includes("recommend")) {
+    fetchQuery = `https://api.themoviedb.org/3/${location.hash.split("-")[1]}/${
+      location.hash.split("-")[2]
+    }?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&append_to_response=recommendations`;
+  } else if (location.hash.includes("work")) {
+    console.log("blah");
+    fetchQuery = `https://api.themoviedb.org/3/person/${
+      location.hash.split("-")[1]
+    }?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&append_to_response=movie_credits,tv_credits`;
+  } else if (location.hash.includes("top")) {
+    if (location.hash.split("-")[2]) {
+      genTitle.innerHTML = `top animes`;
+
+      fetchQuery = `https://api.themoviedb.org/3/${
+        location.hash.split("-")[1]
+      }/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&adult=false&with_original_language=${
+        location.hash.split("-")[2]
+      }`;
+    } else {
+      genTitle.innerHTML = `top </br> ${location.hash.split("-")[1]}s`;
+
+      fetchQuery = `https://api.themoviedb.org/3/${
+        location.hash.split("-")[1]
+      }/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&adult=false`;
+    }
+  }
   init(1);
 });
 
@@ -68,46 +109,61 @@ async function init(page) {
 
   if (location.hash.length == 0) {
     open("/index.html", "_self");
-  } else {
-    console.log("i am here");
-
-    let hashs = location.hash.split("-")[0];
-    let hash2 = location.hash.split("-")[1];
-
-    realInfos = hashs.substring(1);
-    videoType = hash2;
   }
-  console.log(location.hash.slice(1, 3));
-  let genType = location.hash.slice(1, 3) == "tv" ? "tv" : "movie";
-  let allGens = await fetch(
-    `https://api.themoviedb.org/3/genre/${genType}/list?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US`
-  ).then((res) => res.json());
 
-  console.log(allGens);
-  console.log(location.hash.slice(6));
-  genTitle.innerHTML = `${location.hash.slice(-4)} </br> ${genType}s`;
-  //   for (let i of allGens.genres) {
-  //     if (i.id == `${location.hash.slice(6)}`) {
-  //       genTitle.innerHTML = `${i.name} </br> ${genType}s`;
-  //       console.log(i.name);
-  //     }
-  //   }
-
-  let raw = await fetch(
-    `https://api.themoviedb.org/3/discover/${genType}?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&sort_by=popularity.desc&include_adult=false&vote_count.gte=1000&include_video=false&page=${page}&vote_average.gte=7&primary_release_year=${location.hash.slice(
-      6
-    )}`
-  ).then((res) => res.json());
+  let raw = await fetch(`${fetchQuery}&page=${page}`).then((res) => res.json());
   console.log(raw);
-  plotSlides(raw.results, genreBox);
-  // mainOverview.innerHTML = raw.overview;
-  let numf = Math.floor(Math.random() * raw.results.length);
-  console.log(numf);
-  if (page == "1") {
-    mainDop.src = `${baseDrop}${
-      raw.results[numf].backdrop_path || raw.poster_path
-    }`;
+  if (raw.recommendations) {
+    genreBox.querySelector(".slide-title").innerHTML = `${
+      raw.title || raw.name
+    } recommendation`;
+    mainDop.src = `${baseDrop}${raw.backdrop_path || raw.poster_path}`;
+    plotSlides(raw.recommendations.results, genreBox);
+  } else if (raw.similar) {
+    genreBox.querySelector(".slide-title").innerHTML =
+      "similar to <br>" + raw.title || raw.name;
+    mainDop.src = `${baseDrop}${raw.backdrop_path || raw.poster_path}`;
+    plotSlides(raw.similar.results, genreBox);
+  } else if (raw.aggregate_credits || raw.credits) {
+    genreBox.querySelector(".slide-title").innerHTML =
+      "cast of " + (raw.original_name || raw.title);
+    mainDop.src = `${baseDrop}${raw.backdrop_path || raw.poster_path}`;
+
+    if (raw.aggregate_credits) {
+      plotCast(raw.aggregate_credits.cast, genreBox);
+    } else {
+      plotCast(raw.credits.cast, genreBox);
+    }
+  } else if (location.hash.split("-")[0] !== "#work") {
+    console.log(location.hash.split("-")[0]);
+    let numf = Math.floor(Math.random() * raw.results.length);
+    if (page == "1") {
+      mainDop.src = `${baseDrop}${
+        raw.results[numf].backdrop_path || raw.poster_path
+      }`;
+    }
+    plotSlides(raw.results, genreBox);
   }
+  if (location.hash.split("-")[0] == "#work") {
+    if (raw.known_for_department == "Acting") {
+      mainDop.style.transform = "translatey(-40rem)";
+      mainDop.src = `${baseDrop}${raw.profile_path}`;
+      genreBox.querySelector(".slide-title").innerHTML =
+        location.hash.split("-")[2] + "s of " + raw.name;
+      let mType = location.hash.split("-")[2] + "_credits";
+      plotSlides(raw[mType].cast, genreBox);
+    } else {
+      mainDop.src = `${baseDrop}${raw.profile_path}`;
+
+      let mType = location.hash.split("-")[2] + "_credits";
+
+      console.log("repeattttttttttttttttttttttttttttttttttttttttttttt");
+      plotSlides(raw[mType].crew, genreBox);
+    }
+  }
+
+  // mainOverview.innerHTML = raw.overview;
+
   // mainPoster.src = `${baseImg}${raw.poster_path}`;
   // mainPoster.alt = raw.title ?? raw.original_name;
 }
@@ -123,8 +179,8 @@ window.addEventListener(
     ) {
     } else {
       for (let i of document.querySelectorAll(".card")) {
-        console.log(i.dataset.navto);
-        console.log(i);
+        // console.log(i.dataset.navto);
+        // console.log(i);
         i.setAttribute("data-navto", false);
       }
     }
@@ -409,6 +465,36 @@ function plotSlides(trends, slideName) {
   }
 }
 
+function plotCast(trends, slideName) {
+  // trends = trends.slice(0, 7);
+  console.log(trends);
+  for (let trend of trends) {
+    let poster = trend.profile_path;
+    let title = trend.name;
+    let detial = trend.character ?? trend.roles[0].character;
+    let card = movieCard.content.cloneNode(true);
+
+    card.querySelector(".card").id = trend.id;
+    card.querySelector(".card").setAttribute("type", "person");
+    card.querySelector(".card").href = `person.html#${trend.id}`;
+
+    card.querySelector("img").src = `${baseImg}${poster}`;
+    card.querySelector(".infos").innerHTML =
+      `<p style="color:gold; display:inline; font-size:1.2rem;">${title}<p/>` +
+      " " +
+      `<p style=" display:inline; font-size:1rem;">as: ${detial}<p/>` +
+      " " +
+      `<p style=" display:inline; font-size:1rem;"> known for: ${trend.known_for_department}<p/>`;
+    card.querySelectorAll("BUTTON").forEach((e) => {
+      e.remove();
+    });
+    if (poster == null) {
+      card.querySelector("img").src = "/logos/poster-holder.png";
+    }
+    slideName.querySelector(".slide-show").append(card);
+  }
+}
+
 document.addEventListener(
   "click",
   (event) => {
@@ -439,7 +525,10 @@ document.addEventListener(
 // scroll;
 
 window.addEventListener("scroll", (event) => {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+  if (
+    window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+    !["#work", "#cast"].includes(location.hash.split("-")[0])
+  ) {
     console.log("End of page");
 
     // console.log(newPage);
@@ -450,9 +539,11 @@ window.addEventListener("scroll", (event) => {
 nextPage.addEventListener("pointerup", (event) => {
   // console.log("get more");
   let newPage =
-    Math.ceil(
+    Math.round(
       (genreBox.querySelector(".slide-show").children.length - 1) / 20
     ) + 1;
+  console.log(newPage);
+
   init(newPage);
 });
 window.addEventListener("pointerup", appendLink, false);

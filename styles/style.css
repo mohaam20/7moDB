@@ -447,6 +447,12 @@ header {
   transform: translatex(2rem);
 }
 
+.slide-dad > .back {
+  left: -1rem;
+}
+#rec > .back {
+  left: 0;
+}
 .slide-dad button:hover {
   background-color: rgba(0, 0, 0, 0.619);
   color: rgb(0, 80, 200);
@@ -469,6 +475,7 @@ header {
 }
 
 .slide-title {
+  font-weight: bold;
   text-shadow: 0px 0px 5px rgba(176, 255, 250, 0.692);
   font-size: 2rem;
   letter-spacing: 0.1rem;

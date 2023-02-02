@@ -135,7 +135,12 @@ async function init() {
   //   document.querySelector(".genre").innerHTML += `/ ${element.name}`;
   // });
   // plotSlides(raw.movie_credits, actorMovies);
-
+  actorMovies.querySelector(
+    ".slide-title"
+  ).href = `/pages/fullLists.html#work-${realInfos}-movie`;
+  actorShows.querySelector(
+    ".slide-title"
+  ).href = `/pages/fullLists.html#work-${realInfos}-tv`;
   if (raw.known_for_department == "Acting") {
     actorsWork(raw.movie_credits.cast.slice(0, 25), actorMovies, "movie");
     actorsWork(raw.tv_credits.cast.slice(0, 25), actorShows, "tv");
@@ -182,8 +187,9 @@ async function init() {
   } else {
     mainDop.src = `${baseDrop}${raw.profile_path}`;
   }
-
-  mainPoster.src = `${baseImg}${raw.profile_path}`;
+  if (raw.profile_path !== null) {
+    mainPoster.src = `${baseImg}${raw.profile_path}`;
+  }
 
   console.log(raw.credits);
   // plotCast(raw.credits.cast, castSlide);
@@ -282,51 +288,61 @@ window.addEventListener("scroll", (event) => {
 
 window.addEventListener("load", () => {
   init();
-  fetch(
-    "https://api.themoviedb.org/3/movie/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&region=us"
-  )
-    .then((res) => res.json())
-    .then((res) => res.results)
-    .then((res) => {
-      // console.log(res);
-      plotSlides(res, topSlide);
-    });
-  fetch(
-    "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=en|ar&page=1&region=us"
-  )
-    .then((res) => res.json())
-    .then((res) => res.results)
-    .then((res) => {
-      // console.log(res);
-      plotSlides(res, top2Slide);
-    });
-  fetch(
-    "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=ja&page=1"
-  )
-    .then((res) => res.json())
-    .then((res) => res.results)
-    .then((res) => {
-      // console.log(res);
-      plotSlides(res, top3Slide);
-    });
-  fetch(
-    "https://api.themoviedb.org/3/trending/movie/day?api_key=5e060480a887e5981aa743bc33a74e40"
-  )
-    .then((res) => res.json())
-    .then((res) => res.results)
-    .then((res) => {
-      // console.log(res);
-      plotSlides(res, slide1);
-    });
-  fetch(
-    "https://api.themoviedb.org/3/trending/tv/day?api_key=5e060480a887e5981aa743bc33a74e40"
-  )
-    .then((res) => res.json())
-    .then((res) => res.results)
-    .then((res) => {
-      // console.log(res);
-      plotSlides(res, slide2);
-    });
+  setTimeout(() => {
+    fetch(
+      "https://api.themoviedb.org/3/movie/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&region=us"
+    )
+      .then((res) => res.json())
+      .then((res) => res.results)
+      .then((res) => {
+        // console.log(res);
+        plotSlides(res, topSlide);
+      });
+  }, 200);
+  setTimeout(() => {
+    fetch(
+      "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=en|ar&page=1&region=us"
+    )
+      .then((res) => res.json())
+      .then((res) => res.results)
+      .then((res) => {
+        // console.log(res);
+        plotSlides(res, top2Slide);
+      });
+  }, 300);
+  setTimeout(() => {
+    fetch(
+      "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=ja&page=1"
+    )
+      .then((res) => res.json())
+      .then((res) => res.results)
+      .then((res) => {
+        // console.log(res);
+        plotSlides(res, top3Slide);
+      });
+  }, 400);
+  setTimeout(() => {
+    fetch(
+      "https://api.themoviedb.org/3/trending/movie/day?api_key=5e060480a887e5981aa743bc33a74e40"
+    )
+      .then((res) => res.json())
+      .then((res) => res.results)
+      .then((res) => {
+        // console.log(res);
+        plotSlides(res, slide1);
+      });
+  }, 500);
+  setTimeout(() => {
+    fetch(
+      "https://api.themoviedb.org/3/trending/tv/day?api_key=5e060480a887e5981aa743bc33a74e40"
+    )
+      .then((res) => res.json())
+      .then((res) => res.results)
+      .then((res) => {
+        // console.log(res);
+        plotSlides(res, slide2);
+      });
+  }, 600);
 });
 
 // search
