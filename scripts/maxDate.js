@@ -92,11 +92,10 @@ async function init(page) {
   //       console.log(i.name);
   //     }
   //   }
-
+  let dateOfList = +location.hash.slice(-4);
+  console.log(dateOfList);
   let raw = await fetch(
-    `https://api.themoviedb.org/3/discover/${genType}?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&sort_by=popularity.desc&include_adult=false&vote_count.gte=1000&include_video=false&page=${page}&vote_average.gte=7&primary_release_year=${location.hash.slice(
-      6
-    )}`
+    `https://api.themoviedb.org/3/discover/${genType}?api_key=5e060480a887e5981aa743bc33a74e40&sort_by=popularity.desc&language=en-US&include_adult=false&vote_count.gte=10&include_video=false&page=${page}&primary_release_year=${dateOfList}&first_air_date_year=${dateOfList}&certification.lte=R`
   ).then((res) => res.json());
   console.log(raw);
   plotSlides(raw.results, genreBox);
@@ -406,7 +405,9 @@ document.addEventListener(
 // scroll;
 
 window.addEventListener("scroll", (event) => {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+  if (
+    Math.ceil(window.innerHeight + window.scrollY) >= document.body.offsetHeight
+  ) {
     console.log("End of page");
 
     // console.log(newPage);

@@ -152,7 +152,7 @@ console.log(genreFilter.options[0].value);
   }
 })();
 let raws = fetch(
-  `https://api.themoviedb.org/3/discover/movie?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&sort_by=popularity.desc&include_adult=false&vote_count.gte=1000&include_video=false&page=1&vote_average.gte=all&with_genres=null`
+  `https://api.themoviedb.org/3/discover/movie?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&sort_by=popularity.desc&include_adult=false&vote_count.gte=20&include_video=false&page=1&vote_average.gte=all&with_genres=null`
 ).then((res) => {
   console.log(res.json());
 });

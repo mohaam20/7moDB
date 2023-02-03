@@ -206,13 +206,25 @@ async function init() {
   } catch {}
   console.log(raw);
 
-  mainTitle.querySelector(".title").innerHTML = raw.title ?? raw.original_name;
+  mainTitle.querySelector(".title").innerHTML =
+    raw.original_title ?? raw.original_name;
   document.title = raw.title ?? raw.original_name;
 
+  console.log(
+    raw.languages && ["ar", null].includes(raw.languages[0]),
+    raw.spoken_languages &&
+      ["ar", null].includes(raw.spoken_languages[`iso_639_1`]),
+    raw.original_language && ["ar", null].includes(raw.original_language)
+  );
   if (
-    (raw.languages && raw.languages[0] !== "ar") ||
-    raw.spoken_languages[`iso_639_1`] !== "ar"
+    raw.languages &&
+    !["ar", null].includes(raw.languages[0]) &&
+    raw.spoken_languages &&
+    !["ar", null].includes(raw.spoken_languages[`iso_639_1`]) &&
+    raw.original_language &&
+    !["ar", null].includes(raw.original_language)
   ) {
+    console.log("arabi");
     mainTitle.querySelector(".title").innerHTML = raw.name ?? raw.title;
 
     document.title = raw.name ?? raw.original_name ?? raw.title;

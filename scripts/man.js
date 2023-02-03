@@ -173,9 +173,7 @@ async function init() {
     ".slide-title"
   ).innerHTML = `some of ${raw.name}'s shows`;
 
-  // document.querySelector(".air").innerHTML += (
-  //   raw.release_date ?? raw.first_air_date
-  // ).slice(0, 4);
+  document.querySelector(".air").remove();
   // document.querySelector(".media").innerHTML +=
   //   videoType == "movie" ? "moive" : "tv-show";
   mainOverview.innerHTML =
@@ -636,6 +634,10 @@ async function actorsWork(idss, slideName, which) {
     if (poster != null) {
       slideName.querySelector(".slide-show").append(card);
     }
+  }
+  console.log(slideName.querySelector(".slide-show").children);
+  if (slideName.querySelector(".slide-show").children.length < 2) {
+    slideName.remove();
   }
 }
 

@@ -86,9 +86,9 @@ window.addEventListener("load", () => {
 
       fetchQuery = `https://api.themoviedb.org/3/${
         location.hash.split("-")[1]
-      }/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&adult=false&with_original_language=${
+      }/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&adult=falseX&with_original_language=${
         location.hash.split("-")[2]
-      }`;
+      }&certification_country=US&certification.lte=PG`;
     } else {
       genTitle.innerHTML = `top </br> ${location.hash.split("-")[1]}s`;
 
@@ -492,8 +492,11 @@ document.addEventListener(
 // scroll;
 
 window.addEventListener("scroll", (event) => {
+  // console.log(window.innerHeight + window.scrollY);
+  // console.log(document.body.offsetHeight);
   if (
-    window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+    Math.ceil(window.innerHeight + window.scrollY) >=
+      document.body.offsetHeight &&
     !["#work", "#cast"].includes(location.hash.split("-")[0])
   ) {
     console.log("End of page");

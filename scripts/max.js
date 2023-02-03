@@ -406,7 +406,9 @@ document.addEventListener(
 // scroll;
 
 window.addEventListener("scroll", (event) => {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+  if (
+    Math.ceil(window.innerHeight + window.scrollY) >= document.body.offsetHeight
+  ) {
     console.log("End of page");
 
     // console.log(newPage);
