@@ -59,6 +59,23 @@ for (const i of Object.entries(yours)) {
   console.log(i[1].det);
 }
 
+function lazyLoad() {
+  const images = document.querySelectorAll("img");
+
+  images.forEach((img) => {
+    const rect = img.getBoundingClientRect();
+
+    if (
+      rect.top >= 0 &&
+      rect.bottom <= window.innerHeight &&
+      img.closest(".slide-dad")
+    ) {
+      img.src = img.dataset.src;
+    }
+  });
+}
+
+window.addEventListener("scroll", lazyLoad);
 // let tabs = JSON.parse(localStorage.getItem("tabs")).links;
 
 // window.addEventListener("click", (event) => {
@@ -79,6 +96,8 @@ let mainCount = 1;
 let trendPage = 1;
 nextField.children[1].style.display = "none";
 let baseImg = "http://image.tmdb.org/t/p/w342/";
+let thumImg = "http://image.tmdb.org/t/p/w92/";
+let thumDrop = "http://image.tmdb.org/t/p/w300/";
 let baseDrop = "http://image.tmdb.org/t/p/w1280/";
 // refrence constats
 
@@ -430,14 +449,20 @@ function plotSlides(trends, slideName) {
         .querySelector(".card")
         .setAttribute("type", trend.title == null ? "Tv" : "movie");
 
-      nextCard.querySelector("img").src = `${baseImg}${poster}`;
+      nextCard.querySelector("img").src = `${thumImg}${poster}`;
+      nextCard.querySelector("img").dataset.src = thumImg + poster;
       nextCard.querySelector("h4").innerHTML = `${title}`;
       nextCard.querySelector("p").innerHTML = `${date}`;
 
-      card.querySelector("img").src = `${baseDrop}${backDrop || poster}`;
+      card.querySelector("img").src = `${thumDrop}${backDrop || poster}`;
+      card.querySelector("img").alt = `${title}`;
+      card.querySelector("img").dataset.src = baseDrop + backDrop;
+
       card
         .querySelector(".posterTitle")
         .querySelector("img").src = `${baseImg}${poster}`;
+      card.querySelector(".posterTitle").querySelector("img").dataset.src =
+        baseImg + poster;
       card.querySelector(".posterTitle").querySelector("h2").innerHTML = title;
       card.querySelector(".infos").innerHTML +=
         `<p style="color:rgb(199, 199, 199); display:inline;">${date.slice(
@@ -464,7 +489,10 @@ function plotSlides(trends, slideName) {
       card
         .querySelector(".card")
         .setAttribute("type", trend.title == null ? "tv" : "movie");
-      card.querySelector("img").src = `${baseImg}${poster}`;
+      card.querySelector("img").src = `${thumImg}${poster}`;
+      card.querySelector("img").dataset.src = baseImg + poster;
+
+      card.querySelector("img").alt = `${title}`;
       for (let i of allFav.laters) {
         if (i.id == trend.id) {
           card.querySelector("#later").classList.add("bookMarkDone");
