@@ -75,7 +75,7 @@ function lazyLoad() {
   });
 }
 
-window.addEventListener("scroll", lazyLoad);
+// window.addEventListener("scroll", lazyLoad);
 // let tabs = JSON.parse(localStorage.getItem("tabs")).links;
 
 // window.addEventListener("click", (event) => {
@@ -96,8 +96,8 @@ let mainCount = 1;
 let trendPage = 1;
 nextField.children[1].style.display = "none";
 let baseImg = "http://image.tmdb.org/t/p/w342/";
-let thumImg = "http://image.tmdb.org/t/p/w92/";
-let thumDrop = "http://image.tmdb.org/t/p/w300/";
+let thumImg = "http://image.tmdb.org/t/p/w342/";
+let thumDrop = "http://image.tmdb.org/t/p/w1280/";
 let baseDrop = "http://image.tmdb.org/t/p/w1280/";
 // refrence constats
 
