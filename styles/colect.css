@@ -652,6 +652,44 @@ option {
   color: white;
 }
 
+.filter {
+  position: relative;
+  width: 100%;
+  padding: 0 2rem;
+}
+.filter::before {
+  content: "filter :";
+  color: #ffd000;
+  font-weight: 600;
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.612);
+  font-size: 1.6rem;
+}
+.filterOpt {
+  cursor: pointer;
+  overflow: visible;
+
+  background: none;
+  height: 2.5rem;
+  border: 1.2px solid white;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  background-color: var(--main-mid);
+  font-size: 1.1rem;
+  color: white;
+  text-transform: capitalize;
+}
+.filterOpt:focus {
+  border: 0;
+}
+.filterOpt > * {
+  cursor: pointer;
+  background-color: var(--main-dark);
+  border: 0;
+  appearance: none;
+  color: var(--gold);
+  border-radius: 0;
+}
+
 @media all and (max-width: 500px) {
   .burger {
     border-radius: 2.5rem;

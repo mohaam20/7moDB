@@ -77,33 +77,55 @@ async function init() {
   let titleRate;
   let colap = raw.known_for_department == "Acting" ? "cast" : "crew";
   console.log(raw.movie_credits[colap]);
+  let toSort = raw.movie_credits[colap];
+  let toSortT = raw.tv_credits[colap];
   let pastVid;
   let field;
-  for (let i of raw.movie_credits[colap]) {
-    if (i.popularity > 10) {
-      pastVid = i.id;
-      field = "movie";
-      break;
-    }
+
+  let sortedM = toSort.sort((a, b) => {
+    let numa = Math.round(a.vote_average * a.popularity, 3);
+    let numb = Math.round(b.vote_average * b.popularity, 3);
+    // console.log(a.title ?? a.original_name);
+    return numb - numa;
+  });
+
+  field = "movie";
+  console.log(sortedM);
+  // for (let i of raw.movie_credits[colap]) {
+  //   if (i.popularity > 10) {
+  //     pastVid = i.id;
+  //     field = "movie";
+  //     break;
+  //   }
+  // }
+  if (!sortedM[0]) {
+    field = "tv";
+
+    sortedM = toSortT.sort((a, b) => {
+      let numa = Math.round(a.vote_average ?? 1 * a.popularity, 3);
+      let numb = Math.round(b.vote_average ?? 1 * b.popularity, 3);
+      // console.log(a.title ?? a.original_name);
+      return numb - numa;
+    });
   }
-  console.log(pastVid);
-  if (!pastVid) {
-    for (let i of raw.tv_credits[colap]) {
-      if (i.popularity > 10) {
-        console.log(i);
-        pastVid = i.id;
-        field = "tv";
+
+  pastVid = sortedM[0].id;
+  if (sortedM.length !== 0) {
+    console.log("bar");
+    for (let i of sortedM) {
+      console.log(i);
+      titleRate = await fetch(
+        `https://api.themoviedb.org/3/${field}/${i.id}?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&append_to_response=movie_credits,tv_credits,credits,videos,changes,external_ids`
+      )
+        .then((response) => response.json())
+        .then((response) => response)
+        .catch((err) => console.error(err));
+      console.log(titleRate);
+      if (titleRate.videos.results.length !== 0) {
+        console.log("bar");
         break;
       }
     }
-  }
-  if (raw.movie_credits.cast[0] && pastVid) {
-    titleRate = await fetch(
-      `https://api.themoviedb.org/3/${field}/${pastVid}?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&append_to_response=movie_credits,tv_credits,credits,videos,changes,external_ids`
-    )
-      .then((response) => response.json())
-      .then((response) => response)
-      .catch((err) => console.error(err));
 
     console.log(titleRate);
     possibleVids = titleRate.videos.results;
@@ -225,6 +247,15 @@ document.querySelector(".story").querySelector(".text").style.maxHeight =
 
 let num = JSON.parse(localStorage.getItem("tabs")).links.length || 0;
 
+searchBar.addEventListener("keypress", function (event) {
+  console.log("Text input value: " + event.key);
+  console.log(event.data);
+  if (event.key === "Enter" && searchBar.value.length !== 0) {
+    open(`/pages/fullLists.html#search-${searchBar.value}`);
+    // const value = textInput.value;
+    // console.log("Text input value: " + value);
+  }
+});
 // refrence constats
 let autoslide = true;
 let counter = 2;
@@ -493,7 +524,7 @@ function searchResultsMixed(movies) {
   movies = movies.slice(0, 7);
 
   for (let movie of movies) {
-    console.log(movie);
+    // console.log(movie);
     if (movie.known_for_department) {
       let poster = movie.profile_path;
       let title = movie.name;
@@ -522,7 +553,11 @@ function searchResultsMixed(movies) {
       if (movie.original_language !== "ar" && movie.name) {
         title = movie.name;
       }
-      let date = movie.release_date ?? movie.first_air_date;
+      let date = " ";
+      try {
+        date =
+          movie.release_date.slice(0, 4) ?? movie.first_air_date.slice(0, 4);
+      } catch {}
       let card = resTemp.cloneNode(true).querySelector("li");
       // console.log(movie.popularity + " " + title);
       card.id = movie.id;
@@ -536,7 +571,7 @@ function searchResultsMixed(movies) {
       card.querySelector(".res_title").innerHTML =
         `<p style=" display:inline; font-size:1.2rem;">${title}<p/>` +
         " " +
-        `<p style="color:#F1EEE9; display:inline;">${date.slice(0, 4)}<p/>` +
+        `<p style="color:#F1EEE9; display:inline;">${date}<p/>` +
         `<p style="color:rgb(255, 208, 0); display:inline;">${
           movie.title == null ? "tv-show" : "movie"
         }<p/>`;

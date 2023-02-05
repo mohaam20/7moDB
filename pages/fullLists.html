@@ -77,7 +77,7 @@
     </header>
 
     <div class="backDropHolder">
-      <img src="/logos/drop-holder.png" class="backDropImg" alt="" />
+      <img src="/logos/discover.jpg" class="backDropImg" alt="" />
     </div>
 
     <div class="mainInfos">
@@ -90,7 +90,14 @@
           <i class="fa-solid fa-angle-left"></i> cast
           <i class="fa-solid fa-angle-right"></i>
         </h2>
-
+        <div class="filter">
+          <select name="filter" class="filterOpt">
+            <option value="all">all</option>
+            <option value="movie">movies</option>
+            <option value="tv">tv shows</option>
+            <option value="person">person</option>
+          </select>
+        </div>
         <div class="slide-show">
           <template class="card-temp"
             ><a href="movie1.html" onclick="stopShit(event)" class="card">

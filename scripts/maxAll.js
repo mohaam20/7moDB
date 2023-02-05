@@ -10,8 +10,36 @@ const genreBox = document.querySelector("#cast");
 const genTitle = document.querySelector(".slide-title");
 const mainDop = document.querySelector(".backDropHolder").querySelector("img");
 const nextPage = document.querySelector(".nextPage");
-
+const select = document.querySelector(".filterOpt");
 // Dom Elements
+select.addEventListener("change", (event) => {
+  event.preventDefault();
+  console.log("mama");
+  console.log(select.value);
+  console.log(select.closest(".slide-dad").querySelector(".slide-show"));
+  for (let i of select.closest(".slide-dad").querySelector(".slide-show")
+    .children) {
+    console.log(i);
+    if (i.getAttribute("type") == select.value) {
+      i.style.display = null;
+    } else {
+      i.style.display = "none";
+    }
+    if (select.value == "all") {
+      i.style.display = null;
+    }
+  }
+});
+
+searchBar.addEventListener("keypress", function (event) {
+  console.log("Text input value: " + event.key);
+  console.log(event.data);
+  if (event.key === "Enter" && searchBar.value.length !== 0) {
+    open(`/pages/fullLists.html#search-${searchBar.value}`);
+    // const value = textInput.value;
+    // console.log("Text input value: " + value);
+  }
+});
 
 let isTouch = false;
 if (
@@ -96,9 +124,59 @@ window.addEventListener("load", () => {
         location.hash.split("-")[1]
       }/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&adult=false`;
     }
+  } else if (location.hash.includes("search")) {
+    bigSearch();
+    let cleanS = location.hash.split("-")[1].replace(/%20/g, " ");
+    console.log(decodeURIComponent(cleanS));
+    genreBox.querySelector(
+      ".slide-title"
+    ).innerHTML = `results of ${decodeURIComponent(cleanS)} `;
+    return;
   }
+  select.parentNode.remove();
   init(1);
 });
+
+async function bigSearch() {
+  let searched = location.hash.split("-")[1];
+  Promise.all([
+    fetch(
+      `https://api.themoviedb.org/3/search/movie?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&query=${searched}&page=1&include_adult=false`
+    )
+      .then((res) => res.json())
+      .then((res) => res.results)
+      .then((res) => {
+        // allResult.push(...res);
+        // allUnsorted.push(...res);
+        return res;
+      }),
+    fetch(
+      `https://api.themoviedb.org/3/search/tv?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&query=${searched}&include_adult=false`
+    )
+      .then((res) => res.json())
+      .then((res) => res.results)
+      .then((res) => {
+        // allResult.push(...res);
+        // allUnsorted.push(...res);
+        // console.log(allResult);
+        return res;
+      }),
+    fetch(
+      `https://api.themoviedb.org/3/search/person?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&query=${searched}&page=1&include_adult=false`
+    )
+      .then((res) => res.json())
+      .then((res) => {
+        // console.log(res);
+        return res.results;
+      }),
+  ])
+    .then((res) => {
+      return [].concat.apply([], res);
+    })
+    .then((res) => {
+      searchResultsMixedAll(res);
+    });
+}
 
 async function init(page) {
   if (isTouch) {
@@ -311,10 +389,10 @@ function searchResultsMixed(movies) {
     // console.log(a.title ?? a.original_name);
     return numb - numa;
   });
-  movies = movies.slice(0, 3);
+  movies = movies.slice(0, 7);
 
   for (let movie of movies) {
-    console.log(movie);
+    // console.log(movie);
     if (movie.known_for_department) {
       let poster = movie.profile_path;
       let title = movie.name;
@@ -343,7 +421,11 @@ function searchResultsMixed(movies) {
       if (movie.original_language !== "ar" && movie.name) {
         title = movie.name;
       }
-      let date = movie.release_date ?? movie.first_air_date;
+      let date = " ";
+      try {
+        date =
+          movie.release_date.slice(0, 4) ?? movie.first_air_date.slice(0, 4);
+      } catch {}
       let card = resTemp.cloneNode(true).querySelector("li");
       // console.log(movie.popularity + " " + title);
       card.id = movie.id;
@@ -357,7 +439,7 @@ function searchResultsMixed(movies) {
       card.querySelector(".res_title").innerHTML =
         `<p style=" display:inline; font-size:1.2rem;">${title}<p/>` +
         " " +
-        `<p style="color:#F1EEE9; display:inline;">${date.slice(0, 4)}<p/>` +
+        `<p style="color:#F1EEE9; display:inline;">${date}<p/>` +
         `<p style="color:rgb(255, 208, 0); display:inline;">${
           movie.title == null ? "tv-show" : "movie"
         }<p/>`;
@@ -366,6 +448,98 @@ function searchResultsMixed(movies) {
         ressTemp.style.display = "block";
         ressTemp.append(card);
       }
+    }
+  }
+}
+
+function searchResultsMixedAll(movies) {
+  movies.sort((a, b) => {
+    let numa = Math.round((a.vote_average ?? 1) * a.popularity, 3);
+    let numb = Math.round((b.vote_average ?? 1) * b.popularity, 3);
+    // console.log(a.title ?? a.original_name);
+    return numb - numa;
+  });
+  console.log(movies);
+  for (let trend of movies) {
+    // console.log(trend);
+    if (trend.known_for_department) {
+      let poster = trend.profile_path;
+      let title = trend.name;
+      // let detial = trend.character ?? trend.roles[0].character;
+      let card = movieCard.content.cloneNode(true);
+
+      card.querySelector(".card").id = trend.id;
+      card.querySelector(".card").setAttribute("type", "person");
+      card.querySelector(".card").href = `person.html#${trend.id}`;
+
+      card.querySelector("img").src = `${baseImg}${poster}`;
+      card.querySelector(".infos").innerHTML =
+        `<p style="color:gold; display:inline; font-size:1.2rem;">${title}<p/>` +
+        " " +
+        `<p style=" display:inline; font-size:1rem;"> known for: ${trend.known_for_department}<p/>`;
+      card.querySelectorAll("BUTTON").forEach((e) => {
+        e.remove();
+      });
+      if (poster == null) {
+        card.querySelector("img").src = "/logos/poster-holder.png";
+      }
+      genreBox.querySelector(".slide-show").append(card);
+    } else {
+      let poster = trend.poster_path;
+      let backDrop = trend.backdrop_path;
+      let title = trend.original_name ?? trend.title;
+      let date = " ";
+      try {
+        date =
+          movie.release_date.slice(0, 4) ?? movie.first_air_date.slice(0, 4);
+      } catch {}
+      let detial = trend.overview;
+      let card = movieCard.content.cloneNode(true);
+
+      card.querySelector(".card").id = trend.id;
+      card.querySelector(".card").href = `/pages/movie1.html#${trend.id}-${
+        trend.title == null ? "tv" : "movie"
+      }`;
+      card
+        .querySelector(".card")
+        .setAttribute("type", trend.title == null ? "tv" : "movie");
+      card.querySelector("img").src = `${baseImg}${poster}`;
+      for (let i of allFav.laters) {
+        if (i.id == trend.id) {
+          card.querySelector("#later").classList.add("bookMarkDone");
+
+          break;
+        }
+      }
+      for (let i of allSeen.seen) {
+        if (i.id == trend.id) {
+          card.querySelector("#seen").classList.add("bookMarkDone");
+
+          break;
+        }
+      }
+
+      for (let i in yours) {
+        let item = document.createElement("li");
+        item.innerHTML = yours[i].title;
+        card.querySelector(".listOptions").append(item);
+      }
+
+      card.querySelector(".infos").innerHTML =
+        `<p style=" display:inline; font-size:1.2rem;">${title}<p/>` +
+        " " +
+        `<p style="color:rgb(199, 199, 199); display:inline;">${date}<p/>` +
+        `<p style=" color:rgb(255, 208, 0); display:inline;">rating: ${
+          Math.round(trend.vote_average * 10) / 10
+        }<p/>` +
+        `<p class="over-view">overview: ${detial}<p/>`;
+      // card.querySelector(
+      //   ".infos"
+      // ).innerHTML += `<button class="more"">more...</button>`;
+      if (poster == null) {
+        card.querySelector("img").src = "/logos/poster-holder.png";
+      }
+      genreBox.querySelector(".slide-show").append(card);
     }
   }
 }
@@ -379,7 +553,10 @@ function plotSlides(trends, slideName) {
     let poster = trend.poster_path;
     let backDrop = trend.backdrop_path;
     let title = trend.original_name ?? trend.title;
-    let date = trend.release_date ?? trend.first_air_date;
+    let date = " ";
+    try {
+      date = movie.release_date.slice(0, 4) ?? movie.first_air_date.slice(0, 4);
+    } catch {}
     let detial = trend.overview;
     let card = movieCard.content.cloneNode(true);
 
@@ -415,10 +592,7 @@ function plotSlides(trends, slideName) {
     card.querySelector(".infos").innerHTML =
       `<p style=" display:inline; font-size:1.2rem;">${title}<p/>` +
       " " +
-      `<p style="color:rgb(199, 199, 199); display:inline;">${date.slice(
-        0,
-        4
-      )}<p/>` +
+      `<p style="color:rgb(199, 199, 199); display:inline;">${date}<p/>` +
       `<p style=" color:rgb(255, 208, 0); display:inline;">rating: ${
         Math.round(trend.vote_average * 10) / 10
       }<p/>` +

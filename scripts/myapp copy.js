@@ -15,6 +15,15 @@ const menuClose = document.querySelector(".closeMenu");
 const navBar = document.querySelector(".menu");
 // Dom Elements
 
+searchBar.addEventListener("keypress", function (event) {
+  console.log("Text input value: " + event.key);
+  console.log(event.data);
+  if (event.key === "Enter" && searchBar.value.length !== 0) {
+    open(`pages/fullLists.html#search-${searchBar.value}`);
+    // const value = textInput.value;
+    // console.log("Text input value: " + value);
+  }
+});
 addEventListener("hashchange", () => {
   console.log("ya rbbbb");
 });
@@ -327,7 +336,10 @@ function searchResults(movies) {
     console.log(movie);
     let poster = movie.poster_path;
     let title = movie.original_name ?? movie.original_title;
-    let date = movie.release_date ?? movie.first_air_date;
+    let date = " ";
+    try {
+      date = movie.release_date.slice(0, 4) ?? movie.first_air_date.slice(0, 4);
+    } catch {}
     let card = resTemp.cloneNode(true).querySelector("li");
     card.id = movie.id;
     card.setAttribute("type", movie.title == null ? "tv" : "movie");
@@ -340,7 +352,7 @@ function searchResults(movies) {
     card.querySelector(".res_title").innerHTML =
       `<p style=" display:inline; font-size:1.2rem;">${title}<p/>` +
       " " +
-      `<p style="color:#F1EEE9; display:inline;">${date.slice(0, 4)}<p/>` +
+      `<p style="color:#F1EEE9; display:inline;">${date}<p/>` +
       `<p style="color:rgb(255, 208, 0); display:inline;">${
         movie.title == null ? "tv-show" : "movie"
       }<p/>`;
@@ -392,7 +404,11 @@ function searchResultsMixed(movies) {
       if (movie.original_language !== "ar" && movie.name) {
         title = movie.name;
       }
-      let date = movie.release_date ?? movie.first_air_date;
+      let date = " ";
+      try {
+        date =
+          movie.release_date.slice(0, 4) ?? movie.first_air_date.slice(0, 4);
+      } catch {}
       let card = resTemp.cloneNode(true).querySelector("li");
       // console.log(movie.popularity + " " + title);
       card.id = movie.id;
@@ -406,7 +422,7 @@ function searchResultsMixed(movies) {
       card.querySelector(".res_title").innerHTML =
         `<p style=" display:inline; font-size:1.2rem;">${title}<p/>` +
         " " +
-        `<p style="color:#F1EEE9; display:inline;">${date.slice(0, 4)}<p/>` +
+        `<p style="color:#F1EEE9; display:inline;">${date}<p/>` +
         `<p style="color:rgb(255, 208, 0); display:inline;">${
           movie.title == null ? "tv-show" : "movie"
         }<p/>`;
@@ -983,7 +999,12 @@ function stopShit(event) {
     console.log("stoop nav");
   }
   if (unit.classList.contains("viewdCard")) {
-    event.preventDefault();
+    if (isTouch && unit.closest(".slide-dad").id == "rec") {
+      event.preventDefault();
+    }
+    if (unit.closest(".slide-dad").id !== "rec") {
+      event.preventDefault();
+    }
   } else {
     for (let i of unit.children) {
       i.classList.remove("bookMarkSee");

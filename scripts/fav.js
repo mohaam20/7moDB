@@ -37,6 +37,16 @@ document.querySelectorAll(".filterOpt").forEach((select) => {
   });
 });
 
+searchBar.addEventListener("keypress", function (event) {
+  console.log("Text input value: " + event.key);
+  console.log(event.data);
+  if (event.key === "Enter" && searchBar.value.length !== 0) {
+    open(`/pages/fullLists.html#search-${searchBar.value}`);
+    // const value = textInput.value;
+    // console.log("Text input value: " + value);
+  }
+});
+
 window.addEventListener("load", () => {
   console.log(location.hash);
   if (location.hash.length == 0) {
@@ -321,7 +331,11 @@ function searchResultsMixed(movies) {
       if (movie.original_language !== "ar" && movie.name) {
         title = movie.name;
       }
-      let date = movie.release_date ?? movie.first_air_date;
+      let date = " ";
+      try {
+        date =
+          movie.release_date.slice(0, 4) ?? movie.first_air_date.slice(0, 4);
+      } catch {}
       let card = resTemp.cloneNode(true).querySelector("li");
       // console.log(movie.popularity + " " + title);
       card.id = movie.id;
@@ -335,7 +349,7 @@ function searchResultsMixed(movies) {
       card.querySelector(".res_title").innerHTML =
         `<p style=" display:inline; font-size:1.2rem;">${title}<p/>` +
         " " +
-        `<p style="color:#F1EEE9; display:inline;">${date.slice(0, 4)}<p/>` +
+        `<p style="color:#F1EEE9; display:inline;">${date}<p/>` +
         `<p style="color:rgb(255, 208, 0); display:inline;">${
           movie.title == null ? "tv-show" : "movie"
         }<p/>`;
