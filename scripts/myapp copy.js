@@ -595,27 +595,6 @@ function scrollSlide2(direction, area) {
       nextField.children[step + 1].style.zIndex = "10";
     }
     counter = Math.floor(area.scrollLeft / scrollVal + 3);
-    let statu =
-      parseInt(area.children[1].style.transform.replace(/\D/g, "")) || 0;
-    // console.log(statu);
-    // console.log(statu);
-    // console.log(maxScroll);
-
-    let comprmize = statu / scrollVal;
-    console.log(area.scrollWidth + "dddddddddddddddddddddddddddddddd  ");
-
-    // if (nextField.children[counter].className == "nextCard") {
-    //   nextField.children[counter].style.display = "none";
-    //   nextField.children[counter + 1].style.backgroundColor = "rgb(0, 86, 184)";
-    //   nextField.children[counter + 1].style.transform = "scale(1.1)";
-    //   nextField.children[counter + 1].style.zIndex = "10";
-    // }
-    // console.log(
-    //   area.scrollLeft,
-    //   area.children[counter - 2].offsetLeft,
-    //   area.offsetWidth * (counter - 3),
-    //   counter
-    // );
 
     goal =
       area.children[counter - 2].offsetLeft -
@@ -623,40 +602,18 @@ function scrollSlide2(direction, area) {
       8;
     console.log(goal);
 
-    // area.scrollLeft = Math.ceil(
-    //   area.scrollLeft +
-    //     area.scrollWidth -
-    //     area.children[area.children.length - 1].offsetLeft +
-    //     8
-    // );
-
     area.scrollLeft = mainCount * area.offsetWidth + goal;
     if (goal > 0) {
       console.log(area.scrollLeft);
     }
-    if (statu < maxScroll) {
-      // for (let bag of area.children) {
-      //   bag.style.transform = `translateX(-${scrollVal * mainCount  }px)`;
-      // }
-      // area.scrollLeft += scrollVal;
-    }
-    statu = parseInt(area.children[1].style.transform.replace(/\D/g, "")) || 0;
-    // console.log(area.scrollWidth - area.scrollLeft);
-    // console.log(area.offsetWidth * 7);
-    // console.log(area.scrollWidth - area.scrollLeft < area.offsetWidth * 7);
-    console.log(Math.ceil(area.scrollWidth / area.scrollLeft));
+
     if (Math.ceil(area.scrollWidth / area.scrollLeft) < 5) {
       console.log("fetch new");
 
       trendPage += 1;
       fetchTrend(trendPage);
     }
-    // if (set.id == "movieTrends" || set.id == "tvTrends") {
-    //   area.scrollLeft += scrollVal * 4 + 77;
-    // } else if (set.id == "rec") {
-    //   console.log("captin");
-    //   area.scrollLeft += scrollVal + 19;
-    // }
+
     mainCount += 1;
   } else if (direction == "back") {
     for (
@@ -673,29 +630,6 @@ function scrollSlide2(direction, area) {
     }
     area.scrollLeft = (mainCount - 2) * area.offsetWidth + goal;
 
-    // let statu =
-    //   parseInt(area.children[1].style.transform.replace(/\D/g, "")) || 0;
-    // console.log(statu);
-    // if (statu == maxScroll) {
-    //   console.log("error here");
-    //   for (let bag of area.children) {
-    //     bag.style.transform = `translateX(0)`;
-    //   }
-    // } else {
-    //   console.log("error here");
-
-    //   for (let bag of area.children) {
-    //     bag.style.transform = `translateX(-${
-    //       statu - (card.clientWidth + 19)
-    //     }px)`;
-    //   }
-    // }
-
-    // if (set.id == "movieTrends" || set.id == "tvTrends") {
-    //   area.scrollLeft -= scrollVal * 4 + 77;
-    // } else if (set.id == "rec") {
-    //   area.scrollLeft -= scrollVal + 19;
-    // }
     mainCount -= 1;
   } else if (direction == "back" && currentScroll == maxScroll) {
     // area.scrollLeft = 0;
@@ -796,19 +730,26 @@ fetch(
   "https://api.themoviedb.org/3/movie/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&region=us"
 ).then((res) => console.log(res.json()));
 
+let autoScroll = setInterval(() => {
+  if (autoslide) {
+    scrollSlide2("next", mainSlide.querySelector(".slide-show"));
+    // scrollSlide("next", mainSlide.querySelector(".slide-show"));
+  }
+}, 3500);
+
 mainSlide.addEventListener("mouseenter", () => {
+  clearInterval(autoScroll);
   autoslide = false;
 });
 mainSlide.addEventListener("mouseleave", () => {
   autoslide = true;
+  autoScroll = setInterval(() => {
+    if (autoslide) {
+      scrollSlide2("next", mainSlide.querySelector(".slide-show"));
+      // scrollSlide("next", mainSlide.querySelector(".slide-show"));
+    }
+  }, 3500);
 });
-
-const autoScroll = setInterval(() => {
-  if (autoslide) {
-    // scrollSlide2("next", mainSlide.querySelector(".slide-show"));
-    // scrollSlide("next", mainSlide.querySelector(".slide-show"));
-  }
-}, 3500);
 
 window.addEventListener(
   "resize",
