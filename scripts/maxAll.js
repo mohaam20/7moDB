@@ -41,6 +41,7 @@ searchBar.addEventListener("keypress", function (event) {
   }
 });
 
+let searchPage = 1;
 let isTouch = false;
 if (
   /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -126,6 +127,7 @@ window.addEventListener("load", () => {
     }
   } else if (location.hash.includes("search")) {
     bigSearch(1);
+    searchPage += 1;
     let cleanS = location.hash.split("-")[1].replace(/%20/g, " ");
     console.log(decodeURIComponent(cleanS));
     genreBox.querySelector(
@@ -152,14 +154,16 @@ async function bigSearch(page) {
         return res;
       }),
     fetch(
-      `https://api.themoviedb.org/3/search/tv?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=${page}&query=${page}&include_adult=false`
+      `https://api.themoviedb.org/3/search/tv?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=${page}&query=${searched}&include_adult=false`
     )
       .then((res) => res.json())
-      .then((res) => res.results)
+      .then((res) => {
+        console.log(res);
+        return res.results;
+      })
       .then((res) => {
         // allResult.push(...res);
         // allUnsorted.push(...res);
-        console.log(res);
         return res;
       }),
     fetch(
@@ -699,10 +703,10 @@ nextPage.addEventListener("pointerup", (event) => {
     Math.round(
       (genreBox.querySelector(".slide-show").children.length - 1) / 20
     ) + 1;
-  console.log(newPage);
+  console.log(searchPage);
   if (newPage !== 1) {
     if (location.hash.split("-")[0].substring(1) == "search") {
-      bigSearch(newPage);
+      bigSearch(searchPage);
     } else {
       init(newPage);
     }
