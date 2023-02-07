@@ -19,7 +19,7 @@ select.addEventListener("change", (event) => {
   console.log(select.closest(".slide-dad").querySelector(".slide-show"));
   for (let i of select.closest(".slide-dad").querySelector(".slide-show")
     .children) {
-    console.log(i);
+    // console.log(i);
     if (i.getAttribute("type") == select.value) {
       i.style.display = null;
     } else {
@@ -148,17 +148,18 @@ async function bigSearch(page) {
       .then((res) => {
         // allResult.push(...res);
         // allUnsorted.push(...res);
+        console.log(res);
         return res;
       }),
     fetch(
-      `https://api.themoviedb.org/3/search/tv?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=${page}&query=${searched}&include_adult=false`
+      `https://api.themoviedb.org/3/search/tv?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=${page}&query=${page}&include_adult=false`
     )
       .then((res) => res.json())
       .then((res) => res.results)
       .then((res) => {
         // allResult.push(...res);
         // allUnsorted.push(...res);
-        // console.log(allResult);
+        console.log(res);
         return res;
       }),
     fetch(
