@@ -1,0 +1,56 @@
+#feedInput {
+  height: 50vh;
+  width: 40vw;
+  border-radius: 1rem;
+  border: 1px solid gold;
+  background-color: rgba(0, 7, 63, 0.681);
+  box-shadow: 0 0 5px white;
+  color: white;
+  font-size: 1rem;
+  padding: 1rem;
+  text-align: start;
+  text-transform: capitalize;
+  display: flex;
+}
+
+.container label {
+  text-align: center;
+  -webkit-text-stroke: 1px rgba(255, 217, 0, 0.615);
+  z-index: 2;
+  /* position: absolute; */
+  /* top: -25vh; */
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.73);
+  font-size: 2rem;
+  letter-spacing: 0.1rem;
+  padding: 0.2rem;
+  color: #fff;
+  text-transform: capitalize;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container button {
+  color: white;
+  text-transform: capitalize;
+  box-shadow: 0 0 5px white;
+  background-color: gold;
+  border-radius: 0.2rem;
+  border: none;
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.container form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+.container {
+  margin: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}

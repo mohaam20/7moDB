@@ -13,9 +13,10 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <script src="/scripts/max.js" defer></script>
+    <script src="/scripts/feed.js" defer></script>
 
     <link rel="stylesheet" href="/styles/colect.css" />
+    <link rel="stylesheet" href="/styles/feed.css" />
   </head>
   <body>
     <header>
@@ -75,47 +76,15 @@
         </nav>
       </div>
     </header>
-
-    <div class="backDropHolder">
-      <img src="/logos/drop-holder.png" class="backDropImg" alt="" />
+    <div class="container">
+      <form action="https://formspree.io/f/mrgvevdd" method="POST">
+        <label for="feedInput"> feed back </label>
+        <input type="text" name="message" autocomplete="off" id="feedInput" />
+        <button type="submit">submit</button>
+      </form>
     </div>
-
-    <div class="mainInfos">
-      <a href="/pages/discover.html" id="disc">
-        <i class="fa-solid fa-dharmachakra"></i
-      ></a>
-
-      <div class="slide-dad top-dad" id="cast">
-        <h2 class="slide-title">
-          <i class="fa-solid fa-angle-left"></i> cast
-          <i class="fa-solid fa-angle-right"></i>
-        </h2>
-
-        <div class="slide-show">
-          <template class="card-temp"
-            ><a href="movie1.html" onclick="stopShit(event)" class="card">
-              <button class="bookMark" id="later">
-                <i class="fa-solid fa-clock"></i>
-              </button>
-              <button class="bookMark" id="seen">
-                <i class="fa-solid fa-eye"></i>
-              </button>
-              <button class="bookMark" id="custom">
-                <i class="fa-solid fa-list"></i>
-                <ul class="listOptions">
-                  <h5>add to list</h5>
-                  <li id="creatList">create List +</li>
-                </ul>
-              </button>
-              <img class="img-fluid" src="https://source.unsplash.com/random" />
-              <span class="infos">Lorem ipsum dolor sit amet consectetur.</span>
-            </a></template
-          >
-        </div>
-        <button class="nextPage">
-          <i class="fa-solid fa-circle-chevron-down"></i>
-        </button>
-      </div>
+    <div class="backDropHolder">
+      <img src="/logos/discover.jpg" class="backDropImg" alt="" />
     </div>
   </body>
 </html>

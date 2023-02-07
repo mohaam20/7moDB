@@ -375,7 +375,7 @@ function searchResultsMixed(movies) {
   movies = movies.slice(0, 7);
   console.log(movies);
   for (let movie of movies) {
-    console.log(movie);
+    // console.log(movie);
     if (movie.known_for_department) {
       let poster = movie.profile_path;
       let title = movie.name;
@@ -588,7 +588,7 @@ function scrollSlide2(direction, area) {
   if (direction == "next") {
     for (let step = 0; step <= mainCount + 2; step++) {
       // Runs 5 times, with values of step 0 through 4.
-      console.log(step);
+      // console.log(step);
       nextField.children[step].style.display = "none";
       nextField.children[step + 1].style.backgroundColor = "rgb(0, 86, 184)";
       nextField.children[step + 1].style.transform = "scale(1.1)";
@@ -732,7 +732,7 @@ fetch(
 
 let autoScroll = setInterval(() => {
   if (autoslide) {
-    scrollSlide2("next", mainSlide.querySelector(".slide-show"));
+    // scrollSlide2("next", mainSlide.querySelector(".slide-show"));
     // scrollSlide("next", mainSlide.querySelector(".slide-show"));
   }
 }, 3500);
