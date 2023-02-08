@@ -1,6 +1,7 @@
 #feedInput {
   height: 50vh;
-  width: 40vw;
+  width: 40rem;
+  max-width: 90vw;
   border-radius: 1rem;
   border: 1px solid gold;
   background-color: rgba(0, 7, 63, 0.681);
