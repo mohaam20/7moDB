@@ -146,7 +146,10 @@ async function bigSearch(page) {
       `https://api.themoviedb.org/3/search/movie?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&query=${searched}&page=${page}&include_adult=false`
     )
       .then((res) => res.json())
-      .then((res) => res.results)
+      .then((res) => {
+        console.log(res);
+        return res.results;
+      })
       .then((res) => {
         // allResult.push(...res);
         // allUnsorted.push(...res);
@@ -704,13 +707,16 @@ nextPage.addEventListener("pointerup", (event) => {
       (genreBox.querySelector(".slide-show").children.length - 1) / 20
     ) + 1;
   console.log(searchPage);
-  if (newPage !== 1) {
-    if (location.hash.split("-")[0].substring(1) == "search") {
+  if (location.hash.split("-")[0].substring(1) == "search") {
+    if (searchPage !== 1) {
       bigSearch(searchPage);
-    } else {
+    }
+  } else {
+    if (newPage !== 1) {
       init(newPage);
     }
   }
+  searchPage += 1;
 });
 window.addEventListener("pointerup", appendLink, false);
 
