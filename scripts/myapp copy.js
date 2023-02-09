@@ -116,12 +116,7 @@ addEventListener("load", () => {
   sessionStorage.clear();
 
   fetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=5e060480a887e5981aa743bc33a74e40&vote_count.gte=1000&sort_by=release_date.desc&include_adult=false&include_video=false&page=${trendPage}&vote_average.gte=8&with_keywords=avengers&with_watch_monetization_types=flatrate`,
-    {
-      headers: {
-        "Content-Security-Policy": "default-src 'self'",
-      },
-    }
+    `https://api.themoviedb.org/3/discover/movie?api_key=5e060480a887e5981aa743bc33a74e40&vote_count.gte=1000&sort_by=release_date.desc&include_adult=false&include_video=false&page=${trendPage}&vote_average.gte=8&with_keywords=avengers&with_watch_monetization_types=flatrate`
   )
     .then((res) => res.json())
     .then((res) => res.results.filter((res) => res.original_language !== "sd"))
@@ -130,12 +125,7 @@ addEventListener("load", () => {
     });
   setTimeout(() => {
     fetch(
-      "https://api.themoviedb.org/3/trending/movie/day?api_key=5e060480a887e5981aa743bc33a74e40",
-      {
-        headers: {
-          "Content-Security-Policy": "default-src 'self'",
-        },
-      }
+      "https://api.themoviedb.org/3/trending/movie/day?api_key=5e060480a887e5981aa743bc33a74e40"
     )
       .then((res) => res.json())
       .then((res) => {
@@ -152,12 +142,7 @@ addEventListener("load", () => {
 
   setTimeout(() => {
     fetch(
-      "https://api.themoviedb.org/3/trending/tv/day?api_key=5e060480a887e5981aa743bc33a74e40",
-      {
-        headers: {
-          "Content-Security-Policy": "default-src 'self'",
-        },
-      }
+      "https://api.themoviedb.org/3/trending/tv/day?api_key=5e060480a887e5981aa743bc33a74e40"
     )
       .then((res) => res.json())
       .then((res) => res.results)
@@ -170,12 +155,7 @@ addEventListener("load", () => {
   }, 1300);
   setTimeout(() => {
     fetch(
-      "https://api.themoviedb.org/3/movie/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&adult=false",
-      {
-        headers: {
-          "Content-Security-Policy": "default-src 'self'",
-        },
-      }
+      "https://api.themoviedb.org/3/movie/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&adult=false"
     )
       .then((res) => res.json())
       .then((res) => res.results)
@@ -188,12 +168,7 @@ addEventListener("load", () => {
   }, 2000);
   setTimeout(() => {
     fetch(
-      "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=en|ar&page=1&region=us",
-      {
-        headers: {
-          "Content-Security-Policy": "default-src 'self'",
-        },
-      }
+      "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=en|ar&page=1&region=us"
     )
       .then((res) => res.json())
       .then((res) => res.results)
@@ -206,12 +181,7 @@ addEventListener("load", () => {
   }, 2500);
   setTimeout(() => {
     fetch(
-      "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=ja&page=1",
-      {
-        headers: {
-          "Content-Security-Policy": "default-src 'self'",
-        },
-      }
+      "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=ja&page=1"
     )
       .then((res) => res.json())
       .then((res) => res.results)
