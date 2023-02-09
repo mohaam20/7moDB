@@ -391,9 +391,9 @@ let num = JSON.parse(localStorage.getItem("tabs")).links.length || 0;
 let autoslide = true;
 let counter = 2;
 let trendPage = 1;
-let baseImg = "http://image.tmdb.org/t/p/w342/";
-let baseDrop = "http://image.tmdb.org/t/p/w1280/";
-let basePoster = "http://image.tmdb.org/t/p/w342/";
+let baseImg = "https://image.tmdb.org/t/p/w342/";
+let baseDrop = "https://image.tmdb.org/t/p/w1280/";
+let basePoster = "https://image.tmdb.org/t/p/w342/";
 // refrence constats
 
 window.addEventListener("scroll", (event) => {

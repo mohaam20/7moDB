@@ -8,7 +8,7 @@
 console.log = function () {};
 
 fetch(
-  "https://api.themoviedb.org/3/tv/37854/season/3?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US"
+  "httpss://api.themoviedb.org/3/tv/37854/season/3?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US"
 ).then((res) => {
   console.log(res.json());
 });
@@ -196,11 +196,11 @@ async function init() {
   console.log(realInfos, videoType);
 
   let raw = await fetch(
-    `https://api.themoviedb.org/3/tv/${realInfos}/season/${videoType}?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&append_to_response=reviews,aggregate_credits,videos,genres,credits,recommendations,similar,external_ids`
+    `httpss://api.themoviedb.org/3/tv/${realInfos}/season/${videoType}?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&append_to_response=reviews,aggregate_credits,videos,genres,credits,recommendations,similar,external_ids`
   ).then((res) => res.json());
 
   let rawz = await fetch(
-    `https://api.themoviedb.org/3/tv/${realInfos}?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&append_to_response=reviews,aggregate_credits,videos,genres,credits,recommendations,similar,external_ids`
+    `httpss://api.themoviedb.org/3/tv/${realInfos}?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&append_to_response=reviews,aggregate_credits,videos,genres,credits,recommendations,similar,external_ids`
   ).then((res) => res.json());
 
   console.log(raw);
@@ -212,7 +212,7 @@ async function init() {
   let imdbId = rawz.external_ids.imdb_id;
   try {
     let titleRate = await fetch(
-      `https://moviesdatabase.p.rapidapi.com/titles/${imdbId}/ratings`,
+      `httpss://moviesdatabase.p.rapidapi.com/titles/${imdbId}/ratings`,
       options
     )
       .then((response) => response.json())
@@ -232,7 +232,7 @@ async function init() {
   ).innerHTML = `<i class="fa-brands fa-imdb"></i> : ${raw.vote_average}`;
   try {
     let titleRate = await fetch(
-      `https://moviesdatabase.p.rapidapi.com/titles/${imdbId}/ratings`,
+      `httpss://moviesdatabase.p.rapidapi.com/titles/${imdbId}/ratings`,
       options
     )
       .then((response) => response.json())
@@ -292,7 +292,7 @@ async function init() {
     document.querySelector(".boss").remove();
   }
   let genrea = await fetch(
-    "https://api.themoviedb.org/3/discover/movie?api_key=5e060480a887e5981aa743bc33a74e40&with_genres=28"
+    "httpss://api.themoviedb.org/3/discover/movie?api_key=5e060480a887e5981aa743bc33a74e40&with_genres=28"
   )
     .then((res) => res.json())
     .then((res) => {
@@ -363,7 +363,7 @@ async function init() {
     document.querySelector("#trailer").remove();
   } else {
     tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
+    tag.src = "httpss://www.youtube.com/iframe_api";
     firstScriptTag = document.getElementsByTagName("script")[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
   }
@@ -403,7 +403,7 @@ async function init() {
   //   if (k.type == "Trailer" && !failVids.includes(k.key)) {
   //     // document.querySelector(
   //     //   "#trailer"
-  //     // ).src = `https://www.youtube.com/embed/${k.key}`;
+  //     // ).src = `httpss://www.youtube.com/embed/${k.key}`;
   //     player.loadVideoById({ videoId: k.key ,endSeconds: 0  });
   //   }
   // }
@@ -418,9 +418,9 @@ let num = JSON.parse(localStorage.getItem("tabs")).links.length || 0;
 let autoslide = true;
 let counter = 2;
 let trendPage = 1;
-let baseImg = "http://image.tmdb.org/t/p/w342/";
-let baseDrop = "http://image.tmdb.org/t/p/w1280/";
-let basePoster = "http://image.tmdb.org/t/p/w342/";
+let baseImg = "https://image.tmdb.org/t/p/w342/";
+let baseDrop = "https://image.tmdb.org/t/p/w1280/";
+let basePoster = "https://image.tmdb.org/t/p/w342/";
 // refrence constats
 
 window.addEventListener("scroll", (event) => {
@@ -448,7 +448,7 @@ window.addEventListener("load", () => {
   // sessionStorage.setItem("type", hash2);
   init();
   fetch(
-    "https://api.themoviedb.org/3/movie/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&region=us"
+    "httpss://api.themoviedb.org/3/movie/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&region=us"
   )
     .then((res) => res.json())
     .then((res) => res.results)
@@ -457,7 +457,7 @@ window.addEventListener("load", () => {
       plotSlides(res, topSlide);
     });
   fetch(
-    "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=en|ar&page=1&region=us"
+    "httpss://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=en|ar&page=1&region=us"
   )
     .then((res) => res.json())
     .then((res) => res.results)
@@ -466,7 +466,7 @@ window.addEventListener("load", () => {
       plotSlides(res, top2Slide);
     });
   fetch(
-    "https://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=ja&page=1"
+    "httpss://api.themoviedb.org/3/tv/top_rated?api_key=5e060480a887e5981aa743bc33a74e40&with_original_language=ja&page=1"
   )
     .then((res) => res.json())
     .then((res) => res.results)
@@ -475,7 +475,7 @@ window.addEventListener("load", () => {
       plotSlides(res, top3Slide);
     });
   fetch(
-    "https://api.themoviedb.org/3/trending/movie/day?api_key=5e060480a887e5981aa743bc33a74e40"
+    "httpss://api.themoviedb.org/3/trending/movie/day?api_key=5e060480a887e5981aa743bc33a74e40"
   )
     .then((res) => res.json())
     .then((res) => res.results)
@@ -484,7 +484,7 @@ window.addEventListener("load", () => {
       plotSlides(res, slide1);
     });
   fetch(
-    "https://api.themoviedb.org/3/trending/tv/day?api_key=5e060480a887e5981aa743bc33a74e40"
+    "httpss://api.themoviedb.org/3/trending/tv/day?api_key=5e060480a887e5981aa743bc33a74e40"
   )
     .then((res) => res.json())
     .then((res) => res.results)
@@ -509,7 +509,7 @@ window.addEventListener(
       console.log("hi blur pleas");
       Promise.all([
         fetch(
-          `https://api.themoviedb.org/3/search/movie?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&query=${searchBar.value}&page=1&include_adult=false`
+          `httpss://api.themoviedb.org/3/search/movie?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&query=${searchBar.value}&page=1&include_adult=false`
         )
           .then((res) => res.json())
           .then((res) => res.results.slice(0, 10))
@@ -519,7 +519,7 @@ window.addEventListener(
             return res;
           }),
         fetch(
-          `https://api.themoviedb.org/3/search/tv?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&query=${searchBar.value}&include_adult=false`
+          `httpss://api.themoviedb.org/3/search/tv?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&query=${searchBar.value}&include_adult=false`
         )
           .then((res) => res.json())
           .then((res) => res.results.slice(0, 10))
@@ -530,7 +530,7 @@ window.addEventListener(
             return res;
           }),
         fetch(
-          `https://api.themoviedb.org/3/search/person?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&query=${searchBar.value}&page=1&include_adult=false`
+          `httpss://api.themoviedb.org/3/search/person?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&query=${searchBar.value}&page=1&include_adult=false`
         )
           .then((res) => res.json())
           .then((res) => {
@@ -562,12 +562,12 @@ searchBar.addEventListener(
     if (event.target.id == "search_area" && searchBar.value.length !== 0) {
       ressTemp.style.display = "blcok";
       // fetch(
-      //   `https://api.themoviedb.org/3/configuration?api_key=5e060480a887e5981aa743bc33a74e40`
+      //   `httpss://api.themoviedb.org/3/configuration?api_key=5e060480a887e5981aa743bc33a74e40`
       // ).then((res) => {
       //   console.log(res.json());
       // });
       // fetch(
-      //   `https://api.themoviedb.org/3/search/person?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&query=${searchBar.value}&page=1&include_adult=false`
+      //   `httpss://api.themoviedb.org/3/search/person?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&query=${searchBar.value}&page=1&include_adult=false`
       // )
       //   .then((res) => res.json())
       //   .then((res) => {
@@ -576,7 +576,7 @@ searchBar.addEventListener(
       //   }),
       Promise.all([
         fetch(
-          `https://api.themoviedb.org/3/search/movie?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&query=${searchBar.value}&page=1&include_adult=false`
+          `httpss://api.themoviedb.org/3/search/movie?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&query=${searchBar.value}&page=1&include_adult=false`
         )
           .then((res) => res.json())
           .then((res) => res.results.slice(0, 10))
@@ -586,7 +586,7 @@ searchBar.addEventListener(
             return res;
           }),
         fetch(
-          `https://api.themoviedb.org/3/search/tv?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&query=${searchBar.value}&include_adult=false`
+          `httpss://api.themoviedb.org/3/search/tv?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&page=1&query=${searchBar.value}&include_adult=false`
         )
           .then((res) => res.json())
           .then((res) => res.results.slice(0, 10))
@@ -597,7 +597,7 @@ searchBar.addEventListener(
             return res;
           }),
         fetch(
-          `https://api.themoviedb.org/3/search/person?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&query=${searchBar.value}&page=1&include_adult=false`
+          `httpss://api.themoviedb.org/3/search/person?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US&query=${searchBar.value}&page=1&include_adult=false`
         )
           .then((res) => res.json())
           .then((res) => {
@@ -630,7 +630,7 @@ function manSearchResults(movies) {
     // console.log(movie.popularity + " " + title);
     card.id = movie.id;
     card.querySelector("a").href = `/pages/person.html#${movie.id}`;
-    card.querySelector("img").src = `https://image.tmdb.org/t/p/w92/${poster}`;
+    card.querySelector("img").src = `httpss://image.tmdb.org/t/p/w92/${poster}`;
     card.querySelector(".res_title").innerHTML =
       `<p style=" display:inline; font-size:1.2rem;">${title}<p/>` +
       " " +
@@ -667,7 +667,7 @@ function searchResults(movies) {
       movie.title == null ? "tv" : "movie"
     }`;
     card.setAttribute("type", movie.title == null ? "tv" : "movie");
-    card.querySelector("img").src = `https://image.tmdb.org/t/p/w92/${poster}`;
+    card.querySelector("img").src = `httpss://image.tmdb.org/t/p/w92/${poster}`;
     card.querySelector(".res_title").innerHTML =
       `<p style=" display:inline; font-size:1.2rem;">${title}<p/>` +
       " " +
@@ -704,7 +704,7 @@ function searchResultsMixed(movies) {
       card.querySelector("a").href = `/pages/person.html#${movie.id}`;
       card.querySelector(
         "img"
-      ).src = `https://image.tmdb.org/t/p/w92/${poster}`;
+      ).src = `httpss://image.tmdb.org/t/p/w92/${poster}`;
       card.querySelector(".res_title").innerHTML =
         `<p style=" display:inline; font-size:1.2rem;">${title}<p/>` +
         " " +
@@ -737,7 +737,7 @@ function searchResultsMixed(movies) {
       card.setAttribute("type", movie.title == null ? "tv" : "movie");
       card.querySelector(
         "img"
-      ).src = `https://image.tmdb.org/t/p/w92/${poster}`;
+      ).src = `httpss://image.tmdb.org/t/p/w92/${poster}`;
       card.querySelector(".res_title").innerHTML =
         `<p style=" display:inline; font-size:1.2rem;">${title}<p/>` +
         " " +
@@ -1355,7 +1355,7 @@ function onYouTubeIframeAPIReady(secondTime) {
       break;
       // document.querySelector(
       //   "#trailer"
-      // ).src = `https://www.youtube.com/embed/${k.key}`;
+      // ).src = `httpss://www.youtube.com/embed/${k.key}`;
       // player.loadVideoById({ videoId: k.key, endSeconds: 0 });
     } else if (!failVids.includes(k.key) && secondTime) {
       console.log(k.key);

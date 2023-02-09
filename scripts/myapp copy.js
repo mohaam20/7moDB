@@ -14,7 +14,7 @@ const menuOpen = document.querySelector(".burger");
 const menuClose = document.querySelector(".closeMenu");
 const navBar = document.querySelector(".menu");
 // Dom Elements
-console.log = function () {};
+// console.log = function () {};
 
 searchBar.addEventListener("keypress", function (event) {
   console.log("Text input value: " + event.key);
@@ -116,7 +116,7 @@ addEventListener("load", () => {
   sessionStorage.clear();
 
   fetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=5e060480a887e5981aa743bc33a74e40&vote_count.gte=1000&sort_by=release_date.desc&include_adult=false&include_video=false&page=${trendPage}&vote_average.gte=8&with_keywords=avengers&with_watch_monetization_types=flatrate`
+    `https://api.themoviedb.org/3/discover/movie?api_key=5e060480a887e5981aa743bc33a74e40&vote_count.gte=1000&sort_by=release_date.desc&format=webp&include_adult=false&include_video=false&page=${trendPage}&vote_average.gte=8&with_keywords=avengers&with_watch_monetization_types=flatrate&format=webp`
   )
     .then((res) => res.json())
     .then((res) => res.results.filter((res) => res.original_language !== "sd"))
@@ -336,6 +336,7 @@ function searchResults(movies) {
   for (let movie of movies) {
     console.log(movie);
     let poster = movie.poster_path;
+
     let title = movie.original_name ?? movie.original_title;
     let date = " ";
     try {
@@ -443,6 +444,7 @@ function plotSlides(trends, slideName) {
   // trends = trends.slice(0, 7);
   for (let trend of trends) {
     let poster = trend.poster_path;
+    console.log(trend);
     let backDrop = trend.backdrop_path;
     let title = trend.original_name ?? trend.title;
     let date = trend.release_date ?? trend.first_air_date;
@@ -470,7 +472,7 @@ function plotSlides(trends, slideName) {
       nextCard.querySelector("img").dataset.src = thumImg + poster;
       nextCard.querySelector("h4").innerHTML = `${title}`;
       nextCard.querySelector("p").innerHTML = `${date}`;
-
+      console.log(poster);
       card.querySelector("img").src = `${thumDrop}${backDrop || poster}`;
       card.querySelector("img").alt = `${title}`;
       card.querySelector("img").dataset.src = baseDrop + backDrop;

@@ -59,8 +59,8 @@ console.log(yours);
 //   console.log(i[1].det);
 // }
 
-let baseImg = "http://image.tmdb.org/t/p/w342/";
-let baseDrop = "http://image.tmdb.org/t/p/w1280/";
+let baseImg = "https://image.tmdb.org/t/p/w342/";
+let baseDrop = "https://image.tmdb.org/t/p/w1280/";
 // refrence constats
 
 window.addEventListener("load", () => {

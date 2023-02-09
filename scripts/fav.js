@@ -70,9 +70,9 @@ window.addEventListener("load", () => {
 });
 
 console.log(movieCard.content);
-let baseImg = "http://image.tmdb.org/t/p/w500/";
-let baseDrop = "http://image.tmdb.org/t/p/w1280/";
-let basePoster = "http://image.tmdb.org/t/p/w342/";
+let baseImg = "https://image.tmdb.org/t/p/w500/";
+let baseDrop = "https://image.tmdb.org/t/p/w1280/";
+let basePoster = "https://image.tmdb.org/t/p/w342/";
 
 let isTouch = false;
 if (
