@@ -14,6 +14,7 @@ const menuOpen = document.querySelector(".burger");
 const menuClose = document.querySelector(".closeMenu");
 const navBar = document.querySelector(".menu");
 // Dom Elements
+console.log = function () {};
 
 searchBar.addEventListener("keypress", function (event) {
   console.log("Text input value: " + event.key);
@@ -739,17 +740,13 @@ let autoScroll = setInterval(() => {
 }, 3500);
 
 window.onblur = function () {
-  clearInterval(autoScroll);
+  autoslide = false;
 };
 
-// window.onfocus = function () {
-//   autoScroll = setInterval(() => {
-//     if (autoslide) {
-//       scrollSlide2("next", mainSlide.querySelector(".slide-show"));
-//       // scrollSlide("next", mainSlide.querySelector(".slide-show"));
-//     }
-//   }, 3500);
-// };
+window.onfocus = function () {
+  console.log("i am back");
+  autoslide = true;
+};
 
 mainSlide.addEventListener("mouseenter", () => {
   clearInterval(autoScroll);

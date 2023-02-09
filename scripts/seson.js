@@ -5,6 +5,8 @@
 // if (location.hash.length == 0) {
 //   removeEventListener("popstate", channnn);
 // }
+console.log = function () {};
+
 fetch(
   "https://api.themoviedb.org/3/tv/37854/season/3?api_key=5e060480a887e5981aa743bc33a74e40&language=en-US"
 ).then((res) => {
@@ -297,6 +299,9 @@ async function init() {
       console.log(res);
     });
   castSlide.querySelector(".slide-show").innerHTML = "";
+  castSlide.querySelector(
+    ".slide-title"
+  ).href = `/pages/fullLists.html#cast-tv-${realInfos}`;
   if (raw.aggregate_credits) {
     plotCast(raw.credits.cast, castSlide);
 
@@ -324,11 +329,17 @@ async function init() {
   if (rawz.recommendations.results.length == 0) {
     recoSlide.remove();
   } else {
+    console.log("thats");
     document
       .querySelector("#recommend")
       .querySelector(
-        "h2"
+        ".slide-title"
       ).innerHTML = `tv s recommendations <i class="fa-solid fa-angle-right">`;
+    document
+      .querySelector("#recommend")
+      .querySelector(
+        ".slide-title"
+      ).href = `/pages/fullLists.html#recommend-tv-${realInfos}`;
   }
   if (rawz.similar.results.length == 0) {
     similar.remove();
@@ -336,7 +347,12 @@ async function init() {
     document
       .querySelector("#similar")
       .querySelector(
-        "h2"
+        ".slide-title"
+      ).href = `/pages/fullLists.html#similar-tv-${realInfos}`;
+    document
+      .querySelector("#similar")
+      .querySelector(
+        ".slide-title"
       ).innerHTML = `similar tv s <i class="fa-solid fa-angle-right">`;
   }
 

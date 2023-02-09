@@ -12,6 +12,7 @@ const mainDop = document.querySelector(".backDropHolder").querySelector("img");
 const nextPage = document.querySelector(".nextPage");
 const select = document.querySelector(".filterOpt");
 // Dom Elements
+console.log = function () {};
 
 searchBar.addEventListener("keypress", function (event) {
   console.log("Text input value: " + event.key);

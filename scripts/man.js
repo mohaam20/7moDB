@@ -21,6 +21,8 @@ if (
   isTouch = true;
 } else isTouch = false;
 
+console.log = function () {};
+
 addEventListener("popstate", channnn);
 
 function channnn() {

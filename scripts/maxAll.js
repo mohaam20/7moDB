@@ -12,6 +12,8 @@ const mainDop = document.querySelector(".backDropHolder").querySelector("img");
 const nextPage = document.querySelector(".nextPage");
 const select = document.querySelector(".filterOpt");
 // Dom Elements
+console.log = function () {};
+
 select.addEventListener("change", (event) => {
   event.preventDefault();
   console.log("mama");

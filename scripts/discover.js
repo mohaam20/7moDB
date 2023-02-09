@@ -18,6 +18,7 @@ const genreFilter = document.querySelector("#genreFilter");
 const filterStart = document.querySelector("#startFilter");
 const filtersContainer = document.querySelector(".filters");
 const discoverTitle = document.querySelector(".slide-title");
+console.log = function () {};
 
 // Dom Elements
 

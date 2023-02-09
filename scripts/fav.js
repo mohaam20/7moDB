@@ -1,6 +1,5 @@
 const searchBar = document.querySelector("#search_area");
 const resTemp = document.querySelector(".result_temp").content;
-console.log(resTemp);
 const ressTemp = document.querySelector(".results");
 const movieCard = document.querySelector(".card-temp");
 const items = document.querySelector(".slide-show");
@@ -14,6 +13,8 @@ const listForm = document.querySelector("#createList");
 const newListTitle = document.querySelector("#listTitle");
 const newListDesk = document.querySelector("#listDesk");
 const dropListTemp = document.querySelector(".dropTemplate");
+
+console.log = function () {};
 
 console.log(seens);
 document.querySelectorAll(".filterOpt").forEach((select) => {
