@@ -5,7 +5,7 @@
 // if (location.hash.length == 0) {
 //   removeEventListener("popstate", channnn);
 // }
-// console.log = function () {};
+console.log = function () {};
 
 addEventListener("popstate", channnn);
 
