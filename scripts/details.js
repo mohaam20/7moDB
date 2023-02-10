@@ -784,9 +784,9 @@ async function plotSeas(trends, slideName) {
 
     card.querySelector(".card").id = trend.id;
     card.querySelector(".card").setAttribute("type", "person");
-    card.querySelector(".card").href = `season.html#${realInfos}-${
-      trends.indexOf(trend) + 1
-    }`;
+    card.querySelector(
+      ".card"
+    ).href = `season.html#${realInfos}-${trends.indexOf(trend)}`;
 
     card.querySelector("img").src = `${basePoster}${poster}`;
     card.querySelector(".infos").innerHTML =
