@@ -5,7 +5,7 @@
 // if (location.hash.length == 0) {
 //   removeEventListener("popstate", channnn);
 // }
-console.log = function () {};
+// console.log = function () {};
 
 addEventListener("popstate", channnn);
 
@@ -289,9 +289,10 @@ async function init() {
   if (raw.aggregate_credits) {
     plotCast(raw.aggregate_credits.cast.slice(0, 20), castSlide);
 
-    if (raw.seasons.length > 0 && raw.seasons[0].poster_path !== null) {
+    if (raw.seasons.length > 0) {
       plotSeas(raw.seasons, seasSlide);
     } else {
+      console.log("remove here");
       seasSlide.remove();
     }
   } else {
