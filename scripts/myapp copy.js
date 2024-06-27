@@ -116,7 +116,7 @@ addEventListener("load", () => {
   sessionStorage.clear();
 
   fetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=5e060480a887e5981aa743bc33a74e40&vote_count.gte=1000&sort_by=release_date.desc&format=webp&include_adult=false&include_video=false&page=${trendPage}&vote_average.gte=8&with_keywords=avengers&with_watch_monetization_types=flatrate&format=webp`
+    `https://api.themoviedb.org/3/discover/movie?api_key=5e060480a887e5981aa743bc33a74e40&vote_count.gte=1000&sort_by=release_date.desc&format=webp&include_adult=false&include_video=false&page=${trendPage}&vote_average.gte=8&with_watch_monetization_types=flatrate&format=webp`
   )
     .then((res) => res.json())
     .then((res) => res.results.filter((res) => res.original_language !== "sd"))
