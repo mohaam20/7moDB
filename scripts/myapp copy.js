@@ -714,7 +714,7 @@ fetch(
 function fetchTrend(page) {
   console.log(page);
   fetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=5e060480a887e5981aa743bc33a74e40&sort_by=release_date.desc&include_adult=false&include_video=false&page=${page}&vote_average.gte=7&with_keywords=avengers&with_watch_monetization_types=flatrate`
+    `https://api.themoviedb.org/3/discover/movie?api_key=5e060480a887e5981aa743bc33a74e40&sort_by=release_date.desc&include_adult=false&include_video=false&page=${page}&vote_average.gte=7&with_watch_monetization_types=flatrate`
   )
     .then((res) => res.json())
     .then((res) =>
